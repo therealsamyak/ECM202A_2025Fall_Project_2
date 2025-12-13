@@ -1,5 +1,4 @@
 import logging
-import time
 from typing import Dict, Optional, Tuple
 
 import pandas as pd
@@ -69,8 +68,6 @@ class YOLOModel:
         _ = psutil.cpu_percent(interval=1)
 
         # Run inference multiple times
-        start_time = time.time()
-
         for _ in range(iterations):
             try:
                 results = self.model(image_path)
@@ -82,9 +79,6 @@ class YOLOModel:
             except Exception as e:
                 self.logger.error(f"Inference failed: {e}")
                 continue
-
-        end_time = time.time()
-        _ = end_time - start_time
 
         # Get power consumption during inference
         # This is a simplified approach - real power measurement would need more sophisticated tools
