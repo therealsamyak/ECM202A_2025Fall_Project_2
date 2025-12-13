@@ -97,3 +97,6 @@ logs/
 *.temp
 .cache/
 tmp/
+
+#large models
+*.pt
