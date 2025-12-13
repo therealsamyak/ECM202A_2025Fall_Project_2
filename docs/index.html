@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <title>Optimal Charge Security Camera</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a href="index.html" class="logo">OCS</a>
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="docs.html">Documentation</a>
+        <a
+          href="https://github.com/therealsamyak/optimal-charge-security-camera"
+          target="_blank"
+          >GitHub</a
+        >
+      </div>
+    </nav>
+
+    <div class="layout-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>Table of Contents</h2>
+        <ul class="toc-links">
+          <li><a href="#quick-start">Quick Start</a></li>
+          <li><a href="#goals">Goals</a></li>
+          <li><a href="#specific-aims">Specific Aims</a></li>
+          <li><a href="#approach">Approach</a></li>
+          <li><a href="#deliverables">Deliverables</a></li>
+          <li><a href="#timeline">Timeline</a></li>
+        </ul>
+
+        <div class="footer-info">
+          <p><strong>Contributors:</strong><br />Samyak Kakatur, Jasper Lin</p>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <h1>Optimal Charge Security Camera</h1>
+          <p>Intelligent security camera with energy-aware model selection</p>
+
+          <!-- Quick Start Section -->
+          <section id="quick-start" class="quick-start">
+            <h2>Quick Start</h2>
+            <p>Get running in 30 seconds</p>
+
+            <div class="quick-start-box">
+              <code>uv run python src/main_simulation.py</code>
+              <p>Run 24-hour simulation with default config</p>
+            </div>
+
+            <div class="quick-start-box">
+              <code
+                >uv run python src/main_simulation.py --config config.jsonc
+                --output results.csv</code
+              >
+              <p>Run with custom configuration</p>
+            </div>
+
+            <div class="quick-start-box">
+              <code>./scripts/batch_simulations.sh</code>
+              <p>
+                Run all seasonal days, controllers, and threshold combinations
+              </p>
+            </div>
+
+            <p>
+              <strong>Requirements:</strong> Python 3.12+, UV package manager
+            </p>
+          </section>
+
+          <!-- Goals Section -->
+          <section id="goals" class="section">
+            <h2>Goals</h2>
+            <ul>
+              <li>
+                Simulate a battery-powered security camera that switches YOLO
+                models based on battery level and clean energy input
+              </li>
+              <li>
+                Balance accuracy, efficiency, and clean energy usage in
+                real-time
+              </li>
+              <li>
+                Compare three controller approaches: Custom, Oracle (MILP), and
+                Benchmark
+              </li>
+              <li>
+                Evaluate controller effectiveness across seasonal variations
+              </li>
+            </ul>
+          </section>
+
+          <!-- Specific Aims Section -->
+          <section id="specific-aims" class="section">
+            <h2>Specific Aims</h2>
+            <ul>
+              <li>
+                Run 24-hour simulations using historical clean energy data (LDWP
+                dataset)
+              </li>
+              <li>
+                Compare three controller types: Custom (weighted scoring),
+                Oracle (MILP optimization), Benchmark (performance-at-all-costs)
+              </li>
+              <li>
+                Evaluate across 4 seasonal days with different accuracy/latency
+                thresholds
+              </li>
+              <li>
+                Track miss rates (small/large) and clean energy consumption
+                metrics
+              </li>
+              <li>
+                Build comprehensive simulation framework for controller
+                evaluation
+              </li>
+            </ul>
+          </section>
+
+          <!-- Approach Section -->
+          <section id="approach" class="section">
+            <h2>Approach</h2>
+            <p>
+              We're building a simulation framework that evaluates controller
+              effectiveness:
+            </p>
+            <ul>
+              <li>
+                <strong>Simulation:</strong> 24-hour software simulation with
+                configurable parameters
+              </li>
+              <li>
+                <strong>Models:</strong> YOLOv10-N through YOLOv10-X with
+                varying accuracy/latency/energy trade-offs
+              </li>
+              <li>
+                <strong>Controllers:</strong> Three distinct approaches:
+                <ul>
+                  <li>
+                    Custom: Weighted scoring balancing accuracy, latency, clean
+                    energy, battery
+                  </li>
+                  <li>
+                    Oracle: MILP optimization maximizing clean energy
+                    consumption
+                  </li>
+                  <li>
+                    Benchmark: Always use largest model, ignore clean energy
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Data:</strong> LDWP 5-minute granularity carbon
+                intensity data for 2024
+              </li>
+              <li>
+                <strong>Metrics:</strong> Miss rates, total energy, clean energy
+                percentage
+              </li>
+            </ul>
+          </section>
+
+          <!-- Deliverables Section -->
+          <section id="deliverables" class="section">
+            <h2>Deliverables</h2>
+            <ul>
+              <li>
+                Simulation framework with three controller implementations
+              </li>
+              <li>24-hour simulation runner with CSV output</li>
+              <li>LDWP energy data integration</li>
+              <li>YOLOv10 model data integration</li>
+              <li>
+                Comprehensive metrics tracking (miss rates, energy consumption)
+              </li>
+              <li>Batch simulation script for all combinations</li>
+              <li>Documentation and code repository</li>
+            </ul>
+          </section>
+
+          <!-- Timeline Section -->
+          <section id="timeline" class="section">
+            <h2>Evaluation Methodology</h2>
+            <p><strong>Simulation Framework</strong></p>
+            <ul>
+              <li>Run 24-hour simulations for 4 seasonal days</li>
+              <li>
+                Test with multiple accuracy/latency threshold combinations
+              </li>
+              <li>Compare three controller types across all scenarios</li>
+              <li>Analyze miss rates and clean energy consumption</li>
+              <li>Generate comprehensive CSV outputs for analysis</li>
+            </ul>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+    <title>Documentation - Optimal Charge Security Camera</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a href="index.html" class="logo">OCS</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html" class="active">Documentation</a>
+        <a
+          href="https://github.com/therealsamyak/optimal-charge-security-camera"
+          target="_blank"
+          >GitHub</a
+        >
+      </div>
+    </nav>
+
+    <div class="layout-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>Table of Contents</h2>
+        <ul class="toc-links">
+          <li><a href="#cli-reference">CLI Reference</a></li>
+          <li><a href="#implementation">Implementation</a></li>
+        </ul>
+
+        <div class="footer-info">
+          <p><strong>Contributors:</strong><br />Samyak Kakatur, Jasper Lin</p>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <h1>Documentation</h1>
+          <p>Complete reference for CLI usage and implementation details</p>
+
+          <!-- CLI Reference Section -->
+          <section id="cli-reference" class="section">
+            <h2>CLI Reference</h2>
+
+            <h3>Basic Usage</h3>
+            <pre><code># Run simulation with default config
+uv run python src/main_simulation.py
+
+# Run with custom configuration
+uv run python src/main_simulation.py --config custom_config.jsonc --output results.csv</code></pre>
+
+            <h3>Command Line Options</h3>
+
+            <h4>Simulation Options</h4>
+            <pre><code>--config PATH              Configuration file path (JSONC format)
+                          Default: config.jsonc
+
+--output PATH              Output CSV file path
+                          Default: simulation_results.csv</code></pre>
+
+            <h3>Usage Examples</h3>
+
+            <h4>Single Simulation</h4>
+            <pre><code># Run with default config
+uv run python src/main_simulation.py
+
+# Run with custom config and output file
+uv run python src/main_simulation.py --config my_config.jsonc --output my_results.csv</code></pre>
+
+            <h4>Batch Simulations</h4>
+            <pre><code># Run all combinations (4 days × 3 controllers × 4 thresholds × 2 qualities)
+./scripts/batch_simulations.sh
+
+# Results saved in results/ directory
+# Format: {date}_{controller}_{accuracy}_{latency}_{quality}.csv</code></pre>
+
+            <h4>Configuration</h4>
+            <pre><code># Edit config.jsonc to change:
+# - Controller type: "custom", "oracle", or "benchmark"
+# - Simulation date: "2024-01-05", "2024-04-15", "2024-07-04", "2024-10-20"
+# - Accuracy/latency thresholds
+# - Image quality: "good" or "bad"</code></pre>
+
+            <h3>Controller Types</h3>
+
+            <div style="margin: 20px 0">
+              <h4>Custom Controller</h4>
+              <p>
+                <strong>Algorithm:</strong> Weighted scoring balancing multiple
+                factors
+              </p>
+              <p>
+                <strong>Factors:</strong> Accuracy, latency, energy cleanliness,
+                battery conservation
+              </p>
+              <p>
+                <strong>Use Case:</strong> Real-time decision making based on
+                current conditions
+              </p>
+            </div>
+
+            <div style="margin: 20px 0">
+              <h4>Oracle Controller</h4>
+              <p>
+                <strong>Algorithm:</strong> MILP optimization with full 24-hour
+                knowledge
+              </p>
+              <p>
+                <strong>Objective:</strong> Maximize total clean energy
+                consumption
+              </p>
+              <p><strong>Use Case:</strong> Optimal baseline for comparison</p>
+            </div>
+
+            <div style="margin: 20px 0">
+              <h4>Benchmark Controller</h4>
+              <p>
+                <strong>Algorithm:</strong> Always use largest model (YOLOv10-X)
+              </p>
+              <p>
+                <strong>Strategy:</strong> Performance-at-all-costs, ignores
+                clean energy
+              </p>
+              <p>
+                <strong>Use Case:</strong> Baseline representing brute-force
+                approach
+              </p>
+            </div>
+
+            <h3>Available Models</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Accuracy (mAP)</th>
+                  <th>Latency (ms)</th>
+                  <th>Energy (%/inference)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>YOLOv10-N</code></td>
+                  <td>39.5%</td>
+                  <td>1.56</td>
+                  <td>0.004</td>
+                </tr>
+                <tr>
+                  <td><code>YOLOv10-S</code></td>
+                  <td>46.7%</td>
+                  <td>2.66</td>
+                  <td>0.007</td>
+                </tr>
+                <tr>
+                  <td><code>YOLOv10-M</code></td>
+                  <td>51.3%</td>
+                  <td>5.48</td>
+                  <td>0.011</td>
+                </tr>
+                <tr>
+                  <td><code>YOLOv10-B</code></td>
+                  <td>52.7%</td>
+                  <td>6.54</td>
+                  <td>0.015</td>
+                </tr>
+                <tr>
+                  <td><code>YOLOv10-L</code></td>
+                  <td>53.3%</td>
+                  <td>8.33</td>
+                  <td>0.019</td>
+                </tr>
+                <tr>
+                  <td><code>YOLOv10-X</code></td>
+                  <td>54.4%</td>
+                  <td>12.20</td>
+                  <td>0.023</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Testing</h3>
+            <div class="quick-start-box">
+              <p>Run the comprehensive test suite:</p>
+              <code>./scripts/tests.sh</code>
+            </div>
+          </section>
+
+          <!-- Implementation Section -->
+          <section id="implementation" class="section">
+            <h2>Implementation Documentation</h2>
+
+            <h3>Overview</h3>
+            <p>
+              The Optimal Charge Security Camera simulation framework evaluates
+              three controller approaches for dynamically selecting YOLOv10
+              models based on battery level, clean energy availability, and user
+              requirements. The system runs 24-hour simulations using historical
+              energy data to compare controller effectiveness.
+            </p>
+
+            <h3>Architecture</h3>
+
+            <h4>Core Components</h4>
+            <ul>
+              <li>
+                <strong>Simulation Runner</strong>
+                (<code>src/simulation/runner.py</code>): Main orchestrator for
+                24-hour simulations
+              </li>
+              <li>
+                <strong>Controllers</strong>
+                (<code>src/simulation/controllers.py</code>): Custom, Oracle
+                (MILP), and Benchmark controller implementations
+              </li>
+              <li>
+                <strong>Data Loaders</strong> (<code>src/data/</code>): LDWP
+                energy data and YOLOv10 model data integration
+              </li>
+              <li>
+                <strong>Sensors</strong>
+                (<code>src/sensors/simulation_sensors.py</code>): Battery and
+                energy simulation
+              </li>
+              <li>
+                <strong>Metrics</strong>
+                (<code>src/simulation/metrics.py</code>): Performance tracking
+                and analysis
+              </li>
+              <li>
+                <strong>Configuration</strong>
+                (<code>src/utils/config.py</code>): JSONC configuration
+                management
+              </li>
+              <li>
+                <strong>Cache Management</strong>
+                (<code>src/utils/cache.py</code>): Caching infrastructure for
+                expensive computations (energy data, model data, Oracle MILP
+                optimization)
+              </li>
+            </ul>
+
+            <h3>Source Implementation</h3>
+
+            <h4>Simulation Runner (<code>src/simulation/runner.py</code>)</h4>
+            <p>
+              The <code>SimulationRunner</code> class orchestrates 24-hour
+              simulations:
+            </p>
+            <ul>
+              <li>
+                <strong>Initialization:</strong> Sets up energy loader, model
+                loader, sensors, metrics, and controller
+              </li>
+              <li>
+                <strong>Simulation Loop:</strong> Iterates through 24-hour
+                period, updates energy cleanliness, makes controller decisions,
+                tracks metrics
+              </li>
+              <li>
+                <strong>Output:</strong> Generates CSV files with comprehensive
+                results
+              </li>
+              <li>
+                <strong>Metrics:</strong> Tracks miss rates, energy consumption,
+                clean energy percentage
+              </li>
+            </ul>
+
+            <h4>Controllers (<code>src/simulation/controllers.py</code>)</h4>
+
+            <div
+              style="
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 6px;
+              "
+            >
+              <h5>Custom Controller</h5>
+              <p>
+                Weighted scoring algorithm balancing accuracy, latency, energy
+                cleanliness, and battery conservation. Real-time decision making
+                based on current conditions.
+              </p>
+            </div>
+
+            <div
+              style="
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 6px;
+              "
+            >
+              <h5>Oracle Controller</h5>
+              <p>
+                MILP optimization using PuLP solver. Pre-computes all decisions
+                for 24-hour period to maximize clean energy consumption. Uses
+                full future knowledge of energy data.
+              </p>
+            </div>
+
+            <div
+              style="
+                margin: 20px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 6px;
+              "
+            >
+              <h5>Benchmark Controller</h5>
+              <p>
+                Always selects largest available model (YOLOv10-X). Represents
+                performance-at-all-costs approach, ignoring clean energy
+                considerations.
+              </p>
+            </div>
+
+            <h4>Data Loaders (<code>src/data/</code>)</h4>
+            <p>
+              <code>EnergyLoader</code> loads LDWP carbon intensity data and
+              converts to clean energy percentages.
+              <code>ModelDataLoader</code> loads YOLOv10 benchmark data with
+              accuracy and latency metrics.
+            </p>
+
+            <h4>Sensors (<code>src/sensors/simulation_sensors.py</code>)</h4>
+            <p>
+              <code>SimulationSensors</code> provides software simulation of
+              battery and energy systems:
+            </p>
+            <ul>
+              <li>
+                <strong>Battery Simulation:</strong> Tracks capacity, charging,
+                consumption
+              </li>
+              <li>
+                <strong>Energy Cleanliness:</strong> Updates based on LDWP data
+              </li>
+            </ul>
+
+            <h3>Testing Implementation</h3>
+
+            <h4>Test Structure (<code>tests/</code>)</h4>
+            <ul>
+              <li>
+                <strong>Unit Tests:</strong> Controller logic, sensor
+                functionality, metrics calculation
+                (<code>test_simulation_units.py</code>)
+              </li>
+              <li>
+                <strong>Integration Tests:</strong> End-to-end simulation
+                execution (<code>test_simulation_integration.py</code>)
+              </li>
+              <li>
+                <strong>Scenario Tests:</strong> Different seasonal days, image
+                qualities, controller types
+                (<code>test_simulation_scenarios.py</code>)
+              </li>
+            </ul>
+
+            <h3>Simulation Flow</h3>
+            <div
+              style="
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 6px;
+                border-left: 4px solid #007bff;
+              "
+            >
+              <ol>
+                <li>
+                  <strong>Initialization:</strong> Load energy data, model data,
+                  initialize controller (Oracle pre-computes decisions)
+                </li>
+                <li>
+                  <strong>Time Step:</strong> Update energy cleanliness from
+                  LDWP data
+                </li>
+                <li>
+                  <strong>Controller Decision:</strong> Select model based on
+                  battery level, energy cleanliness, thresholds
+                </li>
+                <li>
+                  <strong>Energy Consumption:</strong> Consume battery, track
+                  clean energy
+                </li>
+                <li>
+                  <strong>Metrics Tracking:</strong> Record miss types, energy
+                  consumption, model usage
+                </li>
+                <li>
+                  <strong>Output:</strong> Write results to CSV, generate
+                  summary metrics
+                </li>
+              </ol>
+            </div>
+
+            <h3>Configuration</h3>
+            <p>
+              The system is configured through <code>config.jsonc</code> with:
+            </p>
+            <ul>
+              <li>Accuracy and latency thresholds</li>
+              <li>Simulation date and image quality</li>
+              <li>Controller type and parameters</li>
+              <li>Battery configuration</li>
+              <li>Model energy consumption rates</li>
+            </ul>
+
+            <h3>Output Format</h3>
+            <p>
+              Results are exported to CSV with columns:
+              <code
+                >timestamp, battery_level, energy_cleanliness, model_selected,
+                accuracy, latency, miss_type, energy_consumed,
+                clean_energy_consumed</code
+              >
+            </p>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
