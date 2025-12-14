@@ -32,6 +32,6 @@
     "data_split": { "train": 0.7, "val": 0.1, "test": 0.2 },
     "max_workers": 90,
     "output_dir": "training_data",
-    "chunk_size": 10
+    "chunk_size": 1
   }
 }
