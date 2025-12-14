@@ -423,7 +423,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               and retrained again.</b
             >
 
-            <h3>3.3 Oracle Controller</h3>
+            <h3 id="oracle-controller">3.3 Oracle Controller</h3>
             <p>
               The oracle controller has full knowledge of the future carbon trajectory
               \(\{d_t\}_{t=0}^{T-1}\) over the planning horizon.
@@ -520,6 +520,91 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>The oracle policy \(\pi^*\) maximizes the cumulative reward over the horizon:</p>
             <p>\[ \pi^* = \arg\max_{\pi} \sum_{t=0}^{T-1} R(s_t, \pi(s_t), s_{t+1}). \]</p>
             <p>This optimization is solved exactly using finite-horizon dynamic programming.</p>
+
+            <h3>3.4 Custom Controller (POMDP, Imitation Learning)</h3>
+
+            <p>
+              The custom controller operates without access to the future carbon trajectory
+              \(\{d_t\}_{t=0}^{T-1}\) available to the oracle (<a href="#oracle-controller"
+                >Section 3.3</a
+              >). At each timestep, it must make decisions based only on real-time observations. As
+              a result, the control problem is naturally modeled as a Partially Observable Markov
+              Decision Process (POMDP).
+            </p>
+
+            <h4>State Space, Action Space, Transition Probability, and Reward Function</h4>
+
+            <p>
+              The state space \(\mathcal{S}\), action space \(\mathcal{A} = (\mathcal{M} \cup
+              \{\varnothing\}) \times \{0,1\}\), transition probability \(P(s_{t+1} \mid s_t,
+              a_t)\), and reward function \(R(s_t, a_t, s_{t+1})\) are defined exactly as in
+              <a href="#oracle-controller">Section 3.3</a>. The custom controller operates in the
+              same underlying MDP; only its observability differs.
+            </p>
+
+            <h4>Observation Space</h4>
+
+            <p>At each timestep \(t\), the controller receives the observation:</p>
+
+            <p>
+              \[ o_t = (B_t, d_t, \Delta d_t) \in \mathcal{O} = [0, B_{\max}] \times [0,1] \times
+              [-1,1], \]
+            </p>
+
+            <p>
+              where \(B_t\) is the current battery level, \(d_t\) is the instantaneous dirty energy
+              fraction, and \(\Delta d_t = d_t - d_{t-1}\) captures the change in carbon intensity
+              since the previous timestep. The controller does not observe the timestep index \(t\)
+              or any future carbon values \(\{d_{t'}\}_{t' > t}\).
+            </p>
+
+            <p>
+              The inclusion of \(\Delta d_t\) provides a minimal trend signal, allowing the
+              controller to infer short-term carbon dynamics using only locally available
+              information. Unlike the oracle, which implicitly accesses the full trajectory through
+              \(t\), the custom controller must reason about carbon evolution from this limited
+              window.
+            </p>
+
+            <h4>Policy Learning via Imitation</h4>
+
+            <p>
+              Rather than attempting to solve the POMDP via belief-state planning, we learn the
+              custom controller via imitation learning using the oracle policy \(\pi^*\) (<a
+                href="#oracle-controller"
+                >Section 3.3</a
+              >) as an expert.
+            </p>
+
+            <p>
+              Using the oracle, we generate demonstration trajectories of the form \(\tau =
+              (o_0,a_0^*,\ldots,o_{T-1},a_{T-1}^*)\), where \(a_t^* = \pi^*(s_t)\) and \(o_t\) is
+              the observation available to the custom controller at timestep \(t\). These
+              trajectories define a dataset \(\mathcal{D} = \{(o_t,a_t^*)\}\).
+            </p>
+
+            <p>
+              The custom controller is parameterized by a policy \(\pi_\theta(o_t)\). Training is
+              performed by minimizing a supervised imitation loss:
+            </p>
+
+            <p>
+              \[ \mathcal{L}(\theta) = \mathbb{E}_{(o_t,a_t^*)\sim\mathcal{D}}
+              \big[\ell(\pi_\theta(o_t), a_t^*)\big]. \]
+            </p>
+
+            <p>
+              Here, \(\ell(\cdot,\cdot)\) is a standard classification loss over the discrete action
+              space \(\mathcal{A}\). In our implementation, we use cross-entropy loss between the
+              oracle action \(a_t^* = (m_t^*, c_t^*)\) and the policy's predicted action
+              distribution \(\pi_\theta(o_t)\).
+            </p>
+
+            <p>
+              This imitation-based approach enables the custom controller to approximate the
+              oracle's carbon-aware behavior using only partial observations, without explicit
+              forecasting or belief-state estimation.
+            </p>
 
             <!-- <h3>3.1 System Architecture</h3>
             <p>Include a block diagram or pipeline figure.</p>
