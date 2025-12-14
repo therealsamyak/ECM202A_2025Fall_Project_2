@@ -13,8 +13,8 @@ from utils.core import State, Action, validate_config
 
 
 def load_config() -> Dict:
-    """Load configuration from config.json"""
-    config_path = os.path.join(os.path.dirname(__file__), "config.json")
+    """Load configuration from simulation.config.json"""
+    config_path = os.path.join(os.path.dirname(__file__), "simulation.config.json")
     with open(config_path, "r") as f:
         return json.load(f)
 
