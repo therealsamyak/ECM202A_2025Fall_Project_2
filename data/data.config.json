@@ -1,6 +1,6 @@
 {
   "system_constants": {
-    "task_interval_seconds": 300,
+    "task_interval_seconds": 600,
     "horizon_seconds": 86400,
     "battery_discretization_step": 0.01,
     "nearest_neighbor_k": 3
@@ -17,9 +17,9 @@
     { "success_weight": 12, "small_miss_weight": 4, "large_miss_weight": 9, "carbon_weight": 8 }
   ],
   "battery_configs": [
-    { "battery_capacity_mwh": 200, "charge_rate_mwh_per_second": 0.000008 },
-    { "battery_capacity_mwh": 300, "charge_rate_mwh_per_second": 0.00001 },
-    { "battery_capacity_mwh": 600, "charge_rate_mwh_per_second": 0.000012 }
+    { "battery_capacity_mwh": 610, "charge_rate_mwh_per_second": 0.001613 },
+    { "battery_capacity_mwh": 300, "charge_rate_mwh_per_second": 0.0025 },
+    { "battery_capacity_mwh": 105, "charge_rate_mwh_per_second": 0.0035 }
   ],
   "seasonal_dates": ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"],
   "locations": [
