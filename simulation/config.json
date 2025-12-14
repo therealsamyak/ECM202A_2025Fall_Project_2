@@ -1,0 +1,28 @@
+{
+  "system": {
+    "battery_capacity_mwh": 300,
+    "task_interval_seconds": 300,
+    "horizon_seconds": 86400,
+    "charge_rate_mwh_per_second": 0.00001,
+    "battery_discretization_step": 1,
+    "nearest_neighbor_k": 3
+  },
+  "user_requirements": {
+    "accuracy_threshold": 0.9,
+    "latency_threshold_seconds": 0.006
+  },
+  "reward_weights": {
+    "success_weight": 10,
+    "small_miss_weight": 5,
+    "large_miss_weight": 8,
+    "carbon_weight": 7
+  },
+  "data_paths": {
+    "model_profiles": "../model-profiler/power_profiles.json",
+    "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
+  },
+  "simulation": {
+    "start_date": "2024-01-01",
+    "start_time": "00:00:00"
+  }
+}

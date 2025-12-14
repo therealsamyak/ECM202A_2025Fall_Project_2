@@ -419,8 +419,8 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
 
             <ul>
               <li>\(B_{\max}\) (mWh): maximum battery capacity</li>
-              <li>\(\Delta\) (seconds): task interval (e.g., 300s)</li>
-              <li>\(T\) (seconds): horizon length</li>
+              <li>\(\Delta\) (seconds): task interval (e.g. 300s)</li>
+              <li>\(T\) (seconds): horizon length (e.g. 86400s)</li>
               <li>\(d_t \in [0,1]\): dirty energy fraction at timestep \(t\)</li>
               <li>
                 \(\mathcal{M}\): model profile set, where each profile is \((m_{\text{acc}},
@@ -563,6 +563,28 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>The oracle policy \(\pi^*\) maximizes the cumulative reward over the horizon:</p>
             <p>\[ \pi^* = \arg\max_{\pi} \sum_{t=0}^{T-1} R(s_t, \pi(s_t), s_{t+1}). \]</p>
             <p>This optimization is solved exactly using finite-horizon dynamic programming.</p>
+            <ul>
+              <li>
+                <b>Policy Lookup with K-Nearest Neighbors:</b>
+                <ul>
+                  <li>
+                    The simulation uses battery discretization with \(F \in \mathbb{R}\) mWh steps
+                    for computational efficiency in dynamic programming, while maintaining
+                    continuous battery values in state transitions.
+                  </li>
+                  <li>
+                    The simulation uses a K-nearest neighbor approach with parameter \(K \in
+                    \mathbb{N}_{odd}, K > 0\) to find the nearest discretized battery level with
+                    feasible actions. The algorithm identifies the K closest battery levels and
+                    selects the first one that has valid feasible actions. If fewer than K feasible
+                    options are found within the initial search radius, the algorithm expands the
+                    search radius incrementally until exactly K valid options are identified. This
+                    ensures robust policy extraction while maintaining optimality within the
+                    expanded search space.
+                  </li>
+                </ul>
+              </li>
+            </ul>
 
             <h3 id="custom-controller">3.4 Custom Controller (POMDP, Imitation Learning)</h3>
 

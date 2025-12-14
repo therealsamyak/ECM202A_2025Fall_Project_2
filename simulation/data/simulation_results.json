@@ -1,0 +1,3498 @@
+{
+  "oracle": {
+    "total_reward": -2093.0527781000005,
+    "path_length": 288,
+    "actions": [
+      {
+        "timestep": 0,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 1,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 2,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 3,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 4,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 5,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 6,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 7,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 8,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 9,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 10,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 11,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 12,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 13,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 14,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 15,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 16,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 17,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 18,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 297.0459696
+      },
+      {
+        "timestep": 19,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 294.0919392
+      },
+      {
+        "timestep": 20,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 291.1379088
+      },
+      {
+        "timestep": 21,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 288.1838784
+      },
+      {
+        "timestep": 22,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 285.229848
+      },
+      {
+        "timestep": 23,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 285.229848
+      },
+      {
+        "timestep": 24,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 285.229848
+      },
+      {
+        "timestep": 25,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 282.2758176
+      },
+      {
+        "timestep": 26,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 279.3217872
+      },
+      {
+        "timestep": 27,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 276.3677568
+      },
+      {
+        "timestep": 28,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 273.4137264
+      },
+      {
+        "timestep": 29,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 270.459696
+      },
+      {
+        "timestep": 30,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 267.5056656
+      },
+      {
+        "timestep": 31,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 264.5516352
+      },
+      {
+        "timestep": 32,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 261.5976048
+      },
+      {
+        "timestep": 33,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 258.6435744
+      },
+      {
+        "timestep": 34,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 255.689544
+      },
+      {
+        "timestep": 35,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 252.7355136
+      },
+      {
+        "timestep": 36,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 249.7814832
+      },
+      {
+        "timestep": 37,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 246.8274528
+      },
+      {
+        "timestep": 38,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 243.8734224
+      },
+      {
+        "timestep": 39,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 240.919392
+      },
+      {
+        "timestep": 40,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 237.9653616
+      },
+      {
+        "timestep": 41,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 235.0113312
+      },
+      {
+        "timestep": 42,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 232.0573008
+      },
+      {
+        "timestep": 43,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 229.1032704
+      },
+      {
+        "timestep": 44,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 226.14924
+      },
+      {
+        "timestep": 45,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 223.1952096
+      },
+      {
+        "timestep": 46,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 220.2411792
+      },
+      {
+        "timestep": 47,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 217.2871488
+      },
+      {
+        "timestep": 48,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 214.3331184
+      },
+      {
+        "timestep": 49,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 211.379088
+      },
+      {
+        "timestep": 50,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 208.4250576
+      },
+      {
+        "timestep": 51,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 205.4710272
+      },
+      {
+        "timestep": 52,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 202.5169968
+      },
+      {
+        "timestep": 53,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 199.5629664
+      },
+      {
+        "timestep": 54,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 196.608936
+      },
+      {
+        "timestep": 55,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 193.6549056
+      },
+      {
+        "timestep": 56,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 190.7008752
+      },
+      {
+        "timestep": 57,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 187.7468448
+      },
+      {
+        "timestep": 58,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 184.7928144
+      },
+      {
+        "timestep": 59,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 181.838784
+      },
+      {
+        "timestep": 60,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 61,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 62,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 63,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 64,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 65,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 66,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 67,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 68,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 69,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 70,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 71,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 72,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 73,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 74,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 75,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 76,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 77,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 78,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 79,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 80,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 81,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 82,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 83,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 84,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 85,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 86,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 87,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 88,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 89,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 90,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 91,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 92,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 93,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 94,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 95,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 96,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 97,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 98,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 99,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 100,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 101,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 102,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 103,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 104,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 105,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 106,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 107,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 108,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 109,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 110,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 111,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 112,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 113,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 114,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 115,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 116,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 117,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 118,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 119,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 120,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 121,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 122,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 123,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 124,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 125,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 126,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 127,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 128,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 129,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 130,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 131,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 132,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 133,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 134,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 135,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 136,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 137,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 138,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 139,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 140,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 141,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 142,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 143,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 144,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 145,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 146,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 147,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 148,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 149,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 150,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 151,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 152,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 153,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 154,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 155,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 156,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 157,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 158,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 159,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 160,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 161,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 162,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 163,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 164,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 165,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 166,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 167,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 168,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 169,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 170,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 171,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 172,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 173,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 174,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 175,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 176,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 177,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 178,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 179,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 180,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 181,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 175.9307232
+      },
+      {
+        "timestep": 182,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 172.9766928
+      },
+      {
+        "timestep": 183,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 170.0226624
+      },
+      {
+        "timestep": 184,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 167.068632
+      },
+      {
+        "timestep": 185,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 164.1146016
+      },
+      {
+        "timestep": 186,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 161.1605712
+      },
+      {
+        "timestep": 187,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 158.2065408
+      },
+      {
+        "timestep": 188,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 155.2525104
+      },
+      {
+        "timestep": 189,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 152.29848
+      },
+      {
+        "timestep": 190,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 149.3444496
+      },
+      {
+        "timestep": 191,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 146.3904192
+      },
+      {
+        "timestep": 192,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 143.4363888
+      },
+      {
+        "timestep": 193,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 140.4823584
+      },
+      {
+        "timestep": 194,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 137.528328
+      },
+      {
+        "timestep": 195,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 134.5742976
+      },
+      {
+        "timestep": 196,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 131.6202672
+      },
+      {
+        "timestep": 197,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 128.6662368
+      },
+      {
+        "timestep": 198,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 125.7122064
+      },
+      {
+        "timestep": 199,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 122.758176
+      },
+      {
+        "timestep": 200,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 119.8041456
+      },
+      {
+        "timestep": 201,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 116.8501152
+      },
+      {
+        "timestep": 202,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 113.8960848
+      },
+      {
+        "timestep": 203,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 110.9420544
+      },
+      {
+        "timestep": 204,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 107.988024
+      },
+      {
+        "timestep": 205,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 105.0339936
+      },
+      {
+        "timestep": 206,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 102.0799632
+      },
+      {
+        "timestep": 207,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 99.1259328
+      },
+      {
+        "timestep": 208,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 96.1719024
+      },
+      {
+        "timestep": 209,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 93.217872
+      },
+      {
+        "timestep": 210,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 90.2638416
+      },
+      {
+        "timestep": 211,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 87.3098112
+      },
+      {
+        "timestep": 212,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 84.3557808
+      },
+      {
+        "timestep": 213,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 81.4017504
+      },
+      {
+        "timestep": 214,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 78.44772
+      },
+      {
+        "timestep": 215,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 75.4936896
+      },
+      {
+        "timestep": 216,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 72.5396592
+      },
+      {
+        "timestep": 217,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 69.5856288
+      },
+      {
+        "timestep": 218,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 66.6315984
+      },
+      {
+        "timestep": 219,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 63.677568
+      },
+      {
+        "timestep": 220,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 60.7235376
+      },
+      {
+        "timestep": 221,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 57.7695072
+      },
+      {
+        "timestep": 222,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 54.8154768
+      },
+      {
+        "timestep": 223,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 51.8614464
+      },
+      {
+        "timestep": 224,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 48.907416
+      },
+      {
+        "timestep": 225,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 45.9533856
+      },
+      {
+        "timestep": 226,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 42.9993552
+      },
+      {
+        "timestep": 227,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 40.0453248
+      },
+      {
+        "timestep": 228,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 37.0912944
+      },
+      {
+        "timestep": 229,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 34.137264
+      },
+      {
+        "timestep": 230,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 31.1832336
+      },
+      {
+        "timestep": 231,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 28.2292032
+      },
+      {
+        "timestep": 232,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 25.2751728
+      },
+      {
+        "timestep": 233,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 22.3211424
+      },
+      {
+        "timestep": 234,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 19.367112
+      },
+      {
+        "timestep": 235,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 16.4130816
+      },
+      {
+        "timestep": 236,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 13.4590512
+      },
+      {
+        "timestep": 237,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 10.5050208
+      },
+      {
+        "timestep": 238,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 7.5509904
+      },
+      {
+        "timestep": 239,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 240,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 241,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 242,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 243,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 244,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 245,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 246,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 247,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 248,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 249,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 250,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 251,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 252,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 253,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 254,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 255,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 256,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 257,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 258,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 259,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 260,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 261,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 262,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 263,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 264,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 265,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 266,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 267,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 268,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 269,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 270,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 271,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 272,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 273,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 274,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 275,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 276,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 277,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 278,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 279,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 280,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 281,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 282,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 283,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 284,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 285,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 286,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 287,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 4.59696
+      }
+    ]
+  },
+  "naive": {
+    "total_reward": -2325.225751302094,
+    "path_length": 288,
+    "actions": [
+      {
+        "timestep": 0,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 1,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 297.0459696
+      },
+      {
+        "timestep": 2,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 294.0919392
+      },
+      {
+        "timestep": 3,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 291.1379088
+      },
+      {
+        "timestep": 4,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 288.1838784
+      },
+      {
+        "timestep": 5,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 285.229848
+      },
+      {
+        "timestep": 6,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 282.2758176
+      },
+      {
+        "timestep": 7,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 279.3217872
+      },
+      {
+        "timestep": 8,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 276.3677568
+      },
+      {
+        "timestep": 9,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 273.4137264
+      },
+      {
+        "timestep": 10,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 270.459696
+      },
+      {
+        "timestep": 11,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 267.5056656
+      },
+      {
+        "timestep": 12,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 264.5516352
+      },
+      {
+        "timestep": 13,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 261.5976048
+      },
+      {
+        "timestep": 14,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 258.6435744
+      },
+      {
+        "timestep": 15,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 255.689544
+      },
+      {
+        "timestep": 16,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 252.7355136
+      },
+      {
+        "timestep": 17,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 249.7814832
+      },
+      {
+        "timestep": 18,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 246.8274528
+      },
+      {
+        "timestep": 19,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 243.8734224
+      },
+      {
+        "timestep": 20,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 240.919392
+      },
+      {
+        "timestep": 21,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 237.9653616
+      },
+      {
+        "timestep": 22,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 235.0113312
+      },
+      {
+        "timestep": 23,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 232.0573008
+      },
+      {
+        "timestep": 24,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 229.1032704
+      },
+      {
+        "timestep": 25,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 226.14924
+      },
+      {
+        "timestep": 26,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 223.1952096
+      },
+      {
+        "timestep": 27,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 220.2411792
+      },
+      {
+        "timestep": 28,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 217.2871488
+      },
+      {
+        "timestep": 29,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 214.3331184
+      },
+      {
+        "timestep": 30,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 211.379088
+      },
+      {
+        "timestep": 31,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 208.4250576
+      },
+      {
+        "timestep": 32,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 205.4710272
+      },
+      {
+        "timestep": 33,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 202.5169968
+      },
+      {
+        "timestep": 34,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 199.5629664
+      },
+      {
+        "timestep": 35,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 196.608936
+      },
+      {
+        "timestep": 36,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 193.6549056
+      },
+      {
+        "timestep": 37,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 190.7008752
+      },
+      {
+        "timestep": 38,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 187.7468448
+      },
+      {
+        "timestep": 39,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 184.7928144
+      },
+      {
+        "timestep": 40,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 181.838784
+      },
+      {
+        "timestep": 41,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 178.8847536
+      },
+      {
+        "timestep": 42,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 175.9307232
+      },
+      {
+        "timestep": 43,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 172.9766928
+      },
+      {
+        "timestep": 44,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 170.0226624
+      },
+      {
+        "timestep": 45,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 167.068632
+      },
+      {
+        "timestep": 46,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 164.1146016
+      },
+      {
+        "timestep": 47,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 161.1605712
+      },
+      {
+        "timestep": 48,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 158.2065408
+      },
+      {
+        "timestep": 49,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 155.2525104
+      },
+      {
+        "timestep": 50,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 152.29848
+      },
+      {
+        "timestep": 51,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 149.3444496
+      },
+      {
+        "timestep": 52,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 146.3904192
+      },
+      {
+        "timestep": 53,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 143.4363888
+      },
+      {
+        "timestep": 54,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 140.4823584
+      },
+      {
+        "timestep": 55,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 137.528328
+      },
+      {
+        "timestep": 56,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 134.5742976
+      },
+      {
+        "timestep": 57,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 131.6202672
+      },
+      {
+        "timestep": 58,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 128.6662368
+      },
+      {
+        "timestep": 59,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 125.7122064
+      },
+      {
+        "timestep": 60,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 122.758176
+      },
+      {
+        "timestep": 61,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 119.8041456
+      },
+      {
+        "timestep": 62,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 116.8501152
+      },
+      {
+        "timestep": 63,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 113.8960848
+      },
+      {
+        "timestep": 64,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 110.9420544
+      },
+      {
+        "timestep": 65,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 107.988024
+      },
+      {
+        "timestep": 66,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 105.0339936
+      },
+      {
+        "timestep": 67,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 102.0799632
+      },
+      {
+        "timestep": 68,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 99.1259328
+      },
+      {
+        "timestep": 69,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 96.1719024
+      },
+      {
+        "timestep": 70,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 93.217872
+      },
+      {
+        "timestep": 71,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 90.2638416
+      },
+      {
+        "timestep": 72,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 87.3098112
+      },
+      {
+        "timestep": 73,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 84.3557808
+      },
+      {
+        "timestep": 74,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 81.4017504
+      },
+      {
+        "timestep": 75,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 78.44772
+      },
+      {
+        "timestep": 76,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 75.4936896
+      },
+      {
+        "timestep": 77,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 72.5396592
+      },
+      {
+        "timestep": 78,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 69.5856288
+      },
+      {
+        "timestep": 79,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 66.6315984
+      },
+      {
+        "timestep": 80,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 63.677568
+      },
+      {
+        "timestep": 81,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 60.7235376
+      },
+      {
+        "timestep": 82,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 57.7695072
+      },
+      {
+        "timestep": 83,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 54.8154768
+      },
+      {
+        "timestep": 84,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 51.8614464
+      },
+      {
+        "timestep": 85,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 48.907416
+      },
+      {
+        "timestep": 86,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 45.9533856
+      },
+      {
+        "timestep": 87,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 42.9993552
+      },
+      {
+        "timestep": 88,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 40.0453248
+      },
+      {
+        "timestep": 89,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 37.0912944
+      },
+      {
+        "timestep": 90,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 34.137264
+      },
+      {
+        "timestep": 91,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 31.1832336
+      },
+      {
+        "timestep": 92,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 28.2292032
+      },
+      {
+        "timestep": 93,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 25.2751728
+      },
+      {
+        "timestep": 94,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 22.3211424
+      },
+      {
+        "timestep": 95,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 19.367112
+      },
+      {
+        "timestep": 96,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 16.4130816
+      },
+      {
+        "timestep": 97,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 13.4590512
+      },
+      {
+        "timestep": 98,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 10.5050208
+      },
+      {
+        "timestep": 99,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 7.5509904
+      },
+      {
+        "timestep": 100,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 4.59696
+      },
+      {
+        "timestep": 101,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6429296
+      },
+      {
+        "timestep": 102,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6459296
+      },
+      {
+        "timestep": 103,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6489296
+      },
+      {
+        "timestep": 104,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6519296
+      },
+      {
+        "timestep": 105,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6549296
+      },
+      {
+        "timestep": 106,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6579296
+      },
+      {
+        "timestep": 107,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6609296
+      },
+      {
+        "timestep": 108,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6639296
+      },
+      {
+        "timestep": 109,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6669296
+      },
+      {
+        "timestep": 110,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6699296
+      },
+      {
+        "timestep": 111,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6729296
+      },
+      {
+        "timestep": 112,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6759296
+      },
+      {
+        "timestep": 113,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6789296
+      },
+      {
+        "timestep": 114,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6819296
+      },
+      {
+        "timestep": 115,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6849296
+      },
+      {
+        "timestep": 116,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6879296
+      },
+      {
+        "timestep": 117,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6909296
+      },
+      {
+        "timestep": 118,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6939296
+      },
+      {
+        "timestep": 119,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6969296
+      },
+      {
+        "timestep": 120,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.6999296
+      },
+      {
+        "timestep": 121,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7029296
+      },
+      {
+        "timestep": 122,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7059296
+      },
+      {
+        "timestep": 123,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7089296
+      },
+      {
+        "timestep": 124,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7119296
+      },
+      {
+        "timestep": 125,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7149296
+      },
+      {
+        "timestep": 126,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7179296
+      },
+      {
+        "timestep": 127,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7209296
+      },
+      {
+        "timestep": 128,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7239296
+      },
+      {
+        "timestep": 129,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7269296
+      },
+      {
+        "timestep": 130,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7299296
+      },
+      {
+        "timestep": 131,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7329296
+      },
+      {
+        "timestep": 132,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7359296
+      },
+      {
+        "timestep": 133,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7389296
+      },
+      {
+        "timestep": 134,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7419296
+      },
+      {
+        "timestep": 135,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7449296
+      },
+      {
+        "timestep": 136,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7479296
+      },
+      {
+        "timestep": 137,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7509296
+      },
+      {
+        "timestep": 138,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7539296
+      },
+      {
+        "timestep": 139,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7569296
+      },
+      {
+        "timestep": 140,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7599296
+      },
+      {
+        "timestep": 141,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7629296
+      },
+      {
+        "timestep": 142,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7659296
+      },
+      {
+        "timestep": 143,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7689296
+      },
+      {
+        "timestep": 144,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7719296
+      },
+      {
+        "timestep": 145,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7749296
+      },
+      {
+        "timestep": 146,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7779296
+      },
+      {
+        "timestep": 147,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7809296
+      },
+      {
+        "timestep": 148,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7839296
+      },
+      {
+        "timestep": 149,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7869296
+      },
+      {
+        "timestep": 150,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7899296
+      },
+      {
+        "timestep": 151,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7929296
+      },
+      {
+        "timestep": 152,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7959296
+      },
+      {
+        "timestep": 153,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.7989296
+      },
+      {
+        "timestep": 154,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8019296
+      },
+      {
+        "timestep": 155,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8049296
+      },
+      {
+        "timestep": 156,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8079296
+      },
+      {
+        "timestep": 157,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8109296
+      },
+      {
+        "timestep": 158,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8139296
+      },
+      {
+        "timestep": 159,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8169296
+      },
+      {
+        "timestep": 160,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8199296
+      },
+      {
+        "timestep": 161,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8229296
+      },
+      {
+        "timestep": 162,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8259296
+      },
+      {
+        "timestep": 163,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8289296
+      },
+      {
+        "timestep": 164,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8319296
+      },
+      {
+        "timestep": 165,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8349296
+      },
+      {
+        "timestep": 166,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8379296
+      },
+      {
+        "timestep": 167,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8409296
+      },
+      {
+        "timestep": 168,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8439296
+      },
+      {
+        "timestep": 169,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8469296
+      },
+      {
+        "timestep": 170,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8499296
+      },
+      {
+        "timestep": 171,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8529296
+      },
+      {
+        "timestep": 172,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8559296
+      },
+      {
+        "timestep": 173,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8589296
+      },
+      {
+        "timestep": 174,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8619296
+      },
+      {
+        "timestep": 175,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8649296
+      },
+      {
+        "timestep": 176,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8679296
+      },
+      {
+        "timestep": 177,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8709296
+      },
+      {
+        "timestep": 178,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8739296
+      },
+      {
+        "timestep": 179,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8769296
+      },
+      {
+        "timestep": 180,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8799296
+      },
+      {
+        "timestep": 181,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8829296
+      },
+      {
+        "timestep": 182,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8859296
+      },
+      {
+        "timestep": 183,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8889296
+      },
+      {
+        "timestep": 184,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8919296
+      },
+      {
+        "timestep": 185,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8949296
+      },
+      {
+        "timestep": 186,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.8979296
+      },
+      {
+        "timestep": 187,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9009296
+      },
+      {
+        "timestep": 188,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9039296
+      },
+      {
+        "timestep": 189,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9069296
+      },
+      {
+        "timestep": 190,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9099296
+      },
+      {
+        "timestep": 191,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9129296
+      },
+      {
+        "timestep": 192,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9159296
+      },
+      {
+        "timestep": 193,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9189296
+      },
+      {
+        "timestep": 194,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9219296
+      },
+      {
+        "timestep": 195,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9249296
+      },
+      {
+        "timestep": 196,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9279296
+      },
+      {
+        "timestep": 197,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9309296
+      },
+      {
+        "timestep": 198,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9339296
+      },
+      {
+        "timestep": 199,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9369296
+      },
+      {
+        "timestep": 200,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9399296
+      },
+      {
+        "timestep": 201,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9429296
+      },
+      {
+        "timestep": 202,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9459296
+      },
+      {
+        "timestep": 203,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9489296
+      },
+      {
+        "timestep": 204,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9519296
+      },
+      {
+        "timestep": 205,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9549296
+      },
+      {
+        "timestep": 206,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9579296
+      },
+      {
+        "timestep": 207,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9609296
+      },
+      {
+        "timestep": 208,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9639296
+      },
+      {
+        "timestep": 209,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9669296
+      },
+      {
+        "timestep": 210,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9699296
+      },
+      {
+        "timestep": 211,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9729296
+      },
+      {
+        "timestep": 212,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9759296
+      },
+      {
+        "timestep": 213,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9789296
+      },
+      {
+        "timestep": 214,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9819296
+      },
+      {
+        "timestep": 215,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9849296
+      },
+      {
+        "timestep": 216,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9879296
+      },
+      {
+        "timestep": 217,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9909296
+      },
+      {
+        "timestep": 218,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9939296
+      },
+      {
+        "timestep": 219,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9969296
+      },
+      {
+        "timestep": 220,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 1.9999296
+      },
+      {
+        "timestep": 221,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0029296
+      },
+      {
+        "timestep": 222,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0059296
+      },
+      {
+        "timestep": 223,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0089296
+      },
+      {
+        "timestep": 224,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0119296
+      },
+      {
+        "timestep": 225,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0149296
+      },
+      {
+        "timestep": 226,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0179296
+      },
+      {
+        "timestep": 227,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0209296
+      },
+      {
+        "timestep": 228,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0239296
+      },
+      {
+        "timestep": 229,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0269296
+      },
+      {
+        "timestep": 230,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0299296
+      },
+      {
+        "timestep": 231,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0329296
+      },
+      {
+        "timestep": 232,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0359296
+      },
+      {
+        "timestep": 233,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0389296
+      },
+      {
+        "timestep": 234,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0419296
+      },
+      {
+        "timestep": 235,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0449296
+      },
+      {
+        "timestep": 236,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0479296
+      },
+      {
+        "timestep": 237,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0509296
+      },
+      {
+        "timestep": 238,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0539296
+      },
+      {
+        "timestep": 239,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0569296
+      },
+      {
+        "timestep": 240,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0599296
+      },
+      {
+        "timestep": 241,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0629296
+      },
+      {
+        "timestep": 242,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0659296
+      },
+      {
+        "timestep": 243,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0689296
+      },
+      {
+        "timestep": 244,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0719296
+      },
+      {
+        "timestep": 245,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0749296
+      },
+      {
+        "timestep": 246,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0779296
+      },
+      {
+        "timestep": 247,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0809296
+      },
+      {
+        "timestep": 248,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0839296
+      },
+      {
+        "timestep": 249,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0869296
+      },
+      {
+        "timestep": 250,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0899296
+      },
+      {
+        "timestep": 251,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0929296
+      },
+      {
+        "timestep": 252,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0959296
+      },
+      {
+        "timestep": 253,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.0989296
+      },
+      {
+        "timestep": 254,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1019296
+      },
+      {
+        "timestep": 255,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1049296
+      },
+      {
+        "timestep": 256,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1079296
+      },
+      {
+        "timestep": 257,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1109296
+      },
+      {
+        "timestep": 258,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1139296
+      },
+      {
+        "timestep": 259,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1169296
+      },
+      {
+        "timestep": 260,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1199296
+      },
+      {
+        "timestep": 261,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1229296
+      },
+      {
+        "timestep": 262,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1259296
+      },
+      {
+        "timestep": 263,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1289296
+      },
+      {
+        "timestep": 264,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1319296
+      },
+      {
+        "timestep": 265,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1349296
+      },
+      {
+        "timestep": 266,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1379296
+      },
+      {
+        "timestep": 267,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1409296
+      },
+      {
+        "timestep": 268,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1439296
+      },
+      {
+        "timestep": 269,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1469296
+      },
+      {
+        "timestep": 270,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1499296
+      },
+      {
+        "timestep": 271,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1529296
+      },
+      {
+        "timestep": 272,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1559296
+      },
+      {
+        "timestep": 273,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1589296
+      },
+      {
+        "timestep": 274,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1619296
+      },
+      {
+        "timestep": 275,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1649296
+      },
+      {
+        "timestep": 276,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1679296
+      },
+      {
+        "timestep": 277,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1709296
+      },
+      {
+        "timestep": 278,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1739296
+      },
+      {
+        "timestep": 279,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1769296
+      },
+      {
+        "timestep": 280,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1799296
+      },
+      {
+        "timestep": 281,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1829296
+      },
+      {
+        "timestep": 282,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1859296
+      },
+      {
+        "timestep": 283,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1889296
+      },
+      {
+        "timestep": 284,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1919296
+      },
+      {
+        "timestep": 285,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1949296
+      },
+      {
+        "timestep": 286,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.1979296
+      },
+      {
+        "timestep": 287,
+        "model": "NO_MODEL",
+        "charge": true,
+        "battery_level": 2.2009296
+      }
+    ]
+  },
+  "config": {
+    "system": {
+      "battery_capacity_mwh": 300,
+      "task_interval_seconds": 300,
+      "horizon_seconds": 86400,
+      "charge_rate_mwh_per_second": 1e-5,
+      "battery_discretization_step": 1,
+      "nearest_neighbor_k": 3
+    },
+    "user_requirements": {
+      "accuracy_threshold": 0.9,
+      "latency_threshold_seconds": 0.006
+    },
+    "reward_weights": {
+      "success_weight": 10,
+      "small_miss_weight": 5,
+      "large_miss_weight": 8,
+      "carbon_weight": 7
+    },
+    "data_paths": {
+      "model_profiles": "../model-profiler/power_profiles.json",
+      "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
+    },
+    "simulation": {
+      "start_date": "2024-01-01",
+      "start_time": "00:00:00"
+    }
+  }
+}
