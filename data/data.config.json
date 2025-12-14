@@ -1,0 +1,20 @@
+{
+  "system_constants": {
+    "task_interval_seconds": 300,
+    "horizon_seconds": 1200,
+    "battery_discretization_step": 0.01,
+    "nearest_neighbor_k": 3
+  },
+  "user_parameters": [{ "accuracy_threshold": 0.7, "latency_threshold_seconds": 0.008 }],
+  "reward_weights": [
+    { "success_weight": 10, "small_miss_weight": 5, "large_miss_weight": 8, "carbon_weight": 7 }
+  ],
+  "battery_configs": [{ "battery_capacity_mwh": 200, "charge_rate_mwh_per_second": 0.000008 }],
+  "seasonal_dates": ["2024-01-15", "2024-01-17", "2024-01-25", "2024-01-29"],
+  "locations": ["US-CAL-LDWP_2024_5_minute.csv"],
+  "output": {
+    "data_split": { "train": 0.7, "val": 0.1, "test": 0.2 },
+    "max_workers": 90,
+    "output_dir": "training_data"
+  }
+}

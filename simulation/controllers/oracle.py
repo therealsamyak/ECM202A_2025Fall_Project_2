@@ -1,6 +1,15 @@
 import numpy as np
-from typing import Dict, List, Tuple
-from utils.core import (
+import sys
+import os
+from typing import Dict, List, Tuple, Any
+
+# Add project root to path for absolute imports
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# ruff: noqa: E402
+from simulation.utils.core import (
     State,
     Action,
     ModelType,
@@ -352,3 +361,63 @@ class OracleController:
         """Get the optimal value from the initial state"""
         initial_battery_key = self._battery_to_key(self.battery_capacity)
         return self.V[0].get(initial_battery_key, 0)
+
+    def export_training_data(self, path: List[Tuple[State, Action]]) -> Dict[str, Any]:
+        """
+        Export oracle trajectory as training data for imitation learning
+
+        Args:
+            path: List of (state, action) tuples from oracle solution
+
+        Returns:
+            Dictionary with observations and actions arrays
+        """
+        observations = []
+        actions = []
+
+        for t, (state, action) in enumerate(path):
+            # Get carbon data for this timestep
+            carbon_intensity = self.carbon_data[t]
+            carbon_change = (
+                self.carbon_data[t] - self.carbon_data[t - 1] if t > 0 else 0
+            )
+
+            # Normalize battery level to [0,1]
+            normalized_battery = state.battery_level / self.battery_capacity
+
+            # Create observation (minimal required features)
+            observation = {
+                "battery_level": float(normalized_battery),  # [0,1]
+                "carbon_intensity": float(carbon_intensity),  # [0,1]
+                "carbon_change": float(carbon_change),  # [-1,1]
+            }
+
+            # Create action (target for imitation learning)
+            action_data = {
+                "model_type": int(
+                    list(ModelType).index(action.model)
+                ),  # 0-6 for models
+                "charge_decision": int(action.charge),  # 0 or 1
+            }
+
+            observations.append(
+                [
+                    observation["battery_level"],
+                    observation["carbon_intensity"],
+                    observation["carbon_change"],
+                ]
+            )
+
+            actions.append([action_data["model_type"], action_data["charge_decision"]])
+
+        return {
+            "observations": observations,
+            "actions": actions,
+            "metadata": {
+                "total_timesteps": len(path),
+                "battery_capacity": self.battery_capacity,
+                "task_interval": self.config["system"]["task_interval_seconds"],
+                "horizon_seconds": self.config["system"]["horizon_seconds"],
+                "model_types": [model.value for model in ModelType],
+            },
+        }

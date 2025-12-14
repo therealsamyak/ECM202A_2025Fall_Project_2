@@ -5,11 +5,18 @@ Simulation Runner for Oracle and Naive Controllers
 
 import json
 import os
+import sys
 from typing import Dict, List, Tuple
 
-from controllers.oracle import OracleController
-from controllers.naive import NaiveController
-from utils.core import State, Action, validate_config
+# Add project root to path for absolute imports
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# ruff: noqa: E402
+from simulation.controllers.oracle import OracleController
+from simulation.controllers.naive import NaiveController
+from simulation.utils.core import State, Action, validate_config
 
 
 def load_config() -> Dict:
