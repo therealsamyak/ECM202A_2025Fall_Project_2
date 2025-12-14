@@ -3,6 +3,7 @@
 Power benchmarking script for all YOLOv10 models.
 """
 
+import json
 import logging
 import sys
 from pathlib import Path
@@ -16,6 +17,12 @@ def main():
     # Setup logging
     setup_logging()
     logger = logging.getLogger(__name__)
+
+    # Load config
+    with open("model-profiler/model.config.json", "r") as f:
+        config = json.load(f)
+    iterations = config.get("iterations", 1)
+    iter_sleep_sec = config.get("iter_sleep_sec", 4.0)
 
     # Initialize power profiler
     profiler = PowerProfiler()
@@ -36,8 +43,10 @@ def main():
     profiler.load_profiles()
 
     # Benchmark all models on image2 only
-    logger.info(f"Benchmarking models on {image2}")
-    profiles = profiler.benchmark_all_models(str(image2), iterations=1)
+    logger.info(f"Benchmarking models on {image2} with {iterations} iterations")
+    profiles = profiler.benchmark_all_models(
+        str(image2), iterations=iterations, iter_sleep_sec=iter_sleep_sec
+    )
 
     # Print results
     print(f"\nPower Benchmark Results for {image2.name}:")

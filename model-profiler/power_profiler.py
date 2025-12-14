@@ -223,7 +223,12 @@ class PowerProfiler:
         return median_power, []
 
     def benchmark_model_power(
-        self, model_name: str, model_version: str, image_path: str, iterations: int = 50
+        self,
+        model_name: str,
+        model_version: str,
+        image_path: str,
+        iterations: int = 50,
+        iter_sleep_sec: float = 4.0,
     ) -> Dict:
         """
         Benchmark power consumption for a specific model.
@@ -285,14 +290,14 @@ class PowerProfiler:
                 f"[{model_name} v{model_version}] Iteration {i + 1}/{iterations} - Power: {avg_power:.2f} mW"
             )
 
-            # Longer delay between iterations for system stabilization
-            time.sleep(4.0)
+            # Delay between iterations for system stabilization
+            time.sleep(iter_sleep_sec)
 
         end_time = time.time()
         total_duration = end_time - start_time
 
         # Account for delay between iterations to get actual inference time
-        total_delay_time = iterations * 4.0  # 4.0s delay per iteration
+        total_delay_time = iterations * iter_sleep_sec
         actual_inference_duration = total_duration - total_delay_time
         avg_inference_time_seconds = actual_inference_duration / iterations
 
@@ -353,7 +358,7 @@ class PowerProfiler:
         return profile
 
     def benchmark_all_models(
-        self, image_path: str, iterations: int = 50
+        self, image_path: str, iterations: int = 50, iter_sleep_sec: float = 4.0
     ) -> Dict[str, Dict]:
         """
         Benchmark all YOLOv10 models.
@@ -377,7 +382,7 @@ class PowerProfiler:
         for model_name, model_version in models:
             try:
                 self.benchmark_model_power(
-                    model_name, model_version, image_path, iterations
+                    model_name, model_version, image_path, iterations, iter_sleep_sec
                 )
             except Exception as e:
                 self.logger.error(

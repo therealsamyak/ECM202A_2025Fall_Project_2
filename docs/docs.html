@@ -70,13 +70,24 @@
             <pre><code class="language-bash">python3 model-profiler/benchmark_power.py</code></pre>
 
             <p>
-              Change line 40 of
+              Change the iterations value in
               <a
-                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/benchmark_power.py"
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/model.config.json"
                 target="_blank"
-                >model-profiler/benchmark_power.py</a
+                >model-profiler/model.config.json</a
               >
               to modify number of iterations.
+            </p>
+
+            <p>
+              Change the iter_sleep_sec value in
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/model.config.json"
+                target="_blank"
+                >model-profiler/model.config.json</a
+              >
+              to modify sleep time between iterations. This time is subtracted out of calculations
+              and is only used for throttling.
             </p>
 
             <h3>Accuracy</h3>
