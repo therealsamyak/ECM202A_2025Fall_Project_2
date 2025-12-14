@@ -1,56 +1,94 @@
 #!/usr/bin/env python3
 """
-Main entry point for Phase 1 training data generation.
-Simple script that handles everything automatically.
+Main entry point for training data generation.
+Processes all parameter combinations sequentially.
 """
 
+import traceback
 import os
 import time
 from datetime import datetime
-import traceback
 
 from generation_config import ConfigLoader
-from sequential_generator import SequentialGenerator
+from oracle_runner import OracleRunner
 from recombine_data import DataRecombiner
 
 
 def main():
-    """Generate training data - simple one script approach"""
+    """Generate training data by processing all combinations sequentially"""
     print("=" * 60)
-    print("PHASE 1: TRAINING DATA GENERATION")
+    print("TRAINING DATA GENERATION")
     print("=" * 60)
     print(f"Start time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
 
     start_time = time.time()
+    temp_dir = "data/temp"
+    os.makedirs(temp_dir, exist_ok=True)
 
     try:
-        # Step 1: Load configuration
-        print("STEP 1: Loading configuration...")
+        # Load configuration and generate combinations
+        print("Loading configuration...")
         config_loader = ConfigLoader("data/data.config.json")
         config = config_loader.load_config()
         combinations = config_loader.generate_parameter_combinations()
-        chunks = config_loader.calculate_chunks(combinations)
 
         print("✓ Configuration loaded")
         print(f"  - Total combinations: {len(combinations)}")
-        print(f"  - Total chunks: {len(chunks)}")
-        print(f"  - Max workers: {config.output['max_workers']}")
         print()
 
-        # Step 2: Generate all chunks
-        print("STEP 2: Generating training data...")
-        generator = SequentialGenerator("data.config.json")
+        # Initialize oracle runner
+        oracle_runner = OracleRunner(temp_dir)
 
-        if not generator.generate_all_data():
-            print("✗ Data generation failed")
-            return False
+        # Process all combinations sequentially
+        print("Processing combinations...")
+        successful_combinations = 0
 
-        print("✓ All chunks generated successfully")
+        for i, combination in enumerate(combinations):
+            print(f"\nProcessing combination {i + 1}/{len(combinations)}")
+            print(
+                f"  Parameters: accuracy={combination['user_parameters']['accuracy_threshold']}, "
+                f"latency={combination['user_parameters']['latency_threshold_seconds']}"
+            )
+
+            try:
+                # Run simulation
+                result = oracle_runner.run_simulation(combination)
+
+                if result["success"]:
+                    # Save chunk
+                    chunk_path = oracle_runner.save_chunk([result], i)
+
+                    # Validate chunk
+                    if not oracle_runner.validate_chunk_data(chunk_path):
+                        print("  ✗ Chunk validation failed")
+                        continue
+
+                    timesteps = result["metadata"]["total_timesteps"]
+                    reward = result["metadata"]["total_reward"]
+                    exec_time = result["metadata"]["execution_time_seconds"]
+
+                    print(
+                        f"  ✓ Completed - {timesteps} steps, reward: {reward:.2f}, time: {exec_time:.1f}s"
+                    )
+                    successful_combinations += 1
+
+                else:
+                    print(
+                        f"  ✗ Failed - {result['error']['type']}: {result['error']['message']}"
+                    )
+
+            except Exception as e:
+                print(f"  ✗ Exception: {e}")
+                continue
+
+        print(
+            f"\n✓ {successful_combinations}/{len(combinations)} combinations completed successfully"
+        )
         print()
 
-        # Step 3: Recombine data
-        print("STEP 3: Creating final dataset...")
+        # Recombine data
+        print("Creating final dataset...")
         recombiner = DataRecombiner()
 
         if not recombiner.recombine_all(
@@ -64,35 +102,16 @@ def main():
         print("✓ Final dataset created successfully")
         print()
 
-        # Final summary
+        # Summary
         total_time = time.time() - start_time
         print("=" * 60)
         print("🎉 TRAINING DATA GENERATION COMPLETED!")
         print("=" * 60)
         print(f"Total time: {total_time / 3600:.1f} hours")
+        print(f"Successful combinations: {successful_combinations}/{len(combinations)}")
         print("Output directory: data/training_data/")
         print()
-        print("Files created:")
 
-        output_files = [
-            "combined_dataset.npz",
-            "train.npy",
-            "train_actions.npy",
-            "val.npy",
-            "val_actions.npy",
-            "test.npy",
-            "test_actions.npy",
-            "metadata.json",
-        ]
-
-        for filename in output_files:
-            filepath = os.path.join("data/training_data", filename)
-            if os.path.exists(filepath):
-                size_mb = os.path.getsize(filepath) / (1024 * 1024)
-                print(f"  ✓ {filename} ({size_mb:.1f} MB)")
-
-        print()
-        print("Ready for Phase 2: Model Training")
         return True
 
     except KeyboardInterrupt:

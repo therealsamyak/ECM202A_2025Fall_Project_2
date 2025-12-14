@@ -102,3 +102,4 @@ tmp/
 *.pt
 
 data/training_data
+data/temp

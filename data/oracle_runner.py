@@ -127,7 +127,7 @@ class OracleRunner:
         """Create simulation config from parameter combination"""
         # Base configuration using system constants from data config
         config = {
-            "system": combination["system_constants"],
+            "system": combination["system_constants"].copy(),
             "simulation": {"start_date": combination["date"], "start_time": "00:00:00"},
             "data_paths": {
                 "model_profiles": "../model-profiler/power_profiles.json",
@@ -137,6 +137,9 @@ class OracleRunner:
 
         # Merge combination parameters
         config["system"].update(combination["battery_config"])
+        config["system"]["max_workers"] = combination.get(
+            "max_workers", 90
+        )  # Add max_workers to system
         config["user_requirements"] = combination["user_parameters"]
         config["reward_weights"] = combination["reward_weights"]
 

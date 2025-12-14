@@ -130,6 +130,7 @@ class ConfigLoader:
                 "battery_config": battery_config.copy(),
                 "date": date,
                 "location": location,
+                "max_workers": self.config.output["max_workers"],
             }
 
             combinations.append(combination)
