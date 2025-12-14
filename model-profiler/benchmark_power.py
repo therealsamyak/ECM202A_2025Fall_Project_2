@@ -7,7 +7,7 @@ import logging
 import sys
 from pathlib import Path
 
-from logging_config import setup_logging
+from utils.logging_config import setup_logging
 from power_profiler import PowerProfiler
 
 
