@@ -131,13 +131,27 @@ def main():
         "config": config,
     }
 
-    # Ensure data directory exists
-    os.makedirs("data", exist_ok=True)
+    # Only save if output_dir is specified
+    output_dir = config.get("output_dir")
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
 
-    with open("simulation/data/simulation_results.json", "w") as f:
-        json.dump(results, f, indent=2)
+        # Generate filename from key parameters
+        battery = config["system"]["battery_capacity_mwh"]
+        accuracy = config["user_requirements"]["accuracy_threshold"]
+        latency = config["user_requirements"]["latency_threshold_seconds"]
+        start_date = config["simulation"]["start_date"].replace("-", "")
 
-    print("\nDetailed results saved to simulation/data/simulation_results.json")
+        filename = (
+            f"{output_dir}/sim_b{battery}_a{accuracy}_l{latency}_{start_date}.json"
+        )
+
+        with open(filename, "w") as f:
+            json.dump(results, f, indent=2)
+
+        print(f"\nDetailed results saved to {filename}")
+    else:
+        print("\nNo output directory specified - results not saved")
 
 
 if __name__ == "__main__":

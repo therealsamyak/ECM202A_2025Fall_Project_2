@@ -1,0 +1,103 @@
+{
+  "oracle": {
+    "total_reward": -40.0,
+    "path_length": 5,
+    "actions": [
+      {
+        "timestep": 0,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 1,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 2,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 3,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 4,
+        "model": "NO_MODEL",
+        "charge": false,
+        "battery_level": 300
+      }
+    ]
+  },
+  "naive": {
+    "total_reward": -42.27238767761321,
+    "path_length": 5,
+    "actions": [
+      {
+        "timestep": 0,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 300
+      },
+      {
+        "timestep": 1,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 297.0459696
+      },
+      {
+        "timestep": 2,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 294.0919392
+      },
+      {
+        "timestep": 3,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 291.1379088
+      },
+      {
+        "timestep": 4,
+        "model": "YOLOv10_M",
+        "charge": false,
+        "battery_level": 288.1838784
+      }
+    ]
+  },
+  "config": {
+    "system": {
+      "battery_capacity_mwh": 300,
+      "task_interval_seconds": 300,
+      "horizon_seconds": 1500,
+      "charge_rate_mwh_per_second": 1e-5,
+      "battery_discretization_step": 0.01,
+      "nearest_neighbor_k": 3,
+      "max_workers": 90
+    },
+    "user_requirements": {
+      "accuracy_threshold": 0.9,
+      "latency_threshold_seconds": 0.006
+    },
+    "reward_weights": {
+      "success_weight": 10,
+      "small_miss_weight": 5,
+      "large_miss_weight": 8,
+      "carbon_weight": 7
+    },
+    "data_paths": {
+      "model_profiles": "../model-profiler/power_profiles.json",
+      "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
+    },
+    "simulation": {
+      "start_date": "2024-01-01",
+      "start_time": "00:00:00"
+    }
+  }
+}

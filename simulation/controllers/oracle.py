@@ -1,7 +1,9 @@
 import numpy as np
 import sys
 import os
+import math
 from typing import Dict, List, Tuple, Any
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # Add project root to path for absolute imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -16,7 +18,81 @@ from simulation.utils.core import (
     TransitionDynamics,
     RewardCalculator,
     DataLoader,
+    ModelProfile,
 )
+
+
+def _process_battery_levels_worker(args):
+    """Worker function for parallel battery level processing"""
+    (
+        timestep,
+        battery_keys_chunk,
+        config_data,
+        carbon_intensity,
+        model_profiles_data,
+        next_timestep_values,
+    ) = args
+
+    # Recreate necessary objects from serialized data
+    transition = TransitionDynamics(
+        config_data["battery_capacity"], config_data["charge_rate"]
+    )
+    reward_calc = RewardCalculator(
+        config_data["reward_weights"], config_data["user_requirements"]
+    )
+
+    # Convert model profiles back to ModelProfile objects
+    model_profiles = {}
+    for model_str, profile_data in model_profiles_data.items():
+        model_profiles[ModelType(model_str)] = ModelProfile(**profile_data)
+
+    results = {}
+    for battery_key in battery_keys_chunk:
+        # Exact same logic as original lines 248-295
+        battery_float = float(battery_key)
+        state = State(timestep=timestep, battery_level=battery_float)
+
+        best_value = -np.inf
+        best_action = None
+
+        # All possible actions (recreate in worker)
+        all_actions = []
+        for model in list(ModelType):
+            for charge in [False, True]:
+                all_actions.append(Action(model=model, charge=charge))
+        for charge in [False, True]:
+            all_actions.append(Action(model=ModelType.NO_MODEL, charge=charge))
+
+        for action in all_actions:
+            if not transition.is_feasible(state, action, model_profiles):
+                continue
+
+            model_profile = (
+                None
+                if action.model == ModelType.NO_MODEL
+                else model_profiles[action.model]
+            )
+            next_state = transition.transition(state, action, model_profiles)
+            next_battery_key = str(round(next_state.battery_level, 7))
+
+            reward = round(
+                reward_calc.calculate_reward(action, model_profile, carbon_intensity), 7
+            )
+
+            future_value = next_timestep_values.get(next_battery_key, 0)
+            value = reward + future_value
+
+            if value > best_value:
+                best_value = value
+                best_action = action
+
+        if best_action is not None:
+            results[battery_key] = (
+                best_value,
+                (best_action.model.value, best_action.charge),
+            )
+
+    return results
 
 
 class OracleController:
@@ -74,6 +150,105 @@ class OracleController:
 
         # Cache for battery key conversions to avoid repeated string operations
         self.battery_key_cache = {}
+
+        # Load max_workers from config
+        self.max_workers = config["system"].get("max_workers", 90)
+
+    def _get_optimal_worker_count(self, num_tasks: int) -> int:
+        """Calculate optimal worker count based on task count"""
+        return min(self.max_workers, num_tasks)
+
+    def _merge_worker_results(self, t: int, results: Dict):
+        """Merge worker results into DP matrices"""
+        for battery_key, (value, (model_str, charge_bool)) in results.items():
+            model_enum = ModelType(model_str)
+            action = Action(model=model_enum, charge=charge_bool)
+            self.V[t][battery_key] = value
+            self.pi[t][battery_key] = action
+
+    def _prepare_worker_data(self, t: int) -> Tuple:
+        """Prepare data for worker processes"""
+        config_data = {
+            "battery_capacity": self.battery_capacity,
+            "charge_rate": self.config["system"]["charge_rate_mwh_per_second"],
+            "reward_weights": self.config["reward_weights"],
+            "user_requirements": self.config["user_requirements"],
+        }
+
+        model_profiles_data = {}
+        for model_type, profile in self.model_profiles.items():
+            model_profiles_data[model_type.value] = {
+                "name": profile.name,
+                "accuracy": profile.accuracy,
+                "latency": profile.latency,
+                "energy_per_inference": profile.energy_per_inference,
+            }
+
+        next_timestep_values = self.V[t + 1] if t < self.num_timesteps else {}
+
+        return (
+            config_data,
+            self.carbon_data[t],
+            model_profiles_data,
+            next_timestep_values,
+        )
+
+    def _process_timestep_parallel(self, t: int, battery_keys_to_evaluate: set):
+        """Process single timestep with parallel workers and progress tracking"""
+        num_tasks = len(battery_keys_to_evaluate)
+        if num_tasks == 0:
+            return
+
+        actual_workers = self._get_optimal_worker_count(num_tasks)
+        chunk_size = math.ceil(num_tasks / actual_workers)
+
+        print(
+            f"Timestep {t}: Processing {num_tasks} battery levels with {actual_workers} workers"
+        )
+
+        # Prepare data for workers
+        config_data, carbon_intensity, model_profiles_data, next_timestep_values = (
+            self._prepare_worker_data(t)
+        )
+
+        # Create chunks
+        battery_keys_list = list(battery_keys_to_evaluate)
+        battery_chunks = [
+            battery_keys_list[i : i + chunk_size]
+            for i in range(0, len(battery_keys_list), chunk_size)
+        ]
+
+        # Prepare arguments for each worker
+        worker_args = [
+            (
+                t,
+                chunk,
+                config_data,
+                carbon_intensity,
+                model_profiles_data,
+                next_timestep_values,
+            )
+            for chunk in battery_chunks
+        ]
+
+        with ProcessPoolExecutor(max_workers=actual_workers) as executor:
+            futures = [
+                executor.submit(_process_battery_levels_worker, args)
+                for args in worker_args
+            ]
+            completed = 0
+
+            for future in as_completed(futures):
+                try:
+                    results = future.result()
+                    self._merge_worker_results(t, results)
+                    completed += 1
+                    progress = (completed / len(futures)) * 100
+                    print(
+                        f"  Progress: {progress:.1f}% ({completed}/{len(futures)} chunks)"
+                    )
+                except Exception as e:
+                    raise RuntimeError(f"Worker process failed at timestep {t}: {e}")
 
     def _battery_to_key(self, battery_level: float) -> str:
         """Convert continuous battery level to discretized key for lookup"""
@@ -244,56 +419,8 @@ class OracleController:
 
                 battery_keys_to_evaluate.update(reachable_battery_keys)
 
-            # For each battery level, find optimal action
-            for battery_key in battery_keys_to_evaluate:
-                battery_float = float(battery_key)
-                state = State(timestep=t, battery_level=battery_float)
-
-                best_value = -np.inf
-                best_action = None
-
-                for action in self.all_actions:
-                    if not self.transition.is_feasible(
-                        state, action, self.model_profiles
-                    ):
-                        continue
-
-                    # Get model profile
-                    model_profile = (
-                        None
-                        if action.model == ModelType.NO_MODEL
-                        else self.model_profiles[action.model]
-                    )
-
-                    # Calculate next state
-                    next_state = self.transition.transition(
-                        state, action, self.model_profiles
-                    )
-                    next_battery_key = self._battery_to_key(next_state.battery_level)
-
-                    # Calculate immediate reward (aggregate up to this timestep)
-                    reward = round(
-                        self.reward_calc.calculate_reward(
-                            action, model_profile, self.carbon_data[t]
-                        ),
-                        7,
-                    )
-
-                    # Bellman equation - look ahead to terminal values
-                    if next_battery_key in self.V[t + 1]:
-                        future_value = self.V[t + 1][next_battery_key]
-                    else:
-                        future_value = 0  # Default if not reachable
-
-                    value = reward + future_value
-
-                    if value > best_value:
-                        best_value = value
-                        best_action = action
-
-                if best_action is not None:
-                    self.V[t][battery_key] = best_value
-                    self.pi[t][battery_key] = best_action
+            # Process battery levels in parallel
+            self._process_timestep_parallel(t, battery_keys_to_evaluate)
 
         # Extract optimal path
         return self._extract_optimal_path()
