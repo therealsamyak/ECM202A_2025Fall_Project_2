@@ -335,17 +335,6 @@
           <!-- Technical Approach Section -->
           <section id="technical-approach" class="section">
             <h2>3. Technical Approach</h2>
-            <p>
-              Describe your system, methodology, algorithms, and design choices.<br />
-              Use figures generously:
-            </p>
-            <ul>
-              <li>System architecture diagram</li>
-              <li>Data pipeline</li>
-              <li>Algorithm/model block diagram</li>
-              <li>Hardware setup photos</li>
-            </ul>
-            <p>💡 Tip: Add images, diagrams, and code snippets. Make your system reproducible.</p>
 
             <h3 id="model-profiler">3.1 Model Profiler</h3>
 
@@ -358,7 +347,7 @@
             >
             See <a href="#limitations">Section 5.3</a> for more information.
 
-            <h4>Power and Latency Measurement</h4>
+            <h4>YOLOv10 Power and Latency Measurement</h4>
             <p>
               A Model task is defined as loading an image and running the default classifier
               function on it. The task involves:
@@ -414,7 +403,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               statistics.
             </p>
 
-            <h4>Accuracy Dataset Analysis</h4>
+            <h4>YOLOv10 Accuracy</h4>
             <p>
               Model accuracy values are extracted from the COCO dataset benchmark results stored in
               <a
@@ -431,7 +420,9 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>
               The accuracy analysis processes the CSV data to provide approximate accuracy values
               for each YOLOv10 model version, enabling the controller to make informed tradeoffs
-              between detection accuracy and energy consumption.
+              between detection accuracy and energy consumption. We normalize these values by
+              performing \( \text{NormalizedAccuracy} = \text{COCOmAP5095} / 57.0 \) to get a value
+              between \([0, 1]\) for all models.
             </p>
 
             <h3 id="system-parameters">3.2 System Parameters (per Controller)</h3>
@@ -1068,10 +1059,6 @@ generate_comparative_analysis(controllers)</code></pre>
           <!-- References Section -->
           <section id="references" class="section">
             <h2>6. References</h2>
-            <p>
-              Provide full citations for all sources (academic papers, websites, etc.) referenced
-              and all software and datasets uses.
-            </p>
 
             <h3 id="cite-note-2">
               Carbon- and Precedence-Aware Scheduling for Data Processing Clusters<cite>[2]</cite>
