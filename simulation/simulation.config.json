@@ -1,9 +1,9 @@
 {
   "system": {
     "battery_capacity_mwh": 300,
-    "task_interval_seconds": 300,
-    "horizon_seconds": 86400,
     "charge_rate_mwh_per_second": 0.00001,
+    "task_interval_seconds": 3600,
+    "horizon_seconds": 86400,
     "battery_discretization_step": 0.01,
     "nearest_neighbor_k": 3,
     "max_workers": 90

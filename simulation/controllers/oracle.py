@@ -4,6 +4,7 @@ import os
 import math
 from typing import Dict, List, Tuple, Any
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from threading import Lock
 
 # Add project root to path for absolute imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -160,17 +161,21 @@ class OracleController:
         # Load max_workers from config
         self.max_workers = config["system"]["max_workers"]
 
+        # Lock for atomic DP table updates
+        self._merge_lock = Lock()
+
     def _get_optimal_worker_count(self, num_tasks: int) -> int:
         """Calculate optimal worker count based on task count"""
         return min(self.max_workers, num_tasks)
 
     def _merge_worker_results(self, t: int, results: Dict):
         """Merge worker results into DP matrices"""
-        for battery_key, (value, (model_str, charge_bool)) in results.items():
-            model_enum = ModelType(model_str)
-            action = Action(model=model_enum, charge=charge_bool)
-            self.V[t][battery_key] = value
-            self.pi[t][battery_key] = action
+        with self._merge_lock:
+            for battery_key, (value, (model_str, charge_bool)) in results.items():
+                model_enum = ModelType(model_str)
+                action = Action(model=model_enum, charge=charge_bool)
+                self.V[t][battery_key] = value
+                self.pi[t][battery_key] = action
 
     def _prepare_worker_data(self, t: int) -> Tuple:
         """Prepare data for worker processes"""

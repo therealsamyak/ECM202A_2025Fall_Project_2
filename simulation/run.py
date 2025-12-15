@@ -16,6 +16,7 @@ if project_root not in sys.path:
 # ruff: noqa: E402
 from simulation.controllers.oracle import OracleController
 from simulation.controllers.naive import NaiveController
+from simulation.controllers.ml_controller import MLController
 from simulation.utils.core import State, Action, validate_config
 
 
@@ -86,18 +87,34 @@ def main():
     naive_path = naive.run()
     naive_reward = naive._calculate_path_reward(naive_path)
 
+    # Run ML Controller
+    print("Running ML Controller...")
+    ml = MLController(config)
+    ml_path = ml.run()
+    ml_reward = ml._calculate_path_reward(ml_path)
+
     # Print Oracle results
     print_path_summary("Oracle", oracle_path, oracle_reward)
 
     # Print Naive results
     print_path_summary("Naive", naive_path, naive_reward)
 
+    # Print ML results
+    print_path_summary("ML", ml_path, ml_reward)
+
     # Comparison
     print("\n=== Comparison ===")
     print(f"Oracle reward: {oracle_reward:.7f}")
     print(f"Naive reward: {naive_reward:.7f}")
+    print(f"ML reward: {ml_reward:.7f}")
     print(
-        f"Improvement: {oracle_reward - naive_reward:.7f} ({((oracle_reward / naive_reward - 1) * 100):.1f}%)"
+        f"Oracle vs Naive: {oracle_reward - naive_reward:.7f} ({((oracle_reward / naive_reward - 1) * 100):.1f}%)"
+    )
+    print(
+        f"ML vs Naive: {ml_reward - naive_reward:.7f} ({((ml_reward / naive_reward - 1) * 100):.1f}%)"
+    )
+    print(
+        f"Oracle vs ML: {oracle_reward - ml_reward:.7f} ({((oracle_reward / ml_reward - 1) * 100):.1f}%)"
     )
 
     # Save detailed results
@@ -126,6 +143,19 @@ def main():
                     "battery_level": round(state.battery_level, 7),
                 }
                 for i, (state, action) in enumerate(naive_path)
+            ],
+        },
+        "ml": {
+            "total_reward": ml_reward,
+            "path_length": len(ml_path),
+            "actions": [
+                {
+                    "timestep": i,
+                    "model": action.model.value,
+                    "charge": action.charge,
+                    "battery_level": round(state.battery_level, 7),
+                }
+                for i, (state, action) in enumerate(ml_path)
             ],
         },
         "config": config,
