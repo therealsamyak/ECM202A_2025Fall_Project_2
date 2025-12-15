@@ -398,11 +398,14 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>
               The profiler uses <code>powermetrics</code> with sudo access to capture CPU/GPU/ANE
               power consumption during the model task, storing results in
-              <code>power_profiles.json</code>. Each model is benchmarked across 1000 iterations
-              with outlier removal for stable baseline measurements. Time per inference is tracked
-              to store latency information alongside power data. Outlier removal trims the top and
-              bottom 20% of power readings to eliminate anomalies and uses median values for robust
-              statistics.
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/power_profiles.json"
+                target="_blank"
+                >model-profiler/power_profiles.json</a
+              >. Each model is benchmarked across 1000 iterations with outlier removal for stable
+              baseline measurements. Time per inference is tracked to store latency information
+              alongside power data. Outlier removal trims the top and bottom 20% of power readings
+              to eliminate anomalies and uses median values for robust statistics.
             </p>
 
             <h4>YOLOv10 Accuracy</h4>
@@ -1044,6 +1047,169 @@ generate_comparative_analysis(controllers)</code></pre>
             <p>Each figure should have a caption and a short interpretation.</p>
 
             <h3 id="parameters-used">4.1 Parameters Used</h3>
+
+            <h4>Model Profiler Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/model.config.json"
+                target="_blank"
+                >model-profiler/model.config.json</a
+              >
+            </p>
+
+            <b>Power Measurement Parameters</b>
+            <ul>
+              <li>iterations: 1</li>
+              <li>iter_sleep_sec: 4.0</li>
+            </ul>
+
+            <h4>YOLOv10 Model Specifications</h4>
+            <a
+              href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/power_profiles.json"
+              target="_blank"
+              >model-profiler/power_profiles.json</a
+            >
+            <table class="params-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Energy per Inference (mWh)</th>
+                  <th>Normalized Accuracy [0,1]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>YOLOv10_N</td>
+                  <td>1.02</td>
+                  <td>0.693</td>
+                </tr>
+                <tr>
+                  <td>YOLOv10_S</td>
+                  <td>1.99</td>
+                  <td>0.819</td>
+                </tr>
+                <tr>
+                  <td>YOLOv10_M</td>
+                  <td>2.95</td>
+                  <td>0.900</td>
+                </tr>
+                <tr>
+                  <td>YOLOv10_B</td>
+                  <td>3.89</td>
+                  <td>0.925</td>
+                </tr>
+                <tr>
+                  <td>YOLOv10_L</td>
+                  <td>4.69</td>
+                  <td>0.935</td>
+                </tr>
+                <tr>
+                  <td>YOLOv10_X</td>
+                  <td>6.06</td>
+                  <td>0.954</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h4>Data Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/data/data.config.json"
+                target="_blank"
+                >data/data.config.json</a
+              >
+            </p>
+
+            <b>System Constants</b>
+            <ul>
+              <li>\(\Delta\) (task_interval_seconds): 3600 seconds</li>
+              <li>\(T\) (horizon_seconds): 86400 seconds</li>
+              <li>\(F\) (battery_discretization_step): 0.01</li>
+              <li>\(K\) (nearest_neighbor_k): 3</li>
+            </ul>
+
+            <b>User Requirements Combinations</b>
+            <ul>
+              <li>\(u_{\text{acc}}\) (accuracy_threshold): 0.95, 0.819</li>
+              <li>\(u_{\text{lat}}\) (latency_threshold_seconds): 0.012, 0.006</li>
+            </ul>
+
+            <b>Reward Weights Combinations</b>
+            <ul>
+              <li>\(W\) (success_weight): 20, 5</li>
+              <li>\(X\) (small_miss_weight): 5, 7</li>
+              <li>\(Y\) (large_miss_weight): 8, 10</li>
+              <li>\(Z\) (carbon_weight): 7, 15</li>
+            </ul>
+
+            <b>Battery Configurations</b>
+            <ul>
+              <li>
+                \(B_{\max}\) (battery_capacity_mwh), \(r_{\text{chg}}\)
+                (charge_rate_mwh_per_second): (610, 0.000269), (105, 0.001598)
+              </li>
+            </ul>
+
+            <b>Data Generation Parameters</b>
+            <ul>
+              <li>seasonal_dates: ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"]</li>
+              <li>locations: ["US-CAL-LDWP_2024_5_minute.csv", "US-NY-NYIS_2024_5_minute.csv"]</li>
+              <li>data_split: {train: 0.7, val: 0.1, test: 0.2}</li>
+              <li>oracle_workers: 10</li>
+              <li>combination_workers: 10</li>
+              <li>output_dir: "training_data"</li>
+              <li>chunk_size: 1</li>
+            </ul>
+
+            <h4>Training Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/training/training.config.json"
+                target="_blank"
+                >training/training.config.json</a
+              >
+            </p>
+
+            <b>Training Parameters</b>
+            <ul>
+              <li>training_mode: "per_controller"</li>
+              <li>learning_rate: 0.001</li>
+              <li>batch_size: 32</li>
+              <li>epochs: 100</li>
+              <li>loss_function: "cross_entropy"</li>
+              <li>optimizer: "Adam"</li>
+            </ul>
+
+            <b>Early Stopping</b>
+            <ul>
+              <li>enabled: true</li>
+              <li>patience: 10</li>
+              <li>min_delta: 0.001</li>
+            </ul>
+
+            <b>Data Paths</b>
+            <ul>
+              <li>train_data_path: "data/training_data/train.npy"</li>
+              <li>val_data_path: "data/training_data/val.npy"</li>
+              <li>test_data_path: "data/training_data/test.npy"</li>
+              <li>train_actions_path: "data/training_data/train_actions.npy"</li>
+              <li>val_actions_path: "data/training_data/val_actions.npy"</li>
+              <li>test_actions_path: "data/training_data/test_actions.npy"</li>
+              <li>model_save_path: "training/models/best_model.pth"</li>
+            </ul>
+
+            <h4>Energy Data Source</h4>
+            <p>
+              Energy intensity data obtained from
+              <a href="https://www.electricitymaps.com/" target="_blank">Electricity Maps</a>
+              for the year 2024 at 5-minute granularity for the following regions:
+            </p>
+            <ul>
+              <li>US-CAL-LDWP (California)</li>
+              <li>US-FLA-FPL (Florida)</li>
+              <li>US-NW-PSEI (Northwest)</li>
+              <li>US-NY-NYIS (New York)</li>
+            </ul>
           </section>
 
           <!-- Discussion & Conclusions Section -->
@@ -1207,8 +1373,13 @@ generate_comparative_analysis(controllers)</code></pre>
             </p>
             <p>
               <strong>Power profiling logs (internal).</strong> Our benchmark scripts generate
-              per-model power and latency stats saved as JSON in results/ (for example
-              power_profiles.json) and used to estimate energy-per-inference.
+              per-model power and latency stats saved to
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/model-profiler/power_profiles.json"
+                target="_blank"
+                >model-profiler/power_profiles.json</a
+              >
+              and used to estimate energy-per-inference.
             </p>
             <p>
               <strong>Benchmark images (internal).</strong> Fixed images in benchmark-images/ used
