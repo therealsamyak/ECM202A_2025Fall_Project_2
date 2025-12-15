@@ -15,7 +15,6 @@ import re
 import sys
 from datetime import datetime
 from typing import Dict, List, Tuple, Any
-from multiprocessing import Pool, cpu_count
 
 # Add project root to path for absolute imports
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -180,12 +179,6 @@ def calculate_uptime_metric(
 
     # Average over horizon
     return sum(uptime_scores) / len(uptime_scores)
-
-
-def worker_run_batch(args: Tuple[Dict[str, str], str, str]) -> Dict[str, Any] | None:
-    """Worker function for multiprocessing: run single model against all controllers."""
-    model_info, test_date, batch_results_dir = args
-    return run_single_batch(model_info, test_date, batch_results_dir)
 
 
 def run_single_batch(
@@ -410,29 +403,27 @@ def main():
 
     print(f"\nStarting {total_runs} total runs...")
     print("Each run processes 3 controllers (Oracle, Naive, ML)")
+    print(
+        "Note: Oracle controller uses its own internal multiprocessing for optimization"
+    )
 
-    # Prepare arguments for multiprocessing
-    batch_args = []
+    # Execute batch runs sequentially
+    current_run = 0
     for model_info in model_files:
         for test_date in test_dates:
-            batch_args.append((model_info, test_date, batch_results_dir))
+            current_run += 1
+            print(f"\n--- Progress: {current_run}/{total_runs} ---")
 
-    # Execute batch runs in parallel
-    num_processes = min(cpu_count(), len(batch_args))
-    print(f"\nUsing {num_processes} processes for {total_runs} runs...")
-
-    with Pool(processes=num_processes) as pool:
-        results = pool.map(worker_run_batch, batch_args)
-
-    for i, result in enumerate(results):
-        model_info = batch_args[i][0]
-        test_date = batch_args[i][1]
-
-        if result is not None:
-            all_results.append(result)
-            print(f"✓ Completed: {model_info['filename'][:30]} on {test_date}")
-        else:
-            print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}")
+            try:
+                result = run_single_batch(model_info, test_date, batch_results_dir)
+                if result is not None:
+                    all_results.append(result)
+                    print(f"✓ Completed: {model_info['filename'][:30]} on {test_date}")
+                else:
+                    print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}")
+            except Exception as e:
+                print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}: {e}")
+                continue
 
     # Generate summary and graph data
     print("\n=== Batch Complete ===")
