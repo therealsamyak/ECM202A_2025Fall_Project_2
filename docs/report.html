@@ -63,7 +63,7 @@
                 >
               </li>
               <li><a href="#planning-control-methods">2.2 Planning and Control Methods</a></li>
-              <li><a href="#other-related-works">Other Related Works</a></li>
+              <li><a href="#other-related-works">2.3 Other Related Works</a></li>
             </ul>
           </li>
           <li>
@@ -76,10 +76,18 @@
                 <a href="#custom-controller">3.4 Custom Controller (POMDP, Imitation Learning)</a>
               </li>
               <li><a href="#naive-controller">3.5 Naive Controller</a></li>
+              <li><a href="#simulation">3.6 Simulation Setup</a></li>
             </ul>
           </li>
           <li><a href="#evaluation-results">4. Evaluation & Results</a></li>
-          <li><a href="#discussion-conclusions">5. Discussion & Conclusions</a></li>
+          <li>
+            <a href="#discussion-conclusions">5. Discussion & Conclusions</a>
+            <ul class="toc-sublinks">
+              <li><a href="#worked-well">5.1 What worked well and why?</a></li>
+              <li><a href="#didnt-work">5.2 What didn't work and why?</a></li>
+              <li><a href="#limitations">5.3 Limitations & Future Work</a></li>
+            </ul>
+          </li>
           <li><a href="#references">6. References</a></li>
           <li>
             <a href="#supplementary-material">7. Supplementary Material</a>
@@ -312,7 +320,7 @@
               planning, and doesn't specifically address planning based on carbon-emissions.
             </p>
 
-            <h3 id="other-related-works">Other Related Works</h3>
+            <h3 id="other-related-works">2.3 Other Related Works</h3>
             <p>
               Other works in Section VI are not as directly related to this problem as the other
               papers above are, but still give valuable insight into applications of POMDPs.
@@ -606,6 +614,39 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               </li>
             </ul>
 
+            <p><strong>Basic DP Algorithm with K-NN:</strong></p>
+            <pre><code>FOR t ← T-1 DOWNTO 0 DO
+    FOR each battery_level b IN reachable_states DO
+        best_value ← -∞
+        best_action ← null
+        
+        FOR each action a IN feasible_actions(b) DO
+            next_state ← transition(t, b, a)
+            reward ← R(t, b, a, next_state)
+            future_value ← V[t+1][knn(battery_key(next_state))]
+            total_value ← reward + future_value
+            
+            IF total_value > best_value THEN
+                best_value ← total_value
+                best_action ← a
+            END IF
+        END FOR
+        
+        V[t][battery_key(b)] ← best_value
+        π[t][battery_key(b)] ← best_action
+    END FOR
+END FOR
+</code></pre>
+
+            <p>
+              The oracle controller implementation can be found in
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/simulation/controllers/oracle.py"
+                target="_blank"
+                >oracle.py</a
+              >.
+            </p>
+
             <h3 id="custom-controller">3.4 Custom Controller (POMDP, Imitation Learning)</h3>
 
             <p>
@@ -721,6 +762,15 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               </li>
             </ol>
 
+            <p>
+              The naive controller code can be found in
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/simulation/controllers/naive.py"
+                target="_blank"
+                >naive.py</a
+              >.
+            </p>
+
             <h3 id="simulation">3.6 Simulation Setup</h3>
 
             <h4>Pipeline</h4>
@@ -778,10 +828,10 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <h2>5. Discussion & Conclusions</h2>
             <p>This should synthesize—not merely repeat—your results.</p>
 
-            <h3>What worked well and why?</h3>
+            <h3 id="worked-well">5.1 What worked well and why?</h3>
             <br />
 
-            <h3>What didn't work and why?</h3>
+            <h3 id="didnt-work">5.2 What didn't work and why?</h3>
             <br />
 
             <h3 id="limitations">5.3 Limitations & Future Work</h3>
@@ -805,8 +855,8 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
                 is some idle energy cost, even if its very small due to the controller 'sleeping'.
               </li>
               <li>
-                Energy consumed when running the controller algorithm or trained model is not
-                accounted for.
+                Energy consumed when running the controller-selection algorithm (or running the NN
+                to make decision) is not accounted for.
               </li>
             </ul>
 
@@ -829,6 +879,13 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               requirements and parameter combinations that are possible. This would give us one
               general-use controller that is plug-and-play anywhere.
             </p>
+
+            <p>
+              Future work could incorporate algorithms and methodology from the Data-driven Planning
+              via Imitation Learning paper<sup id="cite-ref-4"><a href="#cite-note-4">[4]</a></sup
+              >. While our current approach uses basic supervised learning with cross-entropy loss,
+              more sophisticated imitation learning techniques could improve controller performance.
+            </p>
           </section>
 
           <!-- References Section -->
@@ -837,14 +894,6 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>
               Provide full citations for all sources (academic papers, websites, etc.) referenced
               and all software and datasets uses.
-            </p>
-
-            <h3 id="cite-note-4">Data-driven Planning via Imitation Learning<cite>[4]</cite></h3>
-            <p>
-              Choudhury, S., Bhardwaj, M., Arora, S., Kapoor, A., Ranade, G., Scherer, S., & Dey, D.
-              Data-driven Planning via Imitation Learning. The Robotics Institute, Carnegie Mellon
-              University & Microsoft Research.
-              <a href="https://arxiv.org/abs/1711.06391" target="_blank">[Paper]</a>
             </p>
 
             <h3 id="cite-note-2">
@@ -867,6 +916,14 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               Systems (E-Energy '25), Association for Computing Machinery, New York, NY, USA,
               907-914.
               <a href="https://doi.org/10.1145/3679240.3735104" target="_blank">[Paper]</a>
+            </p>
+
+            <h3 id="cite-note-4">Data-driven Planning via Imitation Learning<cite>[4]</cite></h3>
+            <p>
+              Choudhury, S., Bhardwaj, M., Arora, S., Kapoor, A., Ranade, G., Scherer, S., & Dey, D.
+              Data-driven Planning via Imitation Learning. The Robotics Institute, Carnegie Mellon
+              University & Microsoft Research.
+              <a href="https://arxiv.org/abs/1711.06391" target="_blank">[Paper]</a>
             </p>
 
             <h3 id="cite-note-5">Monte-Carlo Planning in Large POMDPs<cite>[5]</cite></h3>
@@ -896,23 +953,46 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
           <section id="supplementary-material" class="section">
             <h2>7. Supplementary Material</h2>
 
-            <h3 id="datasets">7.a. Datasets</h3>
-            <p>Describe each dataset:</p>
-            <ul>
-              <li>Source and URL</li>
-              <li>Data format</li>
-              <li>Preprocessing steps</li>
-              <li>Labeling/annotation efforts</li>
-            </ul>
-            <p>Include your internal dataset if you collected one.</p>
+            <h3 id="datasets">7.1 Datasets</h3>
+            <p>
+              <strong>Electricity Maps grid carbon traces (external).</strong> 2024 time-series CSVs
+              at 5-minute granularity for 4 U.S. regions from
+              <a href="https://www.electricitymaps.com/" target="_blank">Electricity Maps</a>,
+              stored in energy-data/. We replay these traces in simulation as the time-varying
+              carbon signal. Preprocessing: load CSV, sort by timestamp, select column 7
+              (Carbon-free energy percentage, CFE%), and align to the simulator timestep (hold the
+              most recent 5-minute value when the task interval is finer). No labeling.
+            </p>
+            <p>
+              <strong>YOLOv10 model metadata (external).</strong> Per-variant accuracy and specs
+              from
+              <a href="https://docs.ultralytics.com/models/yolov10/" target="_blank"
+                >Ultralytics YOLOv10 documentation</a
+              >
+              used to parameterize model trade-offs in the simulator. No labeling.
+            </p>
+            <p>
+              <strong>Power profiling logs (internal).</strong> Our benchmark scripts generate
+              per-model power and latency stats saved as JSON in results/ (for example
+              power_profiles.json) and used to estimate energy-per-inference.
+            </p>
+            <p>
+              <strong>Benchmark images (internal).</strong> Fixed images in benchmark-images/ used
+              only to run consistent inference during profiling and simulation, not to train YOLO.
+            </p>
 
-            <h3 id="software">7.b. Software</h3>
-            <p>List:</p>
-            <ul>
-              <li>External libraries or models</li>
-              <li>Internal modules you wrote</li>
-              <li>Links to repos or documentation</li>
-            </ul>
+            <h3 id="software">7.2 Software</h3>
+            <p>
+              <strong>External libraries:</strong>
+              <a href="https://pytorch.org/" target="_blank">PyTorch</a>,
+              <a href="https://numpy.org/" target="_blank">NumPy</a>,
+              <a href="https://astral.sh/" target="_blank">Astral (uv)</a>.
+            </p>
+            <p><strong>External models:</strong> Ultralytics YOLOv10 variants (N/S/M/B/L/X).</p>
+            <p>
+              <strong>Internal code:</strong> Simulation + battery model, oracle planner,
+              training-data generation, imitation-learning controller, and profiling utilities.
+            </p>
           </section>
         </div>
       </main>

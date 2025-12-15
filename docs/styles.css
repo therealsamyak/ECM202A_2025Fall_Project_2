@@ -354,8 +354,4 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Highlight current section in TOC */
-.sidebar .toc-links a.highlight {
-  background: #007bff;
-  color: white;
-}
+/* Highlight functionality removed - no highlight styling needed */

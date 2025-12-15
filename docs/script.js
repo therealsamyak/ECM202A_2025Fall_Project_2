@@ -4,8 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Set active navigation link based on current page
   setActiveNavLink();
 
-  // Highlight current section in table of contents
-  highlightCurrentSection();
+  // Section highlighting removed - no highlight functionality
 
   // Smooth scroll for anchor links
   setupSmoothScrolling();
@@ -32,48 +31,7 @@ const setActiveNavLink = () => {
   });
 };
 
-const highlightCurrentSection = () => {
-  const sections = document.querySelectorAll("h2[id], h3[id]");
-  const tocLinks = document.querySelectorAll(".sidebar .toc-links a");
-
-  if (sections.length === 0 || tocLinks.length === 0) return;
-
-  const updateActiveTocLink = () => {
-    let currentSection = "";
-    const viewportHeight = window.innerHeight;
-    const topHalfThreshold = viewportHeight * 0.5;
-
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= topHalfThreshold && rect.bottom >= 0) {
-        currentSection = section.getAttribute("id");
-      }
-    });
-
-    // Keep the last highlighted section if no new section is in range
-    if (!currentSection) {
-      const highlightedLink = document.querySelector(".sidebar .toc-links a.highlight");
-      if (highlightedLink) {
-        const href = highlightedLink.getAttribute("href");
-        currentSection = href.substring(1); // Remove the '#' prefix
-      }
-    }
-
-    tocLinks.forEach((link) => {
-      link.classList.remove("highlight");
-      const href = link.getAttribute("href");
-      if (href === "#" + currentSection) {
-        link.classList.add("highlight");
-      }
-    });
-  };
-
-  // Update on scroll
-  window.addEventListener("scroll", updateActiveTocLink);
-
-  // Initial update
-  updateActiveTocLink();
-};
+// Section highlighting removed - no highlight functionality
 
 const setupSmoothScrolling = () => {
   const links = document.querySelectorAll('a[href^="#"]');
