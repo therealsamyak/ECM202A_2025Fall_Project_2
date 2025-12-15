@@ -336,6 +336,11 @@
 
             <h3 id="model-profiler">3.1 Model Profiler</h3>
 
+            To simplify the optimization, we benchmarked and created model profiles separately
+            before our simulation loop. The main simulation loop then uses these pre-computed
+            profiles to make decisions at runtime. We do NOT separately profile during the
+            simulation itself, which is a known limitation. See section 5 for more details.
+
             <h4>3.1.1 Power and Latency Measurement</h4>
             <p>
               A Model task is defined as loading an image and running the default classifier
@@ -542,7 +547,12 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               <li>\( \text{large\_miss}_t = \mathbf{1}\{m_t = \varnothing\} \)</li>
             </ul>
             <p>The dirty energy incurred at timestep \(t\) is:</p>
-            <p>\[ \Delta D_t = (E(m_t) + c_t \cdot r_{\text{chg}})\cdot d_t. \]</p>
+            <p>\[ \Delta D_t = c_t \cdot r_{\text{chg}}\cdot \Delta \cdot d_t. \]</p>
+            <p>
+              Where \(c_t\) is the charge decision (0 or 1), \(r_{\text{chg}}\) is the charging
+              rate, \(\Delta\) is the task interval, and \(d_t\) is the percent of energy that is
+              dirty at that time.
+            </p>
             <p>The immediate reward is defined as:</p>
             <p>
               \[ R(s_t,a_t,s_{t+1}) = W \cdot \text{success}_t - X \cdot \text{small\_miss}_t - Y
@@ -558,15 +568,15 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               contribution as long as feasibility is maintained.
             </p>
             <p>
-              Importantly, cumulative quantities such as total successes, misses, or dirty energy
-              consumed are <em>not</em> included in the state. These quantities enter the objective
-              exclusively through the cumulative sum of per-step rewards and do not influence future
-              system dynamics or feasibility. Because carbon cost is modeled as a soft penalty and
-              does not constrain future actions, histories that reach the same state \((t,B_t)\)
-              differ only by an additive constant in accumulated reward. Consequently, the optimal
-              continuation from a given state depends solely on the remaining horizon and current
-              battery level, preserving the Markov property without explicitly storing historical
-              metrics in the state.
+              Cumulative quantities such as total successes, misses, or dirty energy consumed are
+              <em>not</em> included in the state. These quantities are only used to compute the
+              cumulative sum of per-step rewards and do not influence future system dynamics or
+              feasibility. Because carbon cost is modeled as a soft penalty and does not constrain
+              future actions, histories that reach the same state \((t,B_t)\) differ only by an
+              additive constant in accumulated reward. Consequently, the optimal continuation from a
+              given state depends solely on the remaining horizon and current battery level,
+              preserving the Markov property without explicitly storing historical metrics in the
+              state.
             </p>
 
             <h4>Objective</h4>
@@ -685,9 +695,8 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <p>
               We implement a naive baseline controller with a fixed, myopic policy that ignores
               carbon intensity and does not optimize over the horizon. The controller operates under
-              the same system dynamics and action space as defined in
-              <a href="#system-parameters">Section&nbsp;3.2</a> &
-              <a href="#oracle-controller">Section&nbsp;3.3</a>.
+              the same system dynamics as defined in
+              <a href="#system-parameters">Section&nbsp;3.2</a>.
             </p>
 
             <h4>Policy</h4>
@@ -710,6 +719,23 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
                 If insufficient battery energy is available to execute any model, select no model
                 and charge during the interval.
               </li>
+            </ol>
+
+            <h3 id="simulation">3.6 Simulation Setup</h3>
+
+            <h4>Pipeline</h4>
+            <ol>
+              <li>Pick a day unseen in the training data</li>
+              <li>Loop through all custom controllers:</li>
+              <ul>
+                <li>Extract the system parameters the controller is trained on.</li>
+                <li>Run the controller with those system parameters on the unseen day.</li>
+                <li>
+                  Run the naive and oracle controllers with the same system parameters on the unseen
+                  day.
+                </li>
+              </ul>
+              <li>Aggregate and display results.</li>
             </ol>
 
             <!-- <h3>3.1 System Architecture</h3>
@@ -750,13 +776,57 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
           <!-- Discussion & Conclusions Section -->
           <section id="discussion-conclusions" class="section">
             <h2>5. Discussion & Conclusions</h2>
+            <p>Synthesize the main insights from your work.<br /><br /></p>
+
+            <h3>What worked well and why?</h3>
+            <br />
+
+            <h3>What didn't work and why?</h3>
+            <br />
+
+            <h3 id="limitations">5.3 Limitations</h3>
+
             <p>
-              Synthesize the main insights from your work.<br /><br />
-              <strong>What worked well and why?</strong><br />
-              <strong>What didn't work and why?</strong><br />
-              <strong>What limitations remain?</strong><br />
-              <strong>What would you explore next if you had more time?</strong><br /><br />
-              This should synthesize—not merely repeat—your results.
+              Due to computational and project time constraints, our simulation engine has the
+              following limitations:
+            </p>
+            <ul>
+              <li>
+                As mentioned in Section 3.2, our custom controller is specifically trained on a set
+                of system parameters. The custom controller does not support varying the system
+                parameters without retraining the controller.
+              </li>
+              <li>
+                As mentioned in Section 3.1, there is no runtime measurement of battery consumption;
+                we only use the model profiles.
+              </li>
+              <li>
+                Idle energy consumed by any controller is not considered. In the real world, there
+                is some idle energy cost, even if its very small due to the controller 'sleeping'.
+              </li>
+              <li>
+                Energy consumed when running the controller algorithm or trained model is not
+                accounted for.
+              </li>
+            </ul>
+
+            <p>
+              A future simulation engine would consider all these energy consumption measurements,
+              including real-time power modeling.
+            </p>
+
+            <h3 id="future">What would you explore next if you had more time?</h3>
+
+            <p>
+              We would like to perform more ablation studies on this controller. Due to the
+              computational cost of solving the MDP, even after the restrictions and trade-offs we
+              made, there was not enough time to do this.
+            </p>
+
+            <p>
+              Additionally, we would like to explore a more general-purpose drop-in controller,
+              instead of the very rigid requirements we have set currently. A change in system
+              parameters means we have to redo the entire pipeline from start to finish
             </p>
           </section>
 
@@ -773,7 +843,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               Choudhury, S., Bhardwaj, M., Arora, S., Kapoor, A., Ranade, G., Scherer, S., & Dey, D.
               Data-driven Planning via Imitation Learning. The Robotics Institute, Carnegie Mellon
               University & Microsoft Research.
-              <a href="https://arxiv.org/abs/2008.09719" target="_blank">[Paper]</a>
+              <a href="https://arxiv.org/abs/1711.06391" target="_blank">[Paper]</a>
             </p>
 
             <h3 id="cite-note-2">
