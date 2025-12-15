@@ -1,39 +1,6 @@
 {
-  "system_parameters": {
-    "B_max": 300.0,
-    "r_chg": 0.1,
-    "delta": 300,
-    "T": 86400,
-    "task_interval_seconds": 300,
-    "horizon_seconds": 86400,
-    "battery_capacity_mwh": 300,
-    "charge_rate_mwh_per_second": 0.00001,
-    "battery_discretization_step": 0.01
-  },
-  "user_requirements": {
-    "accuracy_threshold": 0.9,
-    "latency_threshold_seconds": 0.006
-  },
-  "reward_weights": {
-    "success_weight": 10,
-    "small_miss_weight": 5,
-    "large_miss_weight": 8,
-    "carbon_weight": 7
-  },
-  "pomdp": {
-    "observation_space": "[0, B_max] × [0,1] × [-1,1]",
-    "action_space": "(M ∪ {∅}) × {0,1}",
-    "state_space": "{(t, B_t) | t ∈ {0,...,T-1}, B_t ∈ [0, B_max]}",
-    "policy_network": "π_θ(o_t)",
-    "imitation_objective": "ℒ(θ) = 𝔼_{(o_t,a_t*)∼𝔻}[ℓ(π_θ(o_t), a_t*)]"
-  },
-  "model": {
-    "input_features": 3,
-    "hidden_layers": [64, 32],
-    "model_output_classes": 7,
-    "charge_output_classes": 2,
-    "network_type": "3_layer_mlp"
-  },
+  "training_mode": "per_controller",
+  "data_directory": "data/training_data/",
   "training": {
     "learning_rate": 0.001,
     "batch_size": 32,
@@ -44,28 +11,17 @@
       "enabled": true,
       "patience": 10,
       "min_delta": 0.001
-    },
-    "num_workers": 4
+    }
   },
-  "training_mode": "per_controller",
-  "data_directory": "data/training_data/",
   "data": {
     "train_data_path": "data/training_data/train.npy",
     "val_data_path": "data/training_data/val.npy",
     "test_data_path": "data/training_data/test.npy",
     "train_actions_path": "data/training_data/train_actions.npy",
     "val_actions_path": "data/training_data/val_actions.npy",
-    "test_actions_path": "data/training_data/test_actions.npy",
-    "metadata_path": "data/training_data/metadata.json",
-    "oracle_demonstrations": "𝔻 = {(o_t, a_t*)}"
-  },
-  "data_paths": {
-    "model_profiles": "training/model-profiler/power_profiles.json",
-    "energy_data": "training/energy-data/US-CAL-LDWP_2024_5_minute.csv"
+    "test_actions_path": "data/training_data/test_actions.npy"
   },
   "paths": {
-    "model_save_path": "training/models/best_model.pth",
-    "tensorboard_log_dir": "training/logs",
-    "evaluation_report_path": "training/evaluation_report.json"
+    "model_save_path": "training/models/best_model.pth"
   }
 }
