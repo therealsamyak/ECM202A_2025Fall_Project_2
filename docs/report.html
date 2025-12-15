@@ -776,7 +776,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
           <!-- Discussion & Conclusions Section -->
           <section id="discussion-conclusions" class="section">
             <h2>5. Discussion & Conclusions</h2>
-            <p>Synthesize the main insights from your work.<br /><br /></p>
+            <p>This should synthesize—not merely repeat—your results.</p>
 
             <h3>What worked well and why?</h3>
             <br />
@@ -784,7 +784,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <h3>What didn't work and why?</h3>
             <br />
 
-            <h3 id="limitations">5.3 Limitations</h3>
+            <h3 id="limitations">5.3 Limitations & Future Work</h3>
 
             <p>
               Due to computational and project time constraints, our simulation engine has the
@@ -815,18 +815,19 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               including real-time power modeling.
             </p>
 
-            <h3 id="future">What would you explore next if you had more time?</h3>
-
             <p>
-              We would like to perform more ablation studies on this controller. Due to the
-              computational cost of solving the MDP, even after the restrictions and trade-offs we
-              made, there was not enough time to do this.
+              Due to our time constraints, we were not able to perform more ablation studies on this
+              controller. The computational cost of solving the MDP, even after the restrictions and
+              trade-offs we made, there was not enough time to do this. There are so many system
+              parameters that tuning a controller for every single combination, especially with the
+              many tasks we were doing, is just not feasible.
             </p>
 
             <p>
-              Additionally, we would like to explore a more general-purpose drop-in controller,
-              instead of the very rigid requirements we have set currently. A change in system
-              parameters means we have to redo the entire pipeline from start to finish
+              If we had more time to run the oracle on a wider range of system parameters, we could
+              create a massive dataset that can train a controller to recognize the diverse
+              requirements and parameter combinations that are possible. This would give us one
+              general-use controller that is plug-and-play anywhere.
             </p>
           </section>
 
