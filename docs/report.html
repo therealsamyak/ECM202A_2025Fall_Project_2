@@ -89,23 +89,33 @@
                 <a href="#controller-training-statistics">4.2 Controller Training Statistics</a>
               </li>
               <li><a href="#model-performance-comparison">4.3 Model Performance Comparison</a></li>
-              <li><a href="#ablation-studies">4.4 Ablation Studies</a></li>
               <li>
-                <a href="#latency-threshold-ablation">4.5 Latency Threshold Ablation Study</a>
-              </li>
-              <li><a href="#reward-weights-ablation">4.6 Reward Weights Ablation Study</a></li>
-              <li>
-                <a href="#battery-configuration-ablation"
-                  >4.7 Battery Configuration Ablation Study</a
-                >
-              </li>
-              <li>
-                <a href="#seasonal-variation-ablation">4.8 Seasonal Variation Ablation Study</a>
-              </li>
-              <li>
-                <a href="#controller-comparison-ablation"
-                  >4.9 Controller Comparison Ablation Study</a
-                >
+                <a href="#ablation-studies">4.4 Ablation Studies</a>
+                <ul class="toc-sublinks">
+                  <li>
+                    <a href="#4.4.1-accuracy-threshold-ablation-study">4.4.1 Accuracy Threshold</a>
+                  </li>
+                  <li>
+                    <a href="#4.4.2-latency-threshold-ablation-study">4.4.2 Latency Threshold</a>
+                  </li>
+                  <li><a href="#4.4.3-reward-weights-ablation-study">4.4.3 Reward Weights</a></li>
+                  <li>
+                    <a href="#4.4.4-battery-configuration-ablation-study"
+                      >4.4.4 Battery Configuration</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#4.4.5-seasonal-variation-ablation-study">4.4.5 Seasonal Variation</a>
+                  </li>
+                  <li>
+                    <a href="#4.4.6-controller-comparison-ablation-study"
+                      >4.4.6 Controller Comparison</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#4.4.7-model-selection-patterns">4.4.7 Model Selection Patterns</a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -1442,7 +1452,7 @@ generate_comparative_analysis(controllers)</code></pre>
               impact on controller performance.
             </p>
 
-            <h4>Accuracy Threshold Ablation Study</h4>
+            <h4 id="4.4.1-accuracy-threshold-ablation-study">4.4.1 Accuracy Threshold</h4>
             <p>
               Impact of varying accuracy requirements (0.819 vs 0.95) on controller performance.
             </p>
@@ -1455,7 +1465,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Latency Threshold Ablation Study</h4>
+            <h4 id="4.4.2-latency-threshold-ablation-study">4.4.2 Latency Threshold</h4>
             <p>
               Impact of varying latency requirements (0.006s vs 0.012s) on controller performance.
             </p>
@@ -1468,7 +1478,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Reward Weights Ablation Study</h4>
+            <h4 id="4.4.3-reward-weights-ablation-study">4.4.3 Reward Weights</h4>
             <p>Impact of different reward weight configurations on controller behavior.</p>
 
             <b>Performance-Focused Configuration</b>
@@ -1493,7 +1503,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Battery Configuration Ablation Study</h4>
+            <h4 id="4.4.4-battery-configuration-ablation-study">4.4.4 Battery Configuration</h4>
             <p>Impact of different battery capacities and charge rates on system performance.</p>
 
             <b>Large Battery Configuration</b>
@@ -1518,7 +1528,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Seasonal Variation Ablation Study</h4>
+            <h4 id="4.4.5-seasonal-variation-ablation-study">4.4.5 Seasonal Variation</h4>
             <p>
               Controller performance across different test dates representing seasonal carbon
               patterns.
@@ -1532,7 +1542,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Controller Comparison Ablation Study</h4>
+            <h4 id="4.4.6-controller-comparison-ablation-study">4.4.6 Controller Comparison</h4>
             <p>
               Detailed comparison between Oracle, ML, and Naive controllers across all
               configurations.
@@ -1547,7 +1557,7 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Naive Controller Baseline Analysis</h4>
+            <b>Naive Controller Baseline Analysis</b>
             <div class="chart-placeholder">
               <strong>Figure 4.10:</strong> Naive controller performance as baseline
               <ul>
@@ -1557,130 +1567,12 @@ generate_comparative_analysis(controllers)</code></pre>
               </ul>
             </div>
 
-            <h4>Model Selection Patterns</h4>
+            <h4 id="4.4.7-model-selection-patterns">4.4.7 Model Selection Patterns</h4>
             <div class="chart-placeholder">
-              <strong>Figure 4.3:</strong> YOLOv10 model selection frequency by accuracy threshold
+              <strong>Figure 4.11:</strong> YOLOv10 model selection frequency by accuracy threshold
               <ul>
                 <li>Preferred model variants for different accuracy requirements</li>
                 <li>Energy usage patterns by accuracy threshold</li>
-              </ul>
-            </div>
-
-            <h3 id="latency-threshold-ablation">4.5 Latency Threshold Ablation Study</h3>
-            <p>
-              Impact of varying latency requirements (0.006s vs 0.012s) on controller performance.
-            </p>
-
-            <h4>Latency Constraint Analysis</h4>
-            <div class="chart-placeholder">
-              <strong>Figure 4.4:</strong> Performance metrics by latency threshold
-              <ul>
-                <li>Success rates under different latency constraints</li>
-                <li>Model selection patterns by latency requirement</li>
-                <li>Trade-off analysis between accuracy and latency constraints</li>
-              </ul>
-            </div>
-
-            <h3 id="reward-weights-ablation">4.6 Reward Weights Ablation Study</h3>
-            <p>Impact of different reward weight configurations on controller behavior.</p>
-
-            <h4>Weight Configuration 1: Performance-Focused</h4>
-            <p>Configuration: Success=20, Small Miss=5, Large Miss=8, Carbon=7</p>
-            <div class="chart-placeholder">
-              <strong>Figure 4.5:</strong> Performance-focused reward weights results
-              <ul>
-                <li>High success rate emphasis outcomes</li>
-                <li>Carbon efficiency under performance focus</li>
-                <li>Battery utilization patterns</li>
-              </ul>
-            </div>
-
-            <h4>Weight Configuration 2: Carbon-Focused</h4>
-            <p>Configuration: Success=5, Small Miss=7, Large Miss=10, Carbon=15</p>
-            <div class="chart-placeholder">
-              <strong>Figure 4.6:</strong> Carbon-focused reward weights results
-              <ul>
-                <li>Carbon penalty impact on charging decisions</li>
-                <li>Model selection shifts with carbon emphasis</li>
-                <li>Success rate trade-offs for carbon efficiency</li>
-              </ul>
-            </div>
-
-            <h3 id="battery-configuration-ablation">4.7 Battery Configuration Ablation Study</h3>
-            <p>Impact of different battery capacities and charge rates on system performance.</p>
-
-            <h4>Large Battery Configuration</h4>
-            <p>Configuration: 610 mWh capacity, 0.000269 mWh/s charge rate</p>
-            <div class="chart-placeholder">
-              <strong>Figure 4.7:</strong> Large battery configuration results
-              <ul>
-                <li>Energy storage advantages with larger battery</li>
-                <li>Charging patterns for slow charge rate</li>
-                <li>Model selection capabilities with high energy budget</li>
-              </ul>
-            </div>
-
-            <h4>Small Battery Configuration</h4>
-            <p>Configuration: 105 mWh capacity, 0.001598 mWh/s charge rate</p>
-            <div class="chart-placeholder">
-              <strong>Figure 4.8:</strong> Small battery configuration results
-              <ul>
-                <li>Energy constraints impact on model selection</li>
-                <li>Frequent charging necessity with small battery</li>
-                <li>Performance optimization under energy constraints</li>
-              </ul>
-            </div>
-
-            <h3 id="seasonal-variation-ablation">4.8 Seasonal Variation Ablation Study</h3>
-            <p>
-              Controller performance across different test dates representing seasonal carbon
-              patterns.
-            </p>
-
-            <h4>Test Date Performance Analysis</h4>
-            <div class="chart-placeholder">
-              <strong>Figure 4.9:</strong> Seasonal performance variation across test dates
-              <ul>
-                <li>Performance by season (Feb/May/Aug/Nov 2024)</li>
-                <li>Carbon intensity patterns and controller adaptation</li>
-                <li>Charging behavior changes by carbon availability</li>
-              </ul>
-            </div>
-
-            <h4>Cross-Season Generalization</h4>
-            <div class="chart-placeholder">
-              <strong>Figure 4.10:</strong> Controller consistency across seasonal variations
-              <ul>
-                <li>Oracle vs ML performance gap by season</li>
-                <li>Robustness of trained controllers to seasonal changes</li>
-                <li>Seasonal failure mode analysis</li>
-              </ul>
-            </div>
-
-            <h3 id="controller-comparison-ablation">4.9 Controller Comparison Ablation Study</h3>
-            <p>
-              Detailed comparison between Oracle, ML, and Naive controllers across all
-              configurations.
-            </p>
-
-            <h4>Oracle vs ML Performance Gap</h4>
-            <div class="chart-placeholder">
-              <strong>Figure 4.11:</strong> Oracle vs ML controller performance gap
-              <ul>
-                <li>Success rate gap by model configuration</li>
-                <li>Utility reward gap analysis</li>
-                <li>Uptime metric comparison</li>
-                <li>ML imitation quality assessment</li>
-              </ul>
-            </div>
-
-            <h4>Naive Controller Baseline Analysis</h4>
-            <div class="chart-placeholder">
-              <strong>Figure 4.12:</strong> Naive controller performance as baseline
-              <ul>
-                <li>Naive vs Oracle performance gap</li>
-                <li>ML improvement over naive baseline</li>
-                <li>Usefulness of learned policy vs simple heuristic</li>
               </ul>
             </div>
           </section>
