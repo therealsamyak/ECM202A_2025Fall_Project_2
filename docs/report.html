@@ -274,8 +274,9 @@
                 Utility - differences in the rewards of the Oracle Controller (<a
                   href="#oracle-controller"
                   >Section 3.3</a
-                >) and the Imitation Controller (<a href="#custom-controller">Section 3.4</a>)
-                decisions over each horizon.
+                >), the Imitation Controller (<a href="#custom-controller">Section 3.4</a>), and
+                Naive Controller (<a href="#naive-controller">Section 3.5</a>) decisions over each
+                horizon.
               </li>
               <li>
                 "Feasibility-Normalized Effective Uptime" - at each timestep \( t \), let \( F_t \)
@@ -697,42 +698,121 @@ END FOR
 
             <h4>Policy Learning via Imitation</h4>
 
+            <h4 id="oracle-data-generation-methodology">
+              3.4.1 Oracle Data Generation Methodology
+            </h4>
             <p>
-              Rather than attempting to solve the POMDP via belief-state planning, we learn the
-              custom controller via imitation learning using the oracle policy \(\pi^*\) (<a
-                href="#oracle-controller"
-                >Section 3.3</a
-              >) as an expert.
+              We generate training data through a systematic parameter sweep across multiple system
+              dimensions to ensure comprehensive coverage of the operational space. For each unique
+              controller configuration, we run the oracle controller with full future carbon
+              knowledge to generate optimal demonstration trajectories using dynamic programming.
+            </p>
+            <p>
+              Each demonstration trajectory takes the form \(\tau =
+              (o_0,a_0^*,\ldots,o_{T-1},a_{T-1}^*)\), where \(a_t^* = \pi^*(s_t)\) represents the
+              oracle's optimal action and \(o_t\) is the observation available to the custom
+              controller at timestep \(t\). These trajectories collectively define the imitation
+              learning dataset \(\mathcal{D} = \{(o_t,a_t^*)\}\).
+            </p>
+            <p>
+              We implement rigorous data quality validation and filtering procedures to ensure all
+              demonstrations are feasible and optimal. The final dataset is split into training,
+              validation, and test sets to support model development and evaluation while preventing
+              overfitting.
             </p>
 
+            <h4 id="neural-network-architecture-design">
+              3.4.2 Neural Network Architecture Design
+            </h4>
             <p>
-              Using the oracle, we generate demonstration trajectories of the form \(\tau =
-              (o_0,a_0^*,\ldots,o_{T-1},a_{T-1}^*)\), where \(a_t^* = \pi^*(s_t)\) and \(o_t\) is
-              the observation available to the custom controller at timestep \(t\). These
-              trajectories define a dataset \(\mathcal{D} = \{(o_t,a_t^*)\}\).
+              The custom controller uses a 3-layer feedforward network processing 3-dimensional
+              observations: battery level, carbon intensity, and carbon change. The network outputs
+              8 dimensions: 7 model logits + 1 charge logit.
             </p>
 
-            <p>
-              The custom controller is parameterized by a policy \(\pi_\theta(o_t)\). Training is
-              performed by minimizing a supervised imitation loss:
-            </p>
+            <pre><code>PolicyNetwork Architecture:
+Input Layer: 3 features
+Hidden Layer 1: 64 neurons, ReLU activation
+Hidden Layer 2: 32 neurons, ReLU activation  
+Output Layer: 8 neurons (7 model + 1 charge)
+
+Forward Pass:
+shared_output = Sequential(Input → Linear(3,64) → ReLU → Linear(64,32) → ReLU → Linear(32,8))
+model_logits = shared_output[:, :7]
+charge_logit = shared_output[:, 7:]</code></pre>
 
             <p>
-              \[ \mathcal{L}(\theta) = \mathbb{E}_{(o_t,a_t^*)\sim\mathcal{D}}
-              \big[\ell(\pi_\theta(o_t), a_t^*)\big]. \]
+              Model selection uses cross-entropy loss, charging decision uses binary cross-entropy
+              loss. Final loss combines both with equal weighting.
+            </p>
+            <p>
+              The architecture consists of multiple hidden layers with ReLU activations, culminating
+              in a dual-head output structure. One head produces logits for discrete model selection
+              across available YOLOv10 variants, while the other head generates a continuous signal
+              for the charging decision. This design enables the network to learn separate
+              representations for model selection and energy management strategies.
+            </p>
+            <p>
+              We incorporate feasibility-aware inference design to ensure safety in critical
+              applications. The network predictions are validated against system constraints before
+              execution, with mechanisms to handle prediction failures gracefully.
             </p>
 
+            <h4 id="per-controller-training-approach">3.4.3 Per-Controller Training Approach</h4>
             <p>
-              Here, \(\ell(\cdot,\cdot)\) is a standard classification loss over the discrete action
-              space \(\mathcal{A}\). In our implementation, we use cross-entropy loss between the
-              oracle action \(a_t^* = (m_t^*, c_t^*)\) and the policy's predicted action
-              distribution \(\pi_\theta(o_t)\).
+              <b>
+                Each system configuration receives its own neural network rather than one
+                generalized model.
+              </b>
+              This approach was selected to save time with training data generation. See Section 5.3
+              for more information.
             </p>
 
+            <pre><code>Training Algorithm:
+FOR each controller configuration DO
+    Initialize fresh PolicyNetwork
+    Set optimizer = Adam(lr=0.001)
+    Set criterion = CombinedLoss(0.5 * CE_model + 0.5 * BCE_charge)
+    
+    FOR epoch = 1 TO 100 DO
+        Train on batches of size 32
+        Evaluate on validation set
+        IF val_loss doesn't improve for 10 epochs THEN
+            Break (early stopping)
+        END IF
+    END FOR
+    Save best checkpoint
+END FOR</code></pre>
+
             <p>
-              This imitation-based approach enables the custom controller to approximate the
-              oracle's carbon-aware behavior using only partial observations, without explicit
-              forecasting or belief-state estimation.
+              Loss combines model selection cross-entropy and charging binary cross-entropy with
+              equal weighting. Early stopping uses patience of 10 epochs with minimum delta of
+              0.001.
+            </p>
+
+            <h4 id="integration-with-simulation-framework">
+              3.4.4 Integration with Simulation Framework
+            </h4>
+
+            <pre><code>Inference Pipeline:
+Load trained model checkpoint
+Set model to eval mode
+FOR each timestep DO
+    obs = preprocess([battery_level, carbon_intensity, carbon_change])
+    model_logits, charge_logit = model(obs)
+    
+    model_pred = argmax(model_logits)
+    charge_pred = sigmoid(charge_logit) > 0.5
+    
+    IF prediction_infeasible THEN
+        fallback_to_safest_feasible_action()
+    END IF
+END FOR</code></pre>
+
+            <p>
+              Preprocessing normalizes battery level to [0,1] and calculates carbon change.
+              Postprocessing converts model prediction to YOLOv10 variant and applies threshold to
+              charge decision.
             </p>
 
             <h3 id="naive-controller">3.5 Naive Controller</h3>
@@ -863,6 +943,8 @@ generate_comparative_analysis(controllers)</code></pre>
               <li>Error analysis / failure cases</li>
             </ul>
             <p>Each figure should have a caption and a short interpretation.</p>
+
+            <h3 id="parameters-used">4.1 Parameters Used</h3>
           </section>
 
           <!-- Discussion & Conclusions Section -->
