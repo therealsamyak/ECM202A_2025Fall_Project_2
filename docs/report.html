@@ -1583,11 +1583,119 @@ generate_comparative_analysis(controllers)</code></pre>
             <p>This should synthesize—not merely repeat—your results.</p>
 
             <h3 id="worked-well">5.1 What worked well and why?</h3>
-            <br />
 
+            <h4>Oracle planning produced high-quality trajectories</h4>
+            <p>
+              The finite-horizon dynamic programming oracle consistently produced feasible
+              state–action trajectories that respected battery constraints while optimizing the
+              reward trade-offs. This provided a strong expert policy for imitation learning and a
+              reliable upper-bound baseline for comparison.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#model-performance-comparison">Section 4.3</a> (Figure 4.1) to
+                show oracle performance across controller configurations.
+              </li>
+              <li>
+                Reference <a href="#ablation-studies">Section 4.4</a> (Figures 4.2–4.11) to show how
+                oracle behavior changes with constraints and weights.
+              </li>
+            </ul>
+
+            <h4>Imitation learning matched oracle decisions under partial observability</h4>
+            <p>
+              The custom controller learned a deployable real-time policy from oracle demonstrations
+              using only the observation vector (battery, carbon intensity, carbon change). Training
+              results indicate the model can learn the oracle’s decision structure despite not
+              observing the timestep index or future carbon values.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#controller-training-statistics">Section 4.2</a> (training table)
+                for test model accuracy, test charge accuracy, and test loss across controllers.
+              </li>
+              <li>
+                Reference <a href="#controller-comparison-ablation-study">Section 4.4.6</a>
+                (Figures 4.9–4.10) to quantify the oracle vs ML performance gap and ML vs naive
+                improvement.
+              </li>
+            </ul>
+
+            <h4>Parameter sweeps exposed expected control trade-offs</h4>
+            <p>
+              Varying user requirements, reward weights, and battery configurations produced
+              predictable shifts in charging behavior and model selection. This supports the
+              correctness of the simulator dynamics and the reward design as an optimization target.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#ablation-studies">Section 4.4</a> (Figures 4.2–4.8) for accuracy,
+                latency, reward-weight, battery, and seasonal impacts.
+              </li>
+              <li>
+                Reference <a href="#4.4.7-model-selection-patterns">Section 4.4.7</a> (Figure 4.11)
+                for model selection frequency patterns.
+              </li>
+            </ul>
             <h3 id="didnt-work">5.2 What didn't work and why?</h3>
-            <br />
 
+            <h4>Oracle data generation was computationally expensive</h4>
+            <p>
+              Even with discretization and K-nearest neighbor policy lookup, solving the oracle for
+              many parameter combinations is costly. This limited the breadth of parameter coverage
+              and constrained how many controllers could be trained within the project timeline.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#results-parameters">Section 4.1</a> (Data Generation Parameters)
+                to show the limited set of locations, dates, and configuration combinations used.
+              </li>
+              <li>
+                Reference <a href="#controller-training-statistics">Section 4.2</a> to show the
+                finite number of trained controllers and their parameter settings.
+              </li>
+            </ul>
+
+            <h4>Generalization beyond trained parameter sets was not supported</h4>
+            <p>
+              The custom controller was trained per-controller configuration rather than as a single
+              universal policy. As a result, the learned model is not plug-and-play for unseen
+              parameter settings without retraining, which limits practical deployment flexibility.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#controller-training-statistics">Section 4.2</a> to highlight that
+                each controller corresponds to a fixed parameter tuple.
+              </li>
+              <li>
+                Reference <a href="#ablation-studies">Section 4.4</a> to motivate why broader
+                coverage would be needed for a single generalized policy.
+              </li>
+            </ul>
+
+            <h4>Simulation fidelity limitations may bias performance estimates</h4>
+            <p>
+              Energy consumption is estimated using pre-computed model profiles rather than measured
+              at runtime, and the simulation does not include idle power or controller inference
+              overhead. These omissions can cause optimistic estimates of feasibility, carbon cost,
+              and real-world deployability.
+            </p>
+            <p><strong>Where to cite data:</strong></p>
+            <ul>
+              <li>
+                Reference <a href="#limitations">Section 5.3</a> to enumerate the missing energy and
+                latency components.
+              </li>
+              <li>
+                If available, add a future results figure comparing estimated vs measured energy in
+                a small hardware validation experiment.
+              </li>
+            </ul>
             <h3 id="limitations">5.3 Limitations</h3>
 
             <p>
