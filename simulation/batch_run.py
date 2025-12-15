@@ -121,6 +121,10 @@ def calculate_success_metrics(
     }
 
     for state, action in path:
+        # print(f"DEBUG: action.model = {action.model}, type = {type(action.model)}")
+        # print(f"DEBUG: ModelType.NO_MODEL = {ModelType.NO_MODEL}, type = {type(ModelType.NO_MODEL)}")
+        # print(f"DEBUG: Are they equal? {action.model == ModelType.NO_MODEL}")
+        # print(f"DEBUG: NO_MODEL in model_profiles? {ModelType.NO_MODEL in model_profiles}")
         if action.model == ModelType.NO_MODEL:
             # Failure: no model selected due to insufficient energy
             metrics["failure_count"] += 1
@@ -183,13 +187,24 @@ def calculate_uptime_metric(
 
 def run_single_batch(
     model_info: Dict[str, str], test_date: str, batch_results_dir: str
-) -> Dict[str, Any] | None:
+) -> Dict[str, Any]:
     """Run single model against all controllers for one test date."""
-    try:
-        print(f"\n=== Running {model_info['filename'][:50]}... on {test_date} ===")
+    print(f"\n=== Running {model_info['filename'][:50]}... on {test_date} ===")
 
+    results = {
+        "model_filename": model_info["filename"],
+        "test_date": test_date,
+        "config": None,
+        "model_profiles": None,
+        "timestamp": datetime.now().isoformat(),
+        "controllers": {},
+        "error": None,
+    }
+
+    try:
         # Create config for this model and test date
         config = create_config_for_model(model_info["params"], test_date)  # type: ignore
+        results["config"] = config
 
         # Validate configuration
         validate_config(config)
@@ -215,13 +230,17 @@ def run_single_batch(
         # Calculate metrics for all controllers
         model_profiles = ml.model_profiles
 
-        results = {
-            "model_filename": model_info["filename"],
-            "test_date": test_date,
-            "config": config,
-            "timestamp": datetime.now().isoformat(),
-            "controllers": {},
+        # Convert model_profiles dict keys to strings for JSON serialization
+        serializable_model_profiles = {
+            model_type.value: {
+                "name": profile.name,
+                "accuracy": profile.accuracy,
+                "latency": profile.latency,
+                "energy_per_inference": profile.energy_per_inference,
+            }
+            for model_type, profile in model_profiles.items()
         }
+        results["model_profiles"] = serializable_model_profiles
 
         for controller_name, path, reward in [
             ("oracle", oracle_path, oracle_reward),
@@ -241,7 +260,9 @@ def run_single_batch(
                 "actions": [
                     {
                         "timestep": i,
-                        "model": action.model.value,
+                        "model": action.model.value
+                        if hasattr(action.model, "value")
+                        else str(action.model),
                         "charge": action.charge,
                         "battery_level": round(state.battery_level, 7),
                     }
@@ -249,21 +270,49 @@ def run_single_batch(
                 ],
             }
 
-        # Save individual results
+        print(f"  ✓ Completed: {model_info['filename'][:30]} on {test_date}")
+
+    except Exception as e:
+        print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}: {e}")
+        # Convert any potential ModelType enum to string to avoid serialization issues
+        error_str = str(e)
+        results["error"] = error_str
+        results["model_profiles"] = {}
+        results["controllers"] = {
+            controller: {
+                "total_reward": 0,
+                "path_length": 0,
+                "success_metrics": {
+                    "success_rate": 0,
+                    "small_miss_rate": 0,
+                    "failure_rate": 1,
+                    "success_count": 0,
+                    "small_miss_count": 0,
+                    "failure_count": 0,
+                    "total_timesteps": 0,
+                },
+                "uptime_metric": 0,
+                "actions": [],
+            }
+            for controller in ["oracle", "naive", "ml"]
+        }
+
+    # Always save results, even if failed
+    try:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_params = sanitize_filename_string(model_info["filename"][:30])
-        filename = f"model_{safe_params}_{test_date}_{timestamp}.json"
+        status = "failed" if results["error"] else "success"
+        filename = f"model_{safe_params}_{test_date}_{timestamp}_{status}.json"
         filepath = os.path.join(batch_results_dir, filename)
 
         with open(filepath, "w") as f:
             json.dump(results, f, indent=2)
 
         print(f"  Saved: {filename}")
-        return results
+    except Exception as save_error:
+        print(f"✗ Failed to save results: {save_error}")
 
-    except Exception as e:
-        print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}: {e}")
-        return None
+    return results
 
 
 def sanitize_filename_string(s: str) -> str:
@@ -279,9 +328,13 @@ def generate_summary_and_graph_data(
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-    # Group results by model
+    # Separate successful and failed results
+    successful_results = [r for r in all_results if r.get("error") is None]
+    failed_results = [r for r in all_results if r.get("error") is not None]
+
+    # Group results by model (successful only for graph data)
     models_grouped = {}
-    for result in all_results:
+    for result in successful_results:
         model_key = result["model_filename"]
         if model_key not in models_grouped:
             models_grouped[model_key] = []
@@ -311,7 +364,7 @@ def generate_summary_and_graph_data(
         },
     }
 
-    # Process each model's results
+    # Process each model's results (only successful runs)
     for model_key, model_results in models_grouped.items():
         graph_data["accuracy_metrics"]["models"].append(model_key)
         graph_data["utility_comparison"]["models"].append(model_key)
@@ -356,12 +409,18 @@ def generate_summary_and_graph_data(
     summary_data = {
         "summary": {
             "total_runs": len(all_results),
+            "successful_runs": len(successful_results),
+            "failed_runs": len(failed_results),
             "models_tested": list(models_grouped.keys()),
             "test_dates_used": ["2024-02-20", "2024-05-20", "2024-08-20", "2024-11-20"],
             "generation_timestamp": timestamp,
         },
         "graph_data": graph_data,
         "detailed_results": all_results,
+        "failed_run_errors": [
+            {"model": r["model_filename"], "date": r["test_date"], "error": r["error"]}
+            for r in failed_results
+        ],
     }
 
     summary_filename = f"batch_summary_{timestamp}.json"
@@ -371,6 +430,8 @@ def generate_summary_and_graph_data(
         json.dump(summary_data, f, indent=2)
 
     print(f"Summary saved: {summary_filename}")
+    if failed_results:
+        print(f"Failed runs: {len(failed_results)} (see summary for errors)")
     print("Graph data ready for visualization")
 
     return summary_data
@@ -416,25 +477,37 @@ def main():
 
             try:
                 result = run_single_batch(model_info, test_date, batch_results_dir)
-                if result is not None:
-                    all_results.append(result)
-                    print(f"✓ Completed: {model_info['filename'][:30]} on {test_date}")
-                else:
-                    print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}")
+                all_results.append(result)
             except Exception as e:
-                print(f"✗ Failed: {model_info['filename'][:30]} on {test_date}: {e}")
+                print(
+                    f"✗ Critical error: {model_info['filename'][:30]} on {test_date}: {e}"
+                )
+                # Convert any potential ModelType enum to string to avoid serialization issues
+                error_str = str(e)
+                results = {
+                    "model_filename": model_info["filename"],
+                    "test_date": test_date,
+                    "config": None,
+                    "model_profiles": {},
+                    "timestamp": datetime.now().isoformat(),
+                    "controllers": {},
+                    "error": error_str,
+                }
+                all_results.append(results)
                 continue
 
     # Generate summary and graph data
     print("\n=== Batch Complete ===")
-    print(f"Successfully completed {len(all_results)}/{total_runs} runs")
+    successful_runs = [r for r in all_results if r.get("error") is None]
+    print(f"Successfully completed {len(successful_runs)}/{total_runs} runs")
+    print(f"Total runs processed: {len(all_results)} (including failures)")
 
     if all_results:
         generate_summary_and_graph_data(all_results, batch_summaries_dir)
         print("\nAll results saved to simulation_data/")
         print("Graph data ready for visualization")
     else:
-        print("No successful runs to summarize")
+        print("No runs to summarize")
 
 
 if __name__ == "__main__":

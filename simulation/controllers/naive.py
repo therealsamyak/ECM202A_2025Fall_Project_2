@@ -1,5 +1,14 @@
+import sys
+import os
 from typing import Dict, List, Tuple
-from utils.core import (
+
+# Add project root to path for absolute imports
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+# ruff: noqa: E402
+from simulation.utils.core import (
     State,
     Action,
     ModelType,

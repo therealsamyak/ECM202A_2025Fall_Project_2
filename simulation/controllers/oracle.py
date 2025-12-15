@@ -52,7 +52,10 @@ def _process_battery_levels_worker(args):
     # Convert model profiles back to ModelProfile objects
     model_profiles = {}
     for model_str, profile_data in model_profiles_data.items():
-        model_profiles[ModelType(model_str)] = ModelProfile(**profile_data)
+        try:
+            model_profiles[ModelType(model_str)] = ModelProfile(**profile_data)
+        except ValueError as e:
+            raise ValueError(f"Invalid model type '{model_str}' in worker: {e}")
 
     results = {}
     for battery_key in battery_keys_chunk:
@@ -535,6 +538,8 @@ class OracleController:
             action_data = {
                 "model_type": int(
                     list(ModelType).index(action.model)
+                    if action.model in list(ModelType)
+                    else 6  # Default to NO_MODEL index
                 ),  # 0-6 for models
                 "charge_decision": int(action.charge),  # 0 or 1
             }
