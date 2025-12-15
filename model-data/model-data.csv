@@ -1,7 +1,0 @@
-model,version,Latency T4 TensorRT10 FP16(ms/img),COCO mAP 50-95
-"YOLOv10","N","1.56","39.5"
-"YOLOv10","S","2.66","46.7"
-"YOLOv10","M","5.48","51.3"
-"YOLOv10","B","6.54","52.7"
-"YOLOv10","L","8.33","53.3"
-"YOLOv10","X","12.2","54.4"
