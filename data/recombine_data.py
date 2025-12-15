@@ -9,7 +9,7 @@ import json
 import numpy as np
 import shutil
 from datetime import datetime
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any
 
 
 class DataRecombiner:
@@ -22,12 +22,31 @@ class DataRecombiner:
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
 
-    def load_all_chunks(self) -> Tuple[np.ndarray, np.ndarray, List[Dict[str, Any]]]:
+    def _create_controller_signature(self, result: Dict[str, Any]) -> str:
         """
-        Load all chunk files and combine data
+        Create unique controller signature from parameter combination
+
+        Args:
+            result: Simulation result dictionary
 
         Returns:
-            Tuple of (observations, actions, metadata_list)
+            Controller signature string with parameter values
+        """
+        combination = result["combination"]
+        user_params = combination["user_parameters"]
+        reward_weights = combination["reward_weights"]
+        battery_config = combination["battery_config"]
+
+        signature = f"acc{user_params['accuracy_threshold']}_lat{user_params['latency_threshold_seconds']}_succ{reward_weights['success_weight']}_small{reward_weights['small_miss_weight']}_large{reward_weights['large_miss_weight']}_carb{reward_weights['carbon_weight']}_cap{battery_config['battery_capacity_mwh']}_rate{battery_config['charge_rate_mwh_per_second']}"
+
+        return signature
+
+    def load_all_chunks(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Load all chunk files and group data by controller
+
+        Returns:
+            Dictionary mapping controller signatures to their data
         """
         chunk_files = [
             f
@@ -43,11 +62,7 @@ class DataRecombiner:
 
         print(f"Loading {len(chunk_files)} chunk files...")
 
-        all_observations = []
-        all_actions = []
-        all_metadata = []
-
-        total_timesteps = 0
+        controller_data = {}
 
         for chunk_file in chunk_files:
             chunk_path = os.path.join(self.temp_dir, chunk_file)
@@ -67,16 +82,34 @@ class DataRecombiner:
                     print(f"Warning: Shape mismatch in {chunk_file}")
                     continue
 
-                # Add to combined data
-                all_observations.append(chunk_observations)
-                all_actions.append(chunk_actions)
-
-                # Extend metadata for each timestep
+                # Process each result in the chunk
                 for result in detailed_results:
                     if result["success"]:
                         training_data = result["training_data"]
+
+                        # Create controller signature
+                        controller_sig = self._create_controller_signature(result)
+
+                        # Initialize controller data if not exists
+                        if controller_sig not in controller_data:
+                            controller_data[controller_sig] = {
+                                "observations": [],
+                                "actions": [],
+                                "metadata": [],
+                                "combination": result["combination"],
+                            }
+
+                        # Add data to controller group
+                        controller_data[controller_sig]["observations"].append(
+                            training_data["observations"]
+                        )
+                        controller_data[controller_sig]["actions"].append(
+                            training_data["actions"]
+                        )
+
+                        # Add metadata for each timestep
                         for _ in range(len(training_data["observations"])):
-                            all_metadata.append(
+                            controller_data[controller_sig]["metadata"].append(
                                 {
                                     "combination_id": result["combination_id"],
                                     "total_reward": result["metadata"]["total_reward"],
@@ -87,173 +120,232 @@ class DataRecombiner:
                                         "execution_time_seconds"
                                     ],
                                     "chunk_file": chunk_file,
+                                    "date": result["combination"]["date"],
+                                    "location": result["combination"]["location"],
                                 }
                             )
 
-                total_timesteps += metadata["total_timesteps"]
-                print(f"  Loaded {chunk_file}: {metadata['total_timesteps']} timesteps")
+                total_timesteps = metadata["total_timesteps"]
+                print(f"  Loaded {chunk_file}: {total_timesteps} timesteps")
 
             except Exception as e:
                 print(f"Error loading {chunk_file}: {e}")
                 continue
 
-        if not all_observations:
+        if not controller_data:
             raise ValueError("No valid chunk data found")
 
-        # Combine all arrays
-        combined_observations = np.vstack(all_observations)
-        combined_actions = np.vstack(all_actions)
+        # Combine arrays for each controller
+        for controller_sig, data in controller_data.items():
+            data["observations"] = np.vstack(data["observations"])
+            data["actions"] = np.vstack(data["actions"])
 
-        print(f"Combined dataset: {combined_observations.shape[0]} timesteps")
+        print(f"Found {len(controller_data)} unique controllers:")
+        for controller_sig, data in controller_data.items():
+            print(f"  {controller_sig}: {data['observations'].shape[0]} timesteps")
 
-        return combined_observations, combined_actions, all_metadata
+        return controller_data
 
     def split_data(
         self,
-        observations: np.ndarray,
-        actions: np.ndarray,
+        controller_data: Dict[str, Dict[str, Any]],
         train_ratio: float = 0.7,
         val_ratio: float = 0.1,
-    ) -> Dict[str, Any]:
+    ) -> Dict[str, Dict[str, Any]]:
         """
-        Split data into train/val/test sets
+        Split controller data into train/val/test sets
 
         Args:
-            observations: Observation array
-            actions: Action array
+            controller_data: Dictionary mapping controller signatures to their data
             train_ratio: Training set ratio
             val_ratio: Validation set ratio
 
         Returns:
-            Dictionary with train/val/test splits
+            Dictionary mapping controller signatures to their splits
         """
-        total_samples = observations.shape[0]
+        controller_splits = {}
 
-        # Calculate split indices
-        train_end = int(total_samples * train_ratio)
-        val_end = int(total_samples * (train_ratio + val_ratio))
+        for controller_sig, data in controller_data.items():
+            observations = data["observations"]
+            actions = data["actions"]
+            metadata = data["metadata"]
 
-        # Split data
-        train_obs = observations[:train_end]
-        train_actions = actions[:train_end]
+            total_samples = observations.shape[0]
 
-        val_obs = observations[train_end:val_end]
-        val_actions = actions[train_end:val_end]
+            # Calculate split indices
+            train_end = int(total_samples * train_ratio)
+            val_end = int(total_samples * (train_ratio + val_ratio))
 
-        test_obs = observations[val_end:]
-        test_actions = actions[val_end:]
+            # Split data
+            train_obs = observations[:train_end]
+            train_actions = actions[:train_end]
+            train_metadata = metadata[:train_end]
 
-        splits = {
-            "train_obs": train_obs,
-            "train_actions": train_actions,
-            "val_obs": val_obs,
-            "val_actions": val_actions,
-            "test_obs": test_obs,
-            "test_actions": test_actions,
-        }
+            val_obs = observations[train_end:val_end]
+            val_actions = actions[train_end:val_end]
+            val_metadata = metadata[train_end:val_end]
 
-        print("Data split:")
-        print(
-            f"  Train: {train_obs.shape[0]} samples ({train_obs.shape[0] / total_samples:.1%})"
-        )
-        print(
-            f"  Val:   {val_obs.shape[0]} samples ({val_obs.shape[0] / total_samples:.1%})"
-        )
-        print(
-            f"  Test:  {test_obs.shape[0]} samples ({test_obs.shape[0] / total_samples:.1%})"
-        )
+            test_obs = observations[val_end:]
+            test_actions = actions[val_end:]
+            test_metadata = metadata[val_end:]
 
-        # Display sample data for validation
-        print("\nSample data validation:")
-        self.display_samples("Train", train_obs, train_actions, max_samples=3)
-        self.display_samples("Val", val_obs, val_actions, max_samples=2)
-        self.display_samples("Test", test_obs, test_actions, max_samples=2)
+            splits = {
+                "train_obs": train_obs,
+                "train_actions": train_actions,
+                "train_metadata": train_metadata,
+                "val_obs": val_obs,
+                "val_actions": val_actions,
+                "val_metadata": val_metadata,
+                "test_obs": test_obs,
+                "test_actions": test_actions,
+                "test_metadata": test_metadata,
+            }
 
-        return splits
+            controller_splits[controller_sig] = splits
+
+            print(f"Data split for {controller_sig}:")
+            print(
+                f"  Train: {train_obs.shape[0]} samples ({train_obs.shape[0] / total_samples:.1%})"
+            )
+            print(
+                f"  Val:   {val_obs.shape[0]} samples ({val_obs.shape[0] / total_samples:.1%})"
+            )
+            print(
+                f"  Test:  {test_obs.shape[0]} samples ({test_obs.shape[0] / total_samples:.1%})"
+            )
+
+            # Display sample data for validation
+            print(f"Sample data validation for {controller_sig}:")
+            self.display_samples("Train", train_obs, train_actions, max_samples=2)
+            self.display_samples("Val", val_obs, val_actions, max_samples=1)
+            self.display_samples("Test", test_obs, test_actions, max_samples=1)
+
+        return controller_splits
 
     def save_final_dataset(
-        self, splits: Dict[str, Any], metadata: List[Dict[str, Any]]
+        self,
+        controller_splits: Dict[str, Dict[str, Any]],
+        controller_data: Dict[str, Dict[str, Any]],
     ):
         """
-        Save final dataset to output directory
+        Save controller-specific datasets to output directory
 
         Args:
-            splits: Dictionary with train/val/test data
-            metadata: List of metadata for each sample
+            controller_splits: Dictionary mapping controller signatures to their splits
+            controller_data: Dictionary mapping controller signatures to their full data
         """
-        print("Saving final dataset...")
+        print("Saving controller-specific datasets...")
 
-        # Save individual split files
-        train_path = os.path.join(self.output_dir, "train.npy")
-        val_path = os.path.join(self.output_dir, "val.npy")
-        test_path = os.path.join(self.output_dir, "test.npy")
+        all_metadata = []
+        all_controllers_info = {}
 
-        train_actions_path = os.path.join(self.output_dir, "train_actions.npy")
-        val_actions_path = os.path.join(self.output_dir, "val_actions.npy")
-        test_actions_path = os.path.join(self.output_dir, "test_actions.npy")
+        for controller_sig, splits in controller_splits.items():
+            print(f"\nSaving datasets for {controller_sig}...")
 
-        np.save(train_path, splits["train_obs"])
-        np.save(train_actions_path, splits["train_actions"])
-        np.save(val_path, splits["val_obs"])
-        np.save(val_actions_path, splits["val_actions"])
-        np.save(test_path, splits["test_obs"])
-        np.save(test_actions_path, splits["test_actions"])
+            # Save individual split files for this controller
+            controller_prefix = f"controller_{controller_sig}"
 
-        print(f"  Saved train: {train_path}")
-        print(f"  Saved train_actions: {train_actions_path}")
-        print(f"  Saved val: {val_path}")
-        print(f"  Saved val_actions: {val_actions_path}")
-        print(f"  Saved test: {test_path}")
-        print(f"  Saved test_actions: {test_actions_path}")
+            train_path = os.path.join(self.output_dir, f"{controller_prefix}_train.npy")
+            val_path = os.path.join(self.output_dir, f"{controller_prefix}_val.npy")
+            test_path = os.path.join(self.output_dir, f"{controller_prefix}_test.npy")
 
-        # Save combined dataset
-        all_obs = np.vstack(
-            [splits["train_obs"], splits["val_obs"], splits["test_obs"]]
+            train_actions_path = os.path.join(
+                self.output_dir, f"{controller_prefix}_train_actions.npy"
+            )
+            val_actions_path = os.path.join(
+                self.output_dir, f"{controller_prefix}_val_actions.npy"
+            )
+            test_actions_path = os.path.join(
+                self.output_dir, f"{controller_prefix}_test_actions.npy"
+            )
+
+            np.save(train_path, splits["train_obs"])
+            np.save(train_actions_path, splits["train_actions"])
+            np.save(val_path, splits["val_obs"])
+            np.save(val_actions_path, splits["val_actions"])
+            np.save(test_path, splits["test_obs"])
+            np.save(test_actions_path, splits["test_actions"])
+
+            print(f"  Saved {controller_prefix}_train: {train_path}")
+            print(f"  Saved {controller_prefix}_train_actions: {train_actions_path}")
+            print(f"  Saved {controller_prefix}_val: {val_path}")
+            print(f"  Saved {controller_prefix}_val_actions: {val_actions_path}")
+            print(f"  Saved {controller_prefix}_test: {test_path}")
+            print(f"  Saved {controller_prefix}_test_actions: {test_actions_path}")
+
+            # Save combined dataset for this controller
+            all_obs = np.vstack(
+                [splits["train_obs"], splits["val_obs"], splits["test_obs"]]
+            )
+            all_actions = np.vstack(
+                [splits["train_actions"], splits["val_actions"], splits["test_actions"]]
+            )
+            combined_path = os.path.join(
+                self.output_dir, f"{controller_prefix}_combined.npz"
+            )
+
+            np.savez_compressed(
+                combined_path,
+                observations=all_obs,
+                actions=all_actions,
+                train_indices=(0, splits["train_obs"].shape[0]),
+                val_indices=(
+                    splits["train_obs"].shape[0],
+                    splits["train_obs"].shape[0] + splits["val_obs"].shape[0],
+                ),
+                test_indices=(
+                    splits["train_obs"].shape[0] + splits["val_obs"].shape[0],
+                    all_obs.shape[0],
+                ),
+            )
+            print(f"  Saved {controller_prefix}_combined: {combined_path}")
+
+            # Collect all metadata for statistics
+            all_metadata.extend(controller_data[controller_sig]["metadata"])
+
+            # Store controller information
+            all_controllers_info[controller_sig] = {
+                "combination": controller_data[controller_sig]["combination"],
+                "total_samples": all_obs.shape[0],
+                "data_split": {
+                    "train": splits["train_obs"].shape[0],
+                    "val": splits["val_obs"].shape[0],
+                    "test": splits["test_obs"].shape[0],
+                },
+            }
+
+        # Generate global statistics across all controllers
+        all_obs_combined = []
+        all_actions_combined = []
+        for controller_sig, data in controller_data.items():
+            all_obs_combined.append(data["observations"])
+            all_actions_combined.append(data["actions"])
+
+        all_obs_combined = np.vstack(all_obs_combined)
+        all_actions_combined = np.vstack(all_actions_combined)
+
+        stats = self.generate_statistics(
+            all_obs_combined, all_actions_combined, all_metadata
         )
-        all_actions = np.vstack(
-            [splits["train_actions"], splits["val_actions"], splits["test_actions"]]
-        )
-        combined_path = os.path.join(self.output_dir, "combined_dataset.npz")
-
-        np.savez_compressed(
-            combined_path,
-            observations=all_obs,
-            actions=all_actions,
-            train_indices=(0, splits["train_obs"].shape[0]),
-            val_indices=(
-                splits["train_obs"].shape[0],
-                splits["train_obs"].shape[0] + splits["val_obs"].shape[0],
-            ),
-            test_indices=(
-                splits["train_obs"].shape[0] + splits["val_obs"].shape[0],
-                all_obs.shape[0],
-            ),
-        )
-        print(f"  Saved combined: {combined_path}")
 
         # Save metadata
         metadata_path = os.path.join(self.output_dir, "metadata.json")
-
-        # Generate statistics
-        stats = self.generate_statistics(all_obs, all_actions, metadata)
-
         final_metadata = {
             "generation_timestamp": datetime.now().isoformat(),
-            "total_samples": all_obs.shape[0],
+            "total_controllers": len(controller_splits),
+            "total_samples": all_obs_combined.shape[0],
             "observation_features": 3,
             "action_features": 2,
-            "data_split": {
-                "train": splits["train_obs"].shape[0],
-                "val": splits["val_obs"].shape[0],
-                "test": splits["test_obs"].shape[0],
-            },
+            "controllers": all_controllers_info,
             "statistics": stats,
-            "sample_metadata": metadata[:100],  # Save first 100 samples as examples
+            "sample_metadata": all_metadata[:100],  # Save first 100 samples as examples
         }
 
         with open(metadata_path, "w") as f:
             json.dump(final_metadata, f, indent=2)
-        print(f"  Saved metadata: {metadata_path}")
+        print(f"\nSaved metadata: {metadata_path}")
+        print(f"Total controllers: {len(controller_splits)}")
+        print(f"Total samples across all controllers: {all_obs_combined.shape[0]}")
 
     def generate_statistics(
         self,
@@ -361,54 +453,88 @@ class DataRecombiner:
                 print(f"Warning: Failed to clean up temp files: {e}")
 
     def validate_final_dataset(self) -> bool:
-        """Validate the final dataset"""
-        print("Validating final dataset...")
+        """Validate the controller-specific datasets"""
+        print("Validating controller-specific datasets...")
 
         try:
-            # Check combined dataset
-            combined_path = os.path.join(self.output_dir, "combined_dataset.npz")
-            if not os.path.exists(combined_path):
-                print("✗ Combined dataset file missing")
+            # Check metadata file exists
+            metadata_path = os.path.join(self.output_dir, "metadata.json")
+            if not os.path.exists(metadata_path):
+                print("✗ Metadata file missing")
                 return False
 
-            data = np.load(combined_path)
-            obs = data["observations"]
-            actions = data["actions"]
+            with open(metadata_path, "r") as f:
+                metadata = json.load(f)
 
-            # Check shapes
-            if obs.shape[0] != actions.shape[0]:
-                print("✗ Observation and action count mismatch")
-                return False
+            # Validate each controller's dataset
+            for controller_sig, controller_info in metadata["controllers"].items():
+                controller_prefix = f"controller_{controller_sig}"
 
-            if obs.shape[1] != 3:
-                print(f"✗ Expected 3 observation features, got {obs.shape[1]}")
-                return False
-
-            if actions.shape[1] != 2:
-                print(f"✗ Expected 2 action features, got {actions.shape[1]}")
-                return False
-
-            # Check ranges
-            if np.any(obs[:, 0] < 0) or np.any(obs[:, 0] > 1):
-                print("✗ Battery level out of range [0,1]")
-                return False
-
-            if np.any(obs[:, 1] < 0) or np.any(obs[:, 1] > 1):
-                print("✗ Carbon intensity out of range [0,1]")
-                return False
-
-            if np.any(obs[:, 2] < -1) or np.any(obs[:, 2] > 1):
-                print("✗ Carbon change out of range [-1,1]")
-                return False
-
-            # Check split files
-            for split in ["train", "val", "test"]:
-                split_path = os.path.join(self.output_dir, f"{split}.npy")
-                if not os.path.exists(split_path):
-                    print(f"✗ Split file missing: {split}.npy")
+                # Check combined dataset
+                combined_path = os.path.join(
+                    self.output_dir, f"{controller_prefix}_combined.npz"
+                )
+                if not os.path.exists(combined_path):
+                    print(f"✗ Combined dataset file missing for {controller_sig}")
                     return False
 
-            print("✓ Final dataset validation passed")
+                data = np.load(combined_path)
+                obs = data["observations"]
+                actions = data["actions"]
+
+                # Check shapes
+                if obs.shape[0] != actions.shape[0]:
+                    print(
+                        f"✗ Observation and action count mismatch for {controller_sig}"
+                    )
+                    return False
+
+                if obs.shape[1] != 3:
+                    print(
+                        f"✗ Expected 3 observation features, got {obs.shape[1]} for {controller_sig}"
+                    )
+                    return False
+
+                if actions.shape[1] != 2:
+                    print(
+                        f"✗ Expected 2 action features, got {actions.shape[1]} for {controller_sig}"
+                    )
+                    return False
+
+                # Check ranges
+                if np.any(obs[:, 0] < 0) or np.any(obs[:, 0] > 1):
+                    print(f"✗ Battery level out of range [0,1] for {controller_sig}")
+                    return False
+
+                if np.any(obs[:, 1] < 0) or np.any(obs[:, 1] > 1):
+                    print(f"✗ Carbon intensity out of range [0,1] for {controller_sig}")
+                    return False
+
+                if np.any(obs[:, 2] < -1) or np.any(obs[:, 2] > 1):
+                    print(f"✗ Carbon change out of range [-1,1] for {controller_sig}")
+                    return False
+
+                # Check split files
+                for split in ["train", "val", "test"]:
+                    split_path = os.path.join(
+                        self.output_dir, f"{controller_prefix}_{split}.npy"
+                    )
+                    if not os.path.exists(split_path):
+                        print(f"✗ Split file missing: {split}.npy for {controller_sig}")
+                        return False
+
+                    actions_path = os.path.join(
+                        self.output_dir, f"{controller_prefix}_{split}_actions.npy"
+                    )
+                    if not os.path.exists(actions_path):
+                        print(
+                            f"✗ Actions split file missing: {split}_actions.npy for {controller_sig}"
+                        )
+                        return False
+
+                print(f"✓ {controller_sig} validation passed")
+
+            print("✓ All controller datasets validation passed")
             return True
 
         except Exception as e:
@@ -430,14 +556,14 @@ class DataRecombiner:
             True if successful, False otherwise
         """
         try:
-            # Load all chunks
-            observations, actions, metadata = self.load_all_chunks()
+            # Load all chunks and group by controller
+            controller_data = self.load_all_chunks()
 
-            # Split data
-            splits = self.split_data(observations, actions, train_ratio, val_ratio)
+            # Split data by controller
+            controller_splits = self.split_data(controller_data, train_ratio, val_ratio)
 
-            # Save final dataset
-            self.save_final_dataset(splits, metadata)
+            # Save controller-specific datasets
+            self.save_final_dataset(controller_splits, controller_data)
 
             # Validate
             if not self.validate_final_dataset():
@@ -445,7 +571,8 @@ class DataRecombiner:
 
             # Cleanup
             if cleanup:
-                self.cleanup_temp_files()
+                # self.cleanup_temp_files()
+                print("Cleanup)")
 
             print("✓ Dataset recombination completed successfully")
             return True

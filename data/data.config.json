@@ -1,22 +1,20 @@
 {
   "system_constants": {
-    "task_interval_seconds": 3600,
+    "task_interval_seconds": 300,
     "horizon_seconds": 86400,
     "battery_discretization_step": 0.01,
     "nearest_neighbor_k": 3
   },
   "user_parameters": [
     { "accuracy_threshold": 0.95, "latency_threshold_seconds": 0.012 },
-    { "accuracy_threshold": 0.925, "latency_threshold_seconds": 0.008 },
     { "accuracy_threshold": 0.819, "latency_threshold_seconds": 0.006 }
   ],
   "reward_weights": [
-    { "success_weight": 10, "small_miss_weight": 5, "large_miss_weight": 8, "carbon_weight": 7 },
-    { "success_weight": 5, "small_miss_weight": 7, "large_miss_weight": 10, "carbon_weight": 12 }
+    { "success_weight": 20, "small_miss_weight": 5, "large_miss_weight": 8, "carbon_weight": 7 },
+    { "success_weight": 5, "small_miss_weight": 7, "large_miss_weight": 10, "carbon_weight": 15 }
   ],
   "battery_configs": [
     { "battery_capacity_mwh": 610, "charge_rate_mwh_per_second": 0.001613 },
-    { "battery_capacity_mwh": 300, "charge_rate_mwh_per_second": 0.0025 },
     { "battery_capacity_mwh": 105, "charge_rate_mwh_per_second": 0.0035 }
   ],
   "seasonal_dates": ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"],
