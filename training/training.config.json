@@ -40,39 +40,30 @@
     "epochs": 100,
     "loss_function": "cross_entropy",
     "optimizer": "Adam",
-    "early_stopping_patience": 10,
-    "early_stopping_min_delta": 0.001,
+    "early_stopping": {
+      "enabled": true,
+      "patience": 10,
+      "min_delta": 0.001
+    },
     "num_workers": 4
   },
   "data": {
-    "train_data_path": "../data/training_data/train.npy",
-    "val_data_path": "../data/training_data/val.npy",
-    "test_data_path": "../data/training_data/test.npy",
-    "train_actions_path": "../data/training_data/train_actions.npy",
-    "val_actions_path": "../data/training_data/val_actions.npy",
-    "test_actions_path": "../data/training_data/test_actions.npy",
-    "metadata_path": "../data/training_data/metadata.json",
+    "train_data_path": "data/training_data/train.npy",
+    "val_data_path": "data/training_data/val.npy",
+    "test_data_path": "data/training_data/test.npy",
+    "train_actions_path": "data/training_data/train_actions.npy",
+    "val_actions_path": "data/training_data/val_actions.npy",
+    "test_actions_path": "data/training_data/test_actions.npy",
+    "metadata_path": "data/training_data/metadata.json",
     "oracle_demonstrations": "𝔻 = {(o_t, a_t*)}"
   },
   "data_paths": {
-    "model_profiles": "../model-profiler/power_profiles.json",
-    "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
-  },
-  "evaluation": {
-    "accuracy_classification": true,
-    "utility_gap": true,
-    "uptime_metric": true,
-    "action_distribution_kl": true,
-    "comprehensive_evaluation": true
+    "model_profiles": "training/model-profiler/power_profiles.json",
+    "energy_data": "training/energy-data/US-CAL-LDWP_2024_5_minute.csv"
   },
   "paths": {
-    "model_save_path": "./models/best_model.pth",
-    "tensorboard_log_dir": "./logs",
-    "evaluation_report_path": "./evaluation_report.json"
-  },
-  "device": {
-    "auto_detect": true,
-    "prefer_mps": true,
-    "fallback_cpu": true
+    "model_save_path": "training/models/best_model.pth",
+    "tensorboard_log_dir": "training/logs",
+    "evaluation_report_path": "training/evaluation_report.json"
   }
 }
