@@ -87,15 +87,16 @@
             <ul class="toc-sublinks">
               <li><a href="#worked-well">5.1 What worked well and why?</a></li>
               <li><a href="#didnt-work">5.2 What didn't work and why?</a></li>
-              <li><a href="#limitations">5.3 Limitations & Future Work</a></li>
+              <li><a href="#limitations">5.3 Limitations</a></li>
+              <li><a href="#future_work">5.4 Future Work</a></li>
             </ul>
           </li>
           <li><a href="#references">6. References</a></li>
           <li>
             <a href="#supplementary-material">7. Supplementary Material</a>
             <ul class="toc-sublinks">
-              <li><a href="#datasets">7.a. Datasets</a></li>
-              <li><a href="#software">7.b. Software</a></li>
+              <li><a href="#datasets">7.1 Datasets</a></li>
+              <li><a href="#software">7.2 Software</a></li>
             </ul>
           </li>
         </ul>
@@ -350,10 +351,14 @@
 
             To simplify the optimization, we benchmarked and created model profiles separately
             before our simulation loop. The main simulation loop then uses these pre-computed
-            profiles to make decisions at runtime. We do NOT separately profile during the
-            simulation itself, which is a known limitation. See section 5 for more details.
+            profiles to make decisions at runtime.
+            <b
+              >We do NOT separately profile during the simulation itself, which is a known
+              limitation.</b
+            >
+            See <a href="#limitations">Section 5.3</a> for more information.
 
-            <h4>3.1.1 Power and Latency Measurement</h4>
+            <h4>Power and Latency Measurement</h4>
             <p>
               A Model task is defined as loading an image and running the default classifier
               function on it. The task involves:
@@ -409,7 +414,7 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
               statistics.
             </p>
 
-            <h4>3.1.2 Accuracy Dataset Analysis</h4>
+            <h4>Accuracy Dataset Analysis</h4>
             <p>
               Model accuracy values are extracted from the COCO dataset benchmark results stored in
               <a
@@ -490,7 +495,8 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
             <b
               >To simplify this problem, we assume that ALL these parameters are constant per
               controller. If any of these parameters change, the controller will need to be solved
-              and retrained again.</b
+              and retrained again. See <a href="#limitations">Section 5.3</a> for more
+              information.</b
             >
 
             <h3 id="oracle-controller">3.3 Oracle Controller</h3>
@@ -698,9 +704,7 @@ END FOR
 
             <h4>Policy Learning via Imitation</h4>
 
-            <h4 id="oracle-data-generation-methodology">
-              3.4.1 Oracle Data Generation Methodology
-            </h4>
+            <h4 id="oracle-data-generation-methodology">Oracle Data Generation Methodology</h4>
             <p>
               We generate training data through a systematic parameter sweep across multiple system
               dimensions to ensure comprehensive coverage of the operational space. For each unique
@@ -721,9 +725,7 @@ END FOR
               overfitting.
             </p>
 
-            <h4 id="neural-network-architecture-design">
-              3.4.2 Neural Network Architecture Design
-            </h4>
+            <h4 id="neural-network-architecture-design">Neural Network Architecture Design</h4>
             <p>
               The custom controller uses a 3-layer feedforward network processing 3-dimensional
               observations: battery level, carbon intensity, and carbon change. The network outputs
@@ -740,11 +742,20 @@ Forward Pass:
 shared_output = Sequential(Input → Linear(3,64) → ReLU → Linear(64,32) → ReLU → Linear(32,8))
 model_logits = shared_output[:, :7]
 charge_logit = shared_output[:, 7:]</code></pre>
+            <p>
+              Implementation:
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/training/train.py"
+                target="_blank"
+                >training/train.py</a
+              >
+            </p>
 
             <p>
               Model selection uses cross-entropy loss, charging decision uses binary cross-entropy
               loss. Final loss combines both with equal weighting.
             </p>
+
             <p>
               The architecture consists of multiple hidden layers with ReLU activations, culminating
               in a dual-head output structure. One head produces logits for discrete model selection
@@ -758,13 +769,14 @@ charge_logit = shared_output[:, 7:]</code></pre>
               execution, with mechanisms to handle prediction failures gracefully.
             </p>
 
-            <h4 id="per-controller-training-approach">3.4.3 Per-Controller Training Approach</h4>
+            <h4 id="per-controller-training-approach">Per-Controller Training Approach</h4>
             <p>
               <b>
                 Each system configuration receives its own neural network rather than one
                 generalized model.
               </b>
-              This approach was selected to save time with training data generation. See Section 5.3
+              This approach was selected to save time with training data generation. See
+              <a href="#limitations">Section 5.3</a>
               for more information.
             </p>
 
@@ -785,13 +797,22 @@ FOR each controller configuration DO
 END FOR</code></pre>
 
             <p>
+              Implementation:
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/training/train.py"
+                target="_blank"
+                >training/train.py</a
+              >
+            </p>
+
+            <p>
               Loss combines model selection cross-entropy and charging binary cross-entropy with
-              equal weighting. Early stopping uses patience of 10 epochs with minimum delta of
-              0.001.
+              equal (0.5 each) weighting. Early stopping uses patience of 10 epochs with minimum
+              delta of 0.001.
             </p>
 
             <h4 id="integration-with-simulation-framework">
-              3.4.4 Integration with Simulation Framework
+              Integration with Simulation Framework
             </h4>
 
             <pre><code>Inference Pipeline:
@@ -805,9 +826,18 @@ FOR each timestep DO
     charge_pred = sigmoid(charge_logit) > 0.5
     
     IF prediction_infeasible THEN
-        fallback_to_safest_feasible_action()
+        NO_MODEL, NO_CHARGE selected
     END IF
 END FOR</code></pre>
+
+            <p>
+              Implementation:
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/simulation/controllers/ml_controller.py"
+                target="_blank"
+                >simulation/controllers/ml_controller.py</a
+              >
+            </p>
 
             <p>
               Preprocessing normalizes battery level to [0,1] and calculates carbon change.
@@ -859,10 +889,9 @@ END FOR</code></pre>
             <h4>Configuration Management</h4>
             <p>
               Each custom controller is trained on a specific set of system parameters and cannot
-              operate outside those constraints without retraining. The simulation loads
-              controller-specific configurations including battery capacity, task intervals, user
-              requirements, and reward weights. All three controllers (oracle, naive, and custom)
-              run with identical system parameters to ensure fair comparison.
+              operate outside those constraints. The simumlation loads the custom controller
+              corresponding to the system parameters to ensure fair comparison across all
+              controllers. See Section 5.3 for more information.
             </p>
 
             <h4>Main Simulation Loop</h4>
@@ -909,6 +938,15 @@ END FOR</code></pre>
 END FOR
 
 generate_comparative_analysis(controllers)</code></pre>
+
+            <p>
+              Implementation:
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/simulation/run.py"
+                target="_blank"
+                >simulation/run.py</a
+              >
+            </p>
 
             <!-- <h3>3.1 System Architecture</h3>
             <p>Include a block diagram or pipeline figure.</p>
@@ -958,7 +996,7 @@ generate_comparative_analysis(controllers)</code></pre>
             <h3 id="didnt-work">5.2 What didn't work and why?</h3>
             <br />
 
-            <h3 id="limitations">5.3 Limitations & Future Work</h3>
+            <h3 id="limitations">5.3 Limitations</h3>
 
             <p>
               Due to computational and project time constraints, our simulation engine has the
@@ -966,27 +1004,32 @@ generate_comparative_analysis(controllers)</code></pre>
             </p>
             <ul>
               <li>
-                As mentioned in Section 3.2, our custom controller is specifically trained on a set
-                of system parameters. The custom controller does not support varying the system
-                parameters without retraining the controller.
-              </li>
-              <li>
-                As mentioned in Section 3.1, there is no runtime measurement of battery consumption;
-                we only use the model profiles.
+                There is no runtime measurement of battery consumption per task; we only use the
+                model profiles.
               </li>
               <li>
                 Idle energy consumed by any controller is not considered. In the real world, there
-                is some idle energy cost, even if its very small due to the controller 'sleeping'.
+                is some very small idle energy cost even when the controller is 'sleeping.'
               </li>
               <li>
-                Energy consumed when running the controller-selection algorithm (or running the NN
-                to make decision) is not accounted for.
+                Energy and latency consumed when running the controller-selection algorithm (or
+                running the NN to make decision) is not accounted for.
               </li>
             </ul>
+            <p>A future simulation engine would consider all the limitations above.</p>
 
             <p>
-              A future simulation engine would consider all these energy consumption measurements,
-              including real-time power modeling.
+              <b
+                >As mentioned numerous times above, our custom controller is specifically trained on
+                a set of system parameters. The custom controller does not support varying the
+                system parameters without retraining the controller.</b
+              >
+              If we had more time to run the oracle on a wider range of system parameters, we could
+              generate a massive dataset using our oracle that can train a controller to recognize
+              the diverse requirements and parameter combinations that are possible. This would give
+              us one general-use controller that is plug-and-play anywhere. Unfortunately, due to
+              time constraints, we could only train a limited number of custom controllers with
+              rigid parameters.
             </p>
 
             <p>
@@ -994,21 +1037,31 @@ generate_comparative_analysis(controllers)</code></pre>
               controller. The computational cost of solving the MDP, even after the restrictions and
               trade-offs we made, there was not enough time to do this. There are so many system
               parameters that tuning a controller for every single combination, especially with the
-              many tasks we were doing, is just not feasible.
+              many tasks we were doing, is just not feasible. This ties in to the previous point, as
+              more abelation studies would also allow for the general controller.
             </p>
 
-            <p>
-              If we had more time to run the oracle on a wider range of system parameters, we could
-              create a massive dataset that can train a controller to recognize the diverse
-              requirements and parameter combinations that are possible. This would give us one
-              general-use controller that is plug-and-play anywhere.
-            </p>
+            <h3 id="future_work">5.4 Future Work</h3>
 
             <p>
               Future work could incorporate algorithms and methodology from the Data-driven Planning
-              via Imitation Learning paper<sup id="cite-ref-4"><a href="#cite-note-4">[4]</a></sup
-              >. While our current approach uses basic supervised learning with cross-entropy loss,
-              more sophisticated imitation learning techniques could improve controller performance.
+              via Imitation Learning paper<sup id="cite-ref-4"><a href="#cite-note-4">[4]</a></sup>
+              to speed up our oracle training data generation. While our current approach uses basic
+              supervised learning with cross-entropy loss, more sophisticated imitation learning
+              techniques could improve controller performance and make the algorithms faster.
+            </p>
+
+            <p>
+              If we wanted to be simplier, we could incorperate a dual-algorithm controller, where
+              the main policy comes from the neural-network, but the fallback policy is the same as
+              the Naive, to get the best of both worlds.
+            </p>
+
+            <p>
+              Finally, we could also explore an always-learning LSTM-type controller that
+              self-updates itself every task interval at runtime. This would allow a
+              'set-it-and-forget-it' autonomous controller that doesn't need to get retrained
+              periodically.
             </p>
           </section>
 
@@ -1116,6 +1169,12 @@ generate_comparative_analysis(controllers)</code></pre>
             <p>
               <strong>Internal code:</strong> Simulation + battery model, oracle planner,
               training-data generation, imitation-learning controller, and profiling utilities.
+            </p>
+            <p>
+              <strong>AI Coding Tools:</strong>
+              <a href="https://windsurf.com/" target="_blank">Windsurf</a>,
+              <a href="https://github.com/anthropics/claude-code" target="_blank">Claude Code</a>,
+              <a href="https://chatgpt.com/" target="_blank">ChatGPT</a>
             </p>
           </section>
         </div>
