@@ -1,55 +1,365 @@
 {
-  "generation_timestamp": "2025-12-14T17:48:04.163617",
-  "total_samples": 3456,
+  "generation_timestamp": "2025-12-15T00:21:17.407695",
+  "total_controllers": 8,
+  "total_samples": 1536,
   "observation_features": 3,
   "action_features": 2,
-  "data_split": {
-    "train": 2419,
-    "val": 345,
-    "test": 692
+  "controllers": {
+    "acc0.95_lat0.012_succ20_small5_large8_carb7_cap610_rate0.000269": {
+      "combination": {
+        "combination_id": 0,
+        "user_param_idx": 0,
+        "reward_weights_idx": 0,
+        "battery_config_idx": 0,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.95,
+          "latency_threshold_seconds": 0.012
+        },
+        "reward_weights": {
+          "success_weight": 20,
+          "small_miss_weight": 5,
+          "large_miss_weight": 8,
+          "carbon_weight": 7
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 610,
+          "charge_rate_mwh_per_second": 0.000269
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.95_lat0.012_succ20_small5_large8_carb7_cap105_rate0.001598": {
+      "combination": {
+        "combination_id": 8,
+        "user_param_idx": 0,
+        "reward_weights_idx": 0,
+        "battery_config_idx": 1,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.95,
+          "latency_threshold_seconds": 0.012
+        },
+        "reward_weights": {
+          "success_weight": 20,
+          "small_miss_weight": 5,
+          "large_miss_weight": 8,
+          "carbon_weight": 7
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 105,
+          "charge_rate_mwh_per_second": 0.001598
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.95_lat0.012_succ5_small7_large10_carb15_cap610_rate0.000269": {
+      "combination": {
+        "combination_id": 16,
+        "user_param_idx": 0,
+        "reward_weights_idx": 1,
+        "battery_config_idx": 0,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.95,
+          "latency_threshold_seconds": 0.012
+        },
+        "reward_weights": {
+          "success_weight": 5,
+          "small_miss_weight": 7,
+          "large_miss_weight": 10,
+          "carbon_weight": 15
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 610,
+          "charge_rate_mwh_per_second": 0.000269
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.95_lat0.012_succ5_small7_large10_carb15_cap105_rate0.001598": {
+      "combination": {
+        "combination_id": 24,
+        "user_param_idx": 0,
+        "reward_weights_idx": 1,
+        "battery_config_idx": 1,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.95,
+          "latency_threshold_seconds": 0.012
+        },
+        "reward_weights": {
+          "success_weight": 5,
+          "small_miss_weight": 7,
+          "large_miss_weight": 10,
+          "carbon_weight": 15
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 105,
+          "charge_rate_mwh_per_second": 0.001598
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269": {
+      "combination": {
+        "combination_id": 32,
+        "user_param_idx": 1,
+        "reward_weights_idx": 0,
+        "battery_config_idx": 0,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.819,
+          "latency_threshold_seconds": 0.006
+        },
+        "reward_weights": {
+          "success_weight": 20,
+          "small_miss_weight": 5,
+          "large_miss_weight": 8,
+          "carbon_weight": 7
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 610,
+          "charge_rate_mwh_per_second": 0.000269
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.819_lat0.006_succ20_small5_large8_carb7_cap105_rate0.001598": {
+      "combination": {
+        "combination_id": 40,
+        "user_param_idx": 1,
+        "reward_weights_idx": 0,
+        "battery_config_idx": 1,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.819,
+          "latency_threshold_seconds": 0.006
+        },
+        "reward_weights": {
+          "success_weight": 20,
+          "small_miss_weight": 5,
+          "large_miss_weight": 8,
+          "carbon_weight": 7
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 105,
+          "charge_rate_mwh_per_second": 0.001598
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.819_lat0.006_succ5_small7_large10_carb15_cap610_rate0.000269": {
+      "combination": {
+        "combination_id": 48,
+        "user_param_idx": 1,
+        "reward_weights_idx": 1,
+        "battery_config_idx": 0,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.819,
+          "latency_threshold_seconds": 0.006
+        },
+        "reward_weights": {
+          "success_weight": 5,
+          "small_miss_weight": 7,
+          "large_miss_weight": 10,
+          "carbon_weight": 15
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 610,
+          "charge_rate_mwh_per_second": 0.000269
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    },
+    "acc0.819_lat0.006_succ5_small7_large10_carb15_cap105_rate0.001598": {
+      "combination": {
+        "combination_id": 56,
+        "user_param_idx": 1,
+        "reward_weights_idx": 1,
+        "battery_config_idx": 1,
+        "date_idx": 0,
+        "location_idx": 0,
+        "system_constants": {
+          "task_interval_seconds": 3600,
+          "horizon_seconds": 86400,
+          "battery_discretization_step": 0.01,
+          "nearest_neighbor_k": 3
+        },
+        "user_parameters": {
+          "accuracy_threshold": 0.819,
+          "latency_threshold_seconds": 0.006
+        },
+        "reward_weights": {
+          "success_weight": 5,
+          "small_miss_weight": 7,
+          "large_miss_weight": 10,
+          "carbon_weight": 15
+        },
+        "battery_config": {
+          "battery_capacity_mwh": 105,
+          "charge_rate_mwh_per_second": 0.001598
+        },
+        "date": "2024-01-15",
+        "location": "US-CAL-LDWP_2024_5_minute.csv",
+        "oracle_workers": 10
+      },
+      "total_samples": 192,
+      "data_split": {
+        "train": 134,
+        "val": 19,
+        "test": 39
+      }
+    }
   },
   "statistics": {
     "observations": {
       "battery_level": {
-        "min": 0.14832153916358948,
+        "min": 0.56323322,
         "max": 1.0,
-        "mean": 0.8721632957458496,
-        "std": 0.16054171323776245
+        "mean": 0.9032907613563621,
+        "std": 0.10836175871624953
       },
       "carbon_intensity": {
-        "min": 0.4052000045776367,
-        "max": 0.7092000246047974,
-        "mean": 0.5543202757835388,
-        "std": 0.09021306037902832
+        "min": 0.4052,
+        "max": 0.7092,
+        "mean": 0.5543203125,
+        "std": 0.09021305599977761
       },
       "carbon_change": {
-        "min": -0.006399999838322401,
-        "max": 0.06419999897480011,
-        "mean": 0.0004380207974463701,
-        "std": 0.005464369896799326
+        "min": -0.006399999999999961,
+        "max": 0.06420000000000003,
+        "mean": 0.00043802083333333307,
+        "std": 0.005464369649486818
       }
     },
     "actions": {
       "model_type_distribution": {
-        "0": 1139,
-        "1": 1139,
+        "0": 758,
+        "1": 758,
         "2": 0,
-        "3": 1139,
+        "3": 0,
         "4": 0,
         "5": 0,
-        "6": 39
+        "6": 20
       },
       "charge_distribution": {
-        "no_charge": 3456,
+        "no_charge": 1536,
         "charge": 0
       }
     },
     "simulation": {
-      "total_combinations": 144,
+      "total_combinations": 64,
       "reward_stats": {
         "min": -171.0,
-        "max": 240.0,
-        "mean": 68.72916666666667
+        "max": 480.0,
+        "mean": 74.375
       }
     }
   },
@@ -58,701 +368,901 @@
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 0,
       "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.073327,
-      "chunk_file": "chunk_000.npz"
+      "execution_time": 284.441591,
+      "chunk_file": "chunk_000.npz",
+      "date": "2024-01-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
-      "total_reward": -120.0,
+      "total_reward": -123.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 1,
+      "total_reward": -123.0,
+      "optimal_value": -5.0,
+      "execution_time": 281.051822,
+      "chunk_file": "chunk_001.npz",
+      "date": "2024-01-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
+    },
+    {
+      "combination_id": 2,
       "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049784,
-      "chunk_file": "chunk_001.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 2,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
-    },
-    {
-      "combination_id": 2,
-      "total_reward": -123.0,
-      "optimal_value": -5.0,
-      "execution_time": 89.169706,
-      "chunk_file": "chunk_002.npz"
+      "execution_time": 288.078227,
+      "chunk_file": "chunk_002.npz",
+      "date": "2024-04-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 3,
-      "total_reward": -123.0,
+      "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.049344,
-      "chunk_file": "chunk_003.npz"
+      "execution_time": 287.895363,
+      "chunk_file": "chunk_003.npz",
+      "date": "2024-04-15",
+      "location": "US-NY-NYIS_2024_5_minute.csv"
     },
     {
       "combination_id": 4,
       "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.654189,
-      "chunk_file": "chunk_004.npz"
+      "execution_time": 288.187911,
+      "chunk_file": "chunk_004.npz",
+      "date": "2024-07-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 4,
       "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.654189,
-      "chunk_file": "chunk_004.npz"
+      "execution_time": 288.187911,
+      "chunk_file": "chunk_004.npz",
+      "date": "2024-07-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 4,
       "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.654189,
-      "chunk_file": "chunk_004.npz"
+      "execution_time": 288.187911,
+      "chunk_file": "chunk_004.npz",
+      "date": "2024-07-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     },
     {
       "combination_id": 4,
       "total_reward": -120.0,
       "optimal_value": -5.0,
-      "execution_time": 89.654189,
-      "chunk_file": "chunk_004.npz"
+      "execution_time": 288.187911,
+      "chunk_file": "chunk_004.npz",
+      "date": "2024-07-15",
+      "location": "US-CAL-LDWP_2024_5_minute.csv"
     }
   ]
 }
