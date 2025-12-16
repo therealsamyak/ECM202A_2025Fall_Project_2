@@ -457,6 +457,42 @@ def train_per_controller_mode(config, device, logger) -> int:
 
     # Final summary
     log_training_summary(results, logger)
+
+    # Write metadata to training.models/training.metadata.json
+    metadata = {
+        "controllers": [],
+        "average_performance": {
+            "model_accuracy": np.mean([r["test_model_acc"] for r in results]),
+            "charge_accuracy": np.mean([r["test_charge_acc"] for r in results]),
+        },
+    }
+
+    # Format controller data for metadata
+    for result in results:
+        params = result["parameters"]
+        controller_data = {
+            "acc": float(params["acc"]),
+            "lat": float(params["lat"]),
+            "succ": int(params["succ"]),
+            "small": int(params["small"]),
+            "large": int(params["large"]),
+            "carb": int(params["carb"]),
+            "cap": int(params["cap"]),
+            "rate": float(params["rate"]),
+            "test_model_acc": result["test_model_acc"],
+            "test_charge_acc": result["test_charge_acc"],
+            "test_loss": result["test_loss"],
+        }
+        metadata["controllers"].append(controller_data)
+
+    # Write metadata file
+    metadata_path = "training/models/training.metadata.json"
+    os.makedirs(os.path.dirname(metadata_path), exist_ok=True)
+    with open(metadata_path, "w") as f:
+        json.dump(metadata, f, indent=2)
+
+    logger.info(f"📄 Metadata written to: {metadata_path}")
+
     return 0
 
 
