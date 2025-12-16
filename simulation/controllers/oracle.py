@@ -112,12 +112,33 @@ class OracleController:
         self.model_profiles = DataLoader.load_model_profiles(
             config["data_paths"]["model_profiles"]
         )
-        self.carbon_data = DataLoader.load_carbon_data(
+        # Calculate actual timesteps needed for horizon
+        actual_timesteps = (
+            config["system"]["horizon_seconds"]
+            // config["system"]["task_interval_seconds"]
+        )
+
+        # Load carbon data with one extra timestep for DP completion
+        # This is handled internally by the oracle
+        extra_carbon_data = DataLoader.load_carbon_data(
             config["data_paths"]["energy_data"],
             config["simulation"]["start_date"],
             config["simulation"]["start_time"],
-            num_timesteps=config["system"]["horizon_seconds"]
-            // config["system"]["task_interval_seconds"],
+            num_timesteps=actual_timesteps + 1,  # Request one extra
+        )
+
+        # Handle edge case: if insufficient data available, repeat last value
+        if len(extra_carbon_data) < actual_timesteps + 1:
+            while len(extra_carbon_data) < actual_timesteps + 1:
+                extra_carbon_data.append(extra_carbon_data[-1])
+
+        # Store only the actual needed data length for num_timesteps
+        self.carbon_data = extra_carbon_data[:actual_timesteps]
+        # Store extra value for DP computation
+        self.extra_carbon_value = (
+            extra_carbon_data[actual_timesteps]
+            if len(extra_carbon_data) > actual_timesteps
+            else extra_carbon_data[-1]
         )
 
         self.transition = TransitionDynamics(
@@ -136,11 +157,16 @@ class OracleController:
 
         # Use continuous battery values with dictionary lookup
         # Value function: V[t][battery_key] = optimal value from state (t, battery_level)
-        self.V = [{} for _ in range(self.num_timesteps + 1)]
-        self.V[self.num_timesteps] = {}  # Terminal value
+        self.V = [{} for _ in range(self.num_timesteps + 2)]  # +1 for extra timestep
+        self.V[
+            self.num_timesteps
+        ] = {}  # Original terminal timestep (now has lookahead)
+        self.V[self.num_timesteps + 1] = {}  # New terminal timestep (true end)
 
         # Policy: pi[t][battery_key] = optimal action from state (t, battery_level)
-        self.pi = [{} for _ in range(self.num_timesteps)]
+        self.pi = [
+            {} for _ in range(self.num_timesteps + 1)
+        ]  # +1 for policy at original terminal
 
         # All possible actions
         self.all_actions = []
@@ -199,11 +225,18 @@ class OracleController:
                 "energy_per_inference": profile.energy_per_inference,
             }
 
-        next_timestep_values = self.V[t + 1] if t < self.num_timesteps else {}
+        next_timestep_values = self.V[t + 1] if t <= self.num_timesteps else {}
+
+        # Get carbon intensity for current timestep (use extra value for final computation)
+        carbon_intensity = (
+            self.carbon_data[t]
+            if t < len(self.carbon_data)
+            else self.extra_carbon_value
+        )
 
         return (
             config_data,
-            self.carbon_data[t],
+            carbon_intensity,
             model_profiles_data,
             next_timestep_values,
         )
@@ -400,7 +433,9 @@ class OracleController:
         initial_battery_key = self._battery_to_key(self.battery_capacity)
 
         # Backward induction
-        for t in range(self.num_timesteps - 1, -1, -1):
+        for t in range(
+            self.num_timesteps, -1, -1
+        ):  # Include extra timestep in DP computation
             # Determine which battery levels to evaluate at this timestep
             battery_keys_to_evaluate = set()
 

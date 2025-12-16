@@ -655,10 +655,21 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
                   </li>
                 </ul>
               </li>
+              <li>
+                <b>End Look-ahead for Complete Policy Coverage:</b>
+                <ul>
+                  <li>
+                    To ensure optimal policies exist for all reachable states at the final timestep,
+                    the oracle computes one extra timestep beyond the planning horizon. This
+                    enhancement guarantees complete policy coverage while maintaining correct
+                    terminal conditions.
+                  </li>
+                </ul>
+              </li>
             </ul>
 
-            <p><strong>Basic DP Algorithm with K-NN:</strong></p>
-            <pre><code>FOR t ← T-1 DOWNTO 0 DO
+            <pre><code>// Enhanced DP with Extra Timestep for Complete Policy Coverage
+FOR t ← T DOWNTO 0 DO  // Include extra timestep T for complete coverage
     FOR each battery_level b IN reachable_states DO
         best_value ← -∞
         best_action ← null
@@ -666,7 +677,14 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
         FOR each action a IN feasible_actions(b) DO
             next_state ← transition(t, b, a)
             reward ← R(t, b, a, next_state)
-            future_value ← V[t+1][knn(battery_key(next_state))]
+            
+            // Use extra timestep values for complete lookahead
+            IF t < T THEN
+                future_value ← V[t+1][knn(battery_key(next_state))]
+            ELSE
+                future_value ← 0  // True terminal value
+            END IF
+            
             total_value ← reward + future_value
             
             IF total_value > best_value THEN
