@@ -9,9 +9,9 @@
       "carb": 7,
       "cap": 105,
       "rate": 0.001598,
-      "test_model_acc": 0.8258928656578064,
+      "test_model_acc": 0.8102678656578064,
       "test_charge_acc": 1.0,
-      "test_loss": 0.232293538749218
+      "test_loss": 0.24806149303913116
     },
     {
       "acc": 0.95,
@@ -24,7 +24,7 @@
       "rate": 0.000269,
       "test_model_acc": 0.9285714328289032,
       "test_charge_acc": 1.0,
-      "test_loss": 0.15687999920919538
+      "test_loss": 0.1921803466975689
     },
     {
       "acc": 0.819,
@@ -37,7 +37,7 @@
       "rate": 0.000269,
       "test_model_acc": 0.984375,
       "test_charge_acc": 1.0,
-      "test_loss": 0.04460190609097481
+      "test_loss": 0.047966248355805874
     },
     {
       "acc": 0.819,
@@ -50,7 +50,7 @@
       "rate": 0.000269,
       "test_model_acc": 0.9285714328289032,
       "test_charge_acc": 1.0,
-      "test_loss": 0.15550969867035747
+      "test_loss": 0.16530722752213478
     },
     {
       "acc": 0.95,
@@ -63,7 +63,7 @@
       "rate": 0.000269,
       "test_model_acc": 1.0,
       "test_charge_acc": 1.0,
-      "test_loss": 0.015614939853549004
+      "test_loss": 0.015312426257878542
     },
     {
       "acc": 0.819,
@@ -74,9 +74,9 @@
       "carb": 7,
       "cap": 105,
       "rate": 0.001598,
-      "test_model_acc": 0.9129464328289032,
+      "test_model_acc": 0.984375,
       "test_charge_acc": 1.0,
-      "test_loss": 0.20429027453064919
+      "test_loss": 0.04755097487941384
     },
     {
       "acc": 0.819,
@@ -87,9 +87,9 @@
       "carb": 15,
       "cap": 105,
       "rate": 0.001598,
-      "test_model_acc": 0.9129464328289032,
+      "test_model_acc": 1.0,
       "test_charge_acc": 1.0,
-      "test_loss": 0.16151098534464836
+      "test_loss": 0.011397013906389475
     },
     {
       "acc": 0.95,
@@ -100,13 +100,13 @@
       "carb": 15,
       "cap": 105,
       "rate": 0.001598,
-      "test_model_acc": 0.7544642984867096,
+      "test_model_acc": 0.7388392984867096,
       "test_charge_acc": 1.0,
-      "test_loss": 0.2942756600677967
+      "test_loss": 0.2985925078392029
     }
   ],
   "average_performance": {
-    "model_accuracy": 0.9059709869325161,
+    "model_accuracy": 0.9218750037252903,
     "charge_accuracy": 1.0
   }
 }
