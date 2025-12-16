@@ -1109,79 +1109,79 @@ generate_comparative_analysis(controllers)</code></pre>
               target="_blank"
               >model-profiler/power_profiles.json</a
             >
+
             <div class="table-container">
-              <div class="table-container">
-                <table class="params-table">
-                  <thead>
-                    <tr>
-                      <th>Model</th>
-                      <th>Energy per Inference (mWh)</th>
-                      <th>Latency (s)</th>
-                      <th>Normalized Accuracy [0,1]</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>YOLOv10_N</td>
-                      <td>1.02</td>
-                      <td>0.00156</td>
-                      <td>0.693</td>
-                    </tr>
-                    <tr>
-                      <td>YOLOv10_S</td>
-                      <td>1.99</td>
-                      <td>0.00266</td>
-                      <td>0.819</td>
-                    </tr>
-                    <tr>
-                      <td>YOLOv10_M</td>
-                      <td>2.95</td>
-                      <td>0.00548</td>
-                      <td>0.900</td>
-                    </tr>
-                    <tr>
-                      <td>YOLOv10_B</td>
-                      <td>3.89</td>
-                      <td>0.00654</td>
-                      <td>0.925</td>
-                    </tr>
-                    <tr>
-                      <td>YOLOv10_L</td>
-                      <td>4.69</td>
-                      <td>0.00833</td>
-                      <td>0.935</td>
-                    </tr>
-                    <tr>
-                      <td>YOLOv10_X</td>
-                      <td>6.06</td>
-                      <td>0.0122</td>
-                      <td>0.954</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>Energy per Inference (mWh)</th>
+                    <th>Latency (s)</th>
+                    <th>Normalized Accuracy [0,1]</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>YOLOv10_N</td>
+                    <td>1.02</td>
+                    <td>0.00156</td>
+                    <td>0.693</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv10_S</td>
+                    <td>1.99</td>
+                    <td>0.00266</td>
+                    <td>0.819</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv10_M</td>
+                    <td>2.95</td>
+                    <td>0.00548</td>
+                    <td>0.900</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv10_B</td>
+                    <td>3.89</td>
+                    <td>0.00654</td>
+                    <td>0.925</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv10_L</td>
+                    <td>4.69</td>
+                    <td>0.00833</td>
+                    <td>0.935</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv10_X</td>
+                    <td>6.06</td>
+                    <td>0.0122</td>
+                    <td>0.954</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-              <h4>Data Configuration</h4>
-              <p>
-                <a
-                  href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/data/data.config.json"
-                  target="_blank"
-                  >data/data.config.json</a
-                >
-              </p>
+            <h4>Data Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/data/data.config.json"
+                target="_blank"
+                >data/data.config.json</a
+              >
+            </p>
 
-              <b>System Constants</b>
-              <p>\(\Delta\), \(T\), \(F\), \(K\)</p>
-              <pre><code>{
+            <b>System Constants</b>
+            <p>\(\Delta\), \(T\), \(F\), \(K\)</p>
+            <pre><code>{
   "task_interval_seconds": 3600, // 1 hour
   "horizon_seconds": 86400,      // 24 hours
   "battery_discretization_step": 0.01,
   "nearest_neighbor_k": 3
 }</code></pre>
 
-              <b>User Requirements Combinations</b>
-              <p>\(u_{\text{acc}}\), \(u_{\text{lat}}\)</p>
-              <pre><code>[
+            <b>User Requirements Combinations</b>
+            <p>\(u_{\text{acc}}\), \(u_{\text{lat}}\)</p>
+            <pre><code>[
   {
     "accuracy_threshold": 0.95,
     "latency_threshold_seconds": 0.015
@@ -1192,9 +1192,9 @@ generate_comparative_analysis(controllers)</code></pre>
   }
 ]</code></pre>
 
-              <b>Reward Weights Combinations</b>
-              <p>\(W\), \(X\), \(Y\), \(Z\)</p>
-              <pre><code>[
+            <b>Reward Weights Combinations</b>
+            <p>\(W\), \(X\), \(Y\), \(Z\)</p>
+            <pre><code>[
   {
     "success_weight": 20,
     "small_miss_weight": 5,
@@ -1209,9 +1209,9 @@ generate_comparative_analysis(controllers)</code></pre>
   }
 ]</code></pre>
 
-              <b>Battery Configurations</b>
-              <p>\(B_{\max}\), \(r_{\text{chg}}\)</p>
-              <pre><code>[
+            <b>Battery Configurations</b>
+            <p>\(B_{\max}\), \(r_{\text{chg}}\)</p>
+            <pre><code>[
   {
     "battery_capacity_mwh": 610,           // 10 YOLOv10_X iterations
     "charge_rate_mwh_per_second": 0.000269 // 3600s -> 95% capacity to run YOLOv10_N
@@ -1222,8 +1222,8 @@ generate_comparative_analysis(controllers)</code></pre>
   }
 ]</code></pre>
 
-              <b>Data Generation Parameters</b>
-              <pre><code>{
+            <b>Data Generation Parameters</b>
+            <pre><code>{
   "seasonal_dates": ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"],
   "locations": ["US-CAL-LDWP_2024_5_minute.csv", "US-NY-NYIS_2024_5_minute.csv"],
   "data_split": {
@@ -1237,17 +1237,17 @@ generate_comparative_analysis(controllers)</code></pre>
   "chunk_size": 1
 }</code></pre>
 
-              <h4>Training Configuration</h4>
-              <p>
-                <a
-                  href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/training/training.config.json"
-                  target="_blank"
-                  >training/training.config.json</a
-                >
-              </p>
+            <h4>Training Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/training/training.config.json"
+                target="_blank"
+                >training/training.config.json</a
+              >
+            </p>
 
-              <b>Training Parameters</b>
-              <pre><code>{
+            <b>Training Parameters</b>
+            <pre><code>{
   "training_mode": "per_controller",
   "learning_rate": 0.001,
   "batch_size": 32,
@@ -1256,15 +1256,15 @@ generate_comparative_analysis(controllers)</code></pre>
   "optimizer": "Adam"
 }</code></pre>
 
-              <b>Early Stopping</b>
-              <pre><code>{
+            <b>Early Stopping</b>
+            <pre><code>{
   "enabled": true,
   "patience": 10,
   "min_delta": 0.001
 }</code></pre>
 
-              <b>Data Paths</b>
-              <pre><code>{
+            <b>Data Paths</b>
+            <pre><code>{
   "train_data_path": "data/training_data/train.npy",
   "val_data_path": "data/training_data/val.npy",
   "test_data_path": "data/training_data/test.npy",
@@ -1274,315 +1274,311 @@ generate_comparative_analysis(controllers)</code></pre>
   "model_save_path": "training/models/best_model.pth"
 }</code></pre>
 
-              <h4>Energy Data Source</h4>
-              <p>
-                Energy intensity data obtained from
-                <a href="https://www.electricitymaps.com/" target="_blank">Electricity Maps</a>
-                for year 2024 at 5-minute granularity for the following regions:
-              </p>
+            <h4>Energy Data Source</h4>
+            <p>
+              Energy intensity data obtained from
+              <a href="https://www.electricitymaps.com/" target="_blank">Electricity Maps</a>
+              for year 2024 at 5-minute granularity for the following regions:
+            </p>
+            <ul>
+              <li>US-CAL-LDWP (California)</li>
+              <li>US-FLA-FPL (Florida)</li>
+              <li>US-NW-PSEI (Northwest)</li>
+              <li>US-NY-NYIS (New York)</li>
+            </ul>
+
+            <h3 id="controller-training-statistics">4.2 Controller Training Statistics</h3>
+            <p>Training configuration and performance statistics for all 8 trained controllers.</p>
+
+            <div class="table-container">
+              <table class="params-table">
+                <thead>
+                  <tr>
+                    <th>Controller</th>
+                    <th>Accuracy Threshold</th>
+                    <th>Latency Threshold (s)</th>
+                    <th>Success Weight</th>
+                    <th>Small Miss Weight</th>
+                    <th>Large Miss Weight</th>
+                    <th>Carbon Weight</th>
+                    <th>Battery Capacity (mWh)</th>
+                    <th>Charge Rate (mWh/s)</th>
+                    <th>Test Model Acc</th>
+                    <th>Test Charge Acc</th>
+                    <th>Test Loss</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Controller 1</strong></td>
+                    <td>0.819</td>
+                    <td>0.006</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>610</td>
+                    <td>0.000269</td>
+                    <td>0.984</td>
+                    <td>1.0</td>
+                    <td>0.0446</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 2</strong></td>
+                    <td>0.819</td>
+                    <td>0.006</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>610</td>
+                    <td>0.000269</td>
+                    <td>0.929</td>
+                    <td>1.0</td>
+                    <td>0.156</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 3</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>105</td>
+                    <td>0.001598</td>
+                    <td>0.826</td>
+                    <td>1.0</td>
+                    <td>0.232</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 4</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>610</td>
+                    <td>0.000269</td>
+                    <td>0.929</td>
+                    <td>1.0</td>
+                    <td>0.157</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 5</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>610</td>
+                    <td>0.000269</td>
+                    <td>1.0</td>
+                    <td>1.0</td>
+                    <td>0.0156</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 6</strong></td>
+                    <td>0.819</td>
+                    <td>0.006</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>105</td>
+                    <td>0.001598</td>
+                    <td>0.913</td>
+                    <td>1.0</td>
+                    <td>0.204</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 7</strong></td>
+                    <td>0.819</td>
+                    <td>0.006</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>105</td>
+                    <td>0.001598</td>
+                    <td>0.913</td>
+                    <td>1.0</td>
+                    <td>0.162</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Controller 8</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>5</td>
+                    <td>7</td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>105</td>
+                    <td>0.001598</td>
+                    <td>0.754</td>
+                    <td>1.0</td>
+                    <td>0.294</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4>Training Summary</h4>
+            <p><strong>Average Performance Across All Controllers:</strong></p>
+            <ul>
+              <li><strong>Model Accuracy:</strong> 0.906 (90.6%)</li>
+              <li><strong>Charge Accuracy:</strong> 1.0 (100%)</li>
+            </ul>
+
+            <h3 id="model-performance-comparison">4.3 Model Performance Comparison</h3>
+            <p>
+              Comprehensive evaluation across all 8 trained models showing performance variations
+              with different parameter configurations.
+            </p>
+
+            <h4>Overall Performance Summary</h4>
+            <p>Comparison of controller performance across all model variants:</p>
+            <!-- Placeholder for model comparison graph -->
+            <div class="chart-placeholder">
+              <strong>Figure 4.1:</strong> Controller performance comparison across 8 models (Oracle
+              vs Naive vs ML)
               <ul>
-                <li>US-CAL-LDWP (California)</li>
-                <li>US-FLA-FPL (Florida)</li>
-                <li>US-NW-PSEI (Northwest)</li>
-                <li>US-NY-NYIS (New York)</li>
+                <li>Success rates by model configuration</li>
+                <li>Utility rewards by model configuration</li>
+                <li>Uptime metrics by model configuration</li>
               </ul>
+            </div>
 
-              <h3 id="controller-training-statistics">4.2 Controller Training Statistics</h3>
-              <p>
-                Training configuration and performance statistics for all 8 trained controllers.
-              </p>
+            <h3 id="ablation-studies">4.4 Ablation Studies</h3>
+            <p>
+              Comprehensive ablation studies across all parameter variations to understand their
+              impact on controller performance.
+            </p>
 
-              <div class="table-container">
-                <table class="params-table">
-                  <thead>
-                    <tr>
-                      <th>Controller</th>
-                      <th>Accuracy Threshold</th>
-                      <th>Latency Threshold (s)</th>
-                      <th>Success Weight</th>
-                      <th>Small Miss Weight</th>
-                      <th>Large Miss Weight</th>
-                      <th>Carbon Weight</th>
-                      <th>Battery Capacity (mWh)</th>
-                      <th>Charge Rate (mWh/s)</th>
-                      <th>Test Model Acc</th>
-                      <th>Test Charge Acc</th>
-                      <th>Test Loss</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Controller 1</strong></td>
-                      <td>0.819</td>
-                      <td>0.006</td>
-                      <td>5</td>
-                      <td>7</td>
-                      <td>10</td>
-                      <td>15</td>
-                      <td>610</td>
-                      <td>0.000269</td>
-                      <td>0.984</td>
-                      <td>1.0</td>
-                      <td>0.0446</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 2</strong></td>
-                      <td>0.819</td>
-                      <td>0.006</td>
-                      <td>20</td>
-                      <td>5</td>
-                      <td>8</td>
-                      <td>7</td>
-                      <td>610</td>
-                      <td>0.000269</td>
-                      <td>0.929</td>
-                      <td>1.0</td>
-                      <td>0.156</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 3</strong></td>
-                      <td>0.95</td>
-                      <td>0.015</td>
-                      <td>20</td>
-                      <td>5</td>
-                      <td>8</td>
-                      <td>7</td>
-                      <td>105</td>
-                      <td>0.001598</td>
-                      <td>0.826</td>
-                      <td>1.0</td>
-                      <td>0.232</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 4</strong></td>
-                      <td>0.95</td>
-                      <td>0.015</td>
-                      <td>20</td>
-                      <td>5</td>
-                      <td>8</td>
-                      <td>7</td>
-                      <td>610</td>
-                      <td>0.000269</td>
-                      <td>0.929</td>
-                      <td>1.0</td>
-                      <td>0.157</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 5</strong></td>
-                      <td>0.95</td>
-                      <td>0.015</td>
-                      <td>5</td>
-                      <td>7</td>
-                      <td>10</td>
-                      <td>15</td>
-                      <td>610</td>
-                      <td>0.000269</td>
-                      <td>1.0</td>
-                      <td>1.0</td>
-                      <td>0.0156</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 6</strong></td>
-                      <td>0.819</td>
-                      <td>0.006</td>
-                      <td>20</td>
-                      <td>5</td>
-                      <td>8</td>
-                      <td>7</td>
-                      <td>105</td>
-                      <td>0.001598</td>
-                      <td>0.913</td>
-                      <td>1.0</td>
-                      <td>0.204</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 7</strong></td>
-                      <td>0.819</td>
-                      <td>0.006</td>
-                      <td>5</td>
-                      <td>7</td>
-                      <td>10</td>
-                      <td>15</td>
-                      <td>105</td>
-                      <td>0.001598</td>
-                      <td>0.913</td>
-                      <td>1.0</td>
-                      <td>0.162</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Controller 8</strong></td>
-                      <td>0.95</td>
-                      <td>0.015</td>
-                      <td>5</td>
-                      <td>7</td>
-                      <td>10</td>
-                      <td>15</td>
-                      <td>105</td>
-                      <td>0.001598</td>
-                      <td>0.754</td>
-                      <td>1.0</td>
-                      <td>0.294</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <h4>Training Summary</h4>
-              <p><strong>Average Performance Across All Controllers:</strong></p>
+            <h4 id="4.4.1-accuracy-threshold-ablation-study">4.4.1 Accuracy Threshold</h4>
+            <p>
+              Impact of varying accuracy requirements (0.819 vs 0.95) on controller performance.
+            </p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.2:</strong> Success rates by accuracy threshold
               <ul>
-                <li><strong>Model Accuracy:</strong> 0.906 (90.6%)</li>
-                <li><strong>Charge Accuracy:</strong> 1.0 (100%)</li>
+                <li>Success/Small Miss/Failure breakdown for acc=0.819 models</li>
+                <li>Success/Small Miss/Failure breakdown for acc=0.95 models</li>
+                <li>Controller performance gap by accuracy requirement</li>
               </ul>
+            </div>
 
-              <h3 id="model-performance-comparison">4.3 Model Performance Comparison</h3>
-              <p>
-                Comprehensive evaluation across all 8 trained models showing performance variations
-                with different parameter configurations.
-              </p>
+            <h4 id="4.4.2-latency-threshold-ablation-study">4.4.2 Latency Threshold</h4>
+            <p>
+              Impact of varying latency requirements (0.006s vs 0.015s) on controller performance.
+            </p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.3:</strong> Performance metrics by latency threshold
+              <ul>
+                <li>Success rates under different latency constraints</li>
+                <li>Model selection patterns by latency requirement</li>
+                <li>Trade-off analysis between accuracy and latency constraints</li>
+              </ul>
+            </div>
 
-              <h4>Overall Performance Summary</h4>
-              <p>Comparison of controller performance across all model variants:</p>
-              <!-- Placeholder for model comparison graph -->
-              <div class="chart-placeholder">
-                <strong>Figure 4.1:</strong> Controller performance comparison across 8 models
-                (Oracle vs Naive vs ML)
-                <ul>
-                  <li>Success rates by model configuration</li>
-                  <li>Utility rewards by model configuration</li>
-                  <li>Uptime metrics by model configuration</li>
-                </ul>
-              </div>
+            <h4 id="4.4.3-reward-weights-ablation-study">4.4.3 Reward Weights</h4>
+            <p>Impact of different reward weight configurations on controller behavior.</p>
 
-              <h3 id="ablation-studies">4.4 Ablation Studies</h3>
-              <p>
-                Comprehensive ablation studies across all parameter variations to understand their
-                impact on controller performance.
-              </p>
+            <b>Performance-Focused Configuration</b>
+            <p>Configuration: Success=20, Small Miss=5, Large Miss=8, Carbon=7</p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.4:</strong> Performance-focused reward weights results
+              <ul>
+                <li>High success rate emphasis outcomes</li>
+                <li>Carbon efficiency under performance focus</li>
+                <li>Battery utilization patterns</li>
+              </ul>
+            </div>
 
-              <h4 id="4.4.1-accuracy-threshold-ablation-study">4.4.1 Accuracy Threshold</h4>
-              <p>
-                Impact of varying accuracy requirements (0.819 vs 0.95) on controller performance.
-              </p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.2:</strong> Success rates by accuracy threshold
-                <ul>
-                  <li>Success/Small Miss/Failure breakdown for acc=0.819 models</li>
-                  <li>Success/Small Miss/Failure breakdown for acc=0.95 models</li>
-                  <li>Controller performance gap by accuracy requirement</li>
-                </ul>
-              </div>
+            <b>Carbon-Focused Configuration</b>
+            <p>Configuration: Success=5, Small Miss=7, Large Miss=10, Carbon=15</p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.5:</strong> Carbon-focused reward weights results
+              <ul>
+                <li>Carbon penalty impact on charging decisions</li>
+                <li>Model selection shifts with carbon emphasis</li>
+                <li>Success rate trade-offs for carbon efficiency</li>
+              </ul>
+            </div>
 
-              <h4 id="4.4.2-latency-threshold-ablation-study">4.4.2 Latency Threshold</h4>
-              <p>
-                Impact of varying latency requirements (0.006s vs 0.015s) on controller performance.
-              </p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.3:</strong> Performance metrics by latency threshold
-                <ul>
-                  <li>Success rates under different latency constraints</li>
-                  <li>Model selection patterns by latency requirement</li>
-                  <li>Trade-off analysis between accuracy and latency constraints</li>
-                </ul>
-              </div>
+            <h4 id="4.4.4-battery-configuration-ablation-study">4.4.4 Battery Configuration</h4>
+            <p>Impact of different battery capacities and charge rates on system performance.</p>
 
-              <h4 id="4.4.3-reward-weights-ablation-study">4.4.3 Reward Weights</h4>
-              <p>Impact of different reward weight configurations on controller behavior.</p>
+            <b>Large Battery Configuration</b>
+            <p>Configuration: 610 mWh capacity, 0.000269 mWh/s charge rate</p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.6:</strong> Large battery configuration results
+              <ul>
+                <li>Energy storage advantages with larger battery</li>
+                <li>Charging patterns for slow charge rate</li>
+                <li>Model selection capabilities with high energy budget</li>
+              </ul>
+            </div>
 
-              <b>Performance-Focused Configuration</b>
-              <p>Configuration: Success=20, Small Miss=5, Large Miss=8, Carbon=7</p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.4:</strong> Performance-focused reward weights results
-                <ul>
-                  <li>High success rate emphasis outcomes</li>
-                  <li>Carbon efficiency under performance focus</li>
-                  <li>Battery utilization patterns</li>
-                </ul>
-              </div>
+            <b>Small Battery Configuration</b>
+            <p>Configuration: 105 mWh capacity, 0.001598 mWh/s charge rate</p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.7:</strong> Small battery configuration results
+              <ul>
+                <li>Energy constraints impact on model selection</li>
+                <li>Frequent charging necessity with small battery</li>
+                <li>Performance optimization under energy constraints</li>
+              </ul>
+            </div>
 
-              <b>Carbon-Focused Configuration</b>
-              <p>Configuration: Success=5, Small Miss=7, Large Miss=10, Carbon=15</p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.5:</strong> Carbon-focused reward weights results
-                <ul>
-                  <li>Carbon penalty impact on charging decisions</li>
-                  <li>Model selection shifts with carbon emphasis</li>
-                  <li>Success rate trade-offs for carbon efficiency</li>
-                </ul>
-              </div>
+            <h4 id="4.4.5-seasonal-variation-ablation-study">4.4.5 Seasonal Variation</h4>
+            <p>
+              Controller performance across different test dates representing seasonal carbon
+              patterns.
+            </p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.8:</strong> Seasonal performance variation across test dates
+              <ul>
+                <li>Performance by season (Feb/May/Aug/Nov 2024)</li>
+                <li>Carbon intensity patterns and controller adaptation</li>
+                <li>Charging behavior changes by carbon availability</li>
+              </ul>
+            </div>
 
-              <h4 id="4.4.4-battery-configuration-ablation-study">4.4.4 Battery Configuration</h4>
-              <p>Impact of different battery capacities and charge rates on system performance.</p>
+            <h4 id="4.4.6-controller-comparison-ablation-study">4.4.6 Controller Comparison</h4>
+            <p>
+              Detailed comparison between Oracle, ML, and Naive controllers across all
+              configurations.
+            </p>
+            <div class="chart-placeholder">
+              <strong>Figure 4.9:</strong> Oracle vs ML controller performance gap
+              <ul>
+                <li>Success rate gap by model configuration</li>
+                <li>Utility reward gap analysis</li>
+                <li>Uptime metric comparison</li>
+                <li>ML imitation quality assessment</li>
+              </ul>
+            </div>
 
-              <b>Large Battery Configuration</b>
-              <p>Configuration: 610 mWh capacity, 0.000269 mWh/s charge rate</p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.6:</strong> Large battery configuration results
-                <ul>
-                  <li>Energy storage advantages with larger battery</li>
-                  <li>Charging patterns for slow charge rate</li>
-                  <li>Model selection capabilities with high energy budget</li>
-                </ul>
-              </div>
+            <b>Naive Controller Baseline Analysis</b>
+            <div class="chart-placeholder">
+              <strong>Figure 4.10:</strong> Naive controller performance as baseline
+              <ul>
+                <li>Naive vs Oracle performance gap</li>
+                <li>ML improvement over naive baseline</li>
+                <li>Usefulness of learned policy vs simple heuristic</li>
+              </ul>
+            </div>
 
-              <b>Small Battery Configuration</b>
-              <p>Configuration: 105 mWh capacity, 0.001598 mWh/s charge rate</p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.7:</strong> Small battery configuration results
-                <ul>
-                  <li>Energy constraints impact on model selection</li>
-                  <li>Frequent charging necessity with small battery</li>
-                  <li>Performance optimization under energy constraints</li>
-                </ul>
-              </div>
-
-              <h4 id="4.4.5-seasonal-variation-ablation-study">4.4.5 Seasonal Variation</h4>
-              <p>
-                Controller performance across different test dates representing seasonal carbon
-                patterns.
-              </p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.8:</strong> Seasonal performance variation across test dates
-                <ul>
-                  <li>Performance by season (Feb/May/Aug/Nov 2024)</li>
-                  <li>Carbon intensity patterns and controller adaptation</li>
-                  <li>Charging behavior changes by carbon availability</li>
-                </ul>
-              </div>
-
-              <h4 id="4.4.6-controller-comparison-ablation-study">4.4.6 Controller Comparison</h4>
-              <p>
-                Detailed comparison between Oracle, ML, and Naive controllers across all
-                configurations.
-              </p>
-              <div class="chart-placeholder">
-                <strong>Figure 4.9:</strong> Oracle vs ML controller performance gap
-                <ul>
-                  <li>Success rate gap by model configuration</li>
-                  <li>Utility reward gap analysis</li>
-                  <li>Uptime metric comparison</li>
-                  <li>ML imitation quality assessment</li>
-                </ul>
-              </div>
-
-              <b>Naive Controller Baseline Analysis</b>
-              <div class="chart-placeholder">
-                <strong>Figure 4.10:</strong> Naive controller performance as baseline
-                <ul>
-                  <li>Naive vs Oracle performance gap</li>
-                  <li>ML improvement over naive baseline</li>
-                  <li>Usefulness of learned policy vs simple heuristic</li>
-                </ul>
-              </div>
-
-              <h4 id="4.4.7-model-selection-patterns">4.4.7 Model Selection Patterns</h4>
-              <div class="chart-placeholder">
-                <strong>Figure 4.11:</strong> YOLOv10 model selection frequency by accuracy
-                threshold
-                <ul>
-                  <li>Preferred model variants for different accuracy requirements</li>
-                  <li>Energy usage patterns by accuracy threshold</li>
-                </ul>
-              </div>
+            <h4 id="4.4.7-model-selection-patterns">4.4.7 Model Selection Patterns</h4>
+            <div class="chart-placeholder">
+              <strong>Figure 4.11:</strong> YOLOv10 model selection frequency by accuracy threshold
+              <ul>
+                <li>Preferred model variants for different accuracy requirements</li>
+                <li>Energy usage patterns by accuracy threshold</li>
+              </ul>
             </div>
           </section>
 
