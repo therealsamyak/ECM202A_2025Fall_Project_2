@@ -1,0 +1,561 @@
+{
+  "model_filename": "C2_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth",
+  "test_date": "2024-08-20",
+  "config": {
+    "system": {
+      "battery_capacity_mwh": 610,
+      "charge_rate_mwh_per_second": 0.000269,
+      "task_interval_seconds": 3600,
+      "horizon_seconds": 86400,
+      "battery_discretization_step": 0.01,
+      "nearest_neighbor_k": 3,
+      "max_workers": 100
+    },
+    "user_requirements": {
+      "accuracy_threshold": 0.95,
+      "latency_threshold_seconds": 0.015
+    },
+    "reward_weights": {
+      "success_weight": 20,
+      "small_miss_weight": 5,
+      "large_miss_weight": 8,
+      "carbon_weight": 7
+    },
+    "data_paths": {
+      "model_profiles": "../model-profiler/power_profiles.json",
+      "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
+    },
+    "simulation": {
+      "start_date": "2024-08-20",
+      "start_time": "00:00:00"
+    }
+  },
+  "model_profiles": {
+    "YOLOv10_N": {
+      "name": "YOLOv10_N",
+      "accuracy": 0.693,
+      "latency": 0.00156,
+      "energy_per_inference": 1.0193704678595066
+    },
+    "YOLOv10_S": {
+      "name": "YOLOv10_S",
+      "accuracy": 0.819,
+      "latency": 0.00266,
+      "energy_per_inference": 1.993935327473283
+    },
+    "YOLOv10_M": {
+      "name": "YOLOv10_M",
+      "accuracy": 0.9,
+      "latency": 0.00548,
+      "energy_per_inference": 2.9540303583870333
+    },
+    "YOLOv10_B": {
+      "name": "YOLOv10_B",
+      "accuracy": 0.925,
+      "latency": 0.00654,
+      "energy_per_inference": 3.8880972742090623
+    },
+    "YOLOv10_L": {
+      "name": "YOLOv10_L",
+      "accuracy": 0.935,
+      "latency": 0.00833,
+      "energy_per_inference": 4.686591747873028
+    },
+    "YOLOv10_X": {
+      "name": "YOLOv10_X",
+      "accuracy": 0.954,
+      "latency": 0.0122,
+      "energy_per_inference": 6.055224678654638
+    },
+    "NO_MODEL": {
+      "name": "NO_MODEL",
+      "accuracy": 0.0,
+      "latency": 0.0,
+      "energy_per_inference": 0.0
+    }
+  },
+  "timestamp": "2025-12-16T03:18:54.161445",
+  "controllers": {
+    "oracle": {
+      "total_reward": 452.0,
+      "path_length": 24,
+      "success_metrics": {
+        "success_count": 23,
+        "small_miss_count": 0,
+        "failure_count": 1,
+        "total_timesteps": 24,
+        "success_rate": 0.9583333333333334,
+        "small_miss_rate": 0.0,
+        "failure_rate": 0.041666666666666664
+      },
+      "uptime_metric": 0.9583333333333334,
+      "actions": [
+        {
+          "timestep": 0,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 610
+        },
+        {
+          "timestep": 1,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 603.9447753
+        },
+        {
+          "timestep": 2,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 597.8895506
+        },
+        {
+          "timestep": 3,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 591.8343259
+        },
+        {
+          "timestep": 4,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 585.7791012
+        },
+        {
+          "timestep": 5,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 579.7238765
+        },
+        {
+          "timestep": 6,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 573.6686518
+        },
+        {
+          "timestep": 7,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 567.6134271
+        },
+        {
+          "timestep": 8,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 561.5582024
+        },
+        {
+          "timestep": 9,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 555.5029777
+        },
+        {
+          "timestep": 10,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 549.447753
+        },
+        {
+          "timestep": 11,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 543.3925283
+        },
+        {
+          "timestep": 12,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 537.3373036
+        },
+        {
+          "timestep": 13,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 531.2820789
+        },
+        {
+          "timestep": 14,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 525.2268542
+        },
+        {
+          "timestep": 15,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 519.1716295
+        },
+        {
+          "timestep": 16,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 513.1164048
+        },
+        {
+          "timestep": 17,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 507.0611801
+        },
+        {
+          "timestep": 18,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 501.0059554
+        },
+        {
+          "timestep": 19,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 494.9507307
+        },
+        {
+          "timestep": 20,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 488.895506
+        },
+        {
+          "timestep": 21,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 482.8402813
+        },
+        {
+          "timestep": 22,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 476.7850566
+        },
+        {
+          "timestep": 23,
+          "model": "NO_MODEL",
+          "charge": false,
+          "battery_level": 470.7298319
+        }
+      ]
+    },
+    "naive": {
+      "total_reward": 480.0,
+      "path_length": 24,
+      "success_metrics": {
+        "success_count": 24,
+        "small_miss_count": 0,
+        "failure_count": 0,
+        "total_timesteps": 24,
+        "success_rate": 1.0,
+        "small_miss_rate": 0.0,
+        "failure_rate": 0.0
+      },
+      "uptime_metric": 1.0,
+      "actions": [
+        {
+          "timestep": 0,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 610
+        },
+        {
+          "timestep": 1,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 603.9447753
+        },
+        {
+          "timestep": 2,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 597.8895506
+        },
+        {
+          "timestep": 3,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 591.8343259
+        },
+        {
+          "timestep": 4,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 585.7791012
+        },
+        {
+          "timestep": 5,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 579.7238765
+        },
+        {
+          "timestep": 6,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 573.6686518
+        },
+        {
+          "timestep": 7,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 567.6134271
+        },
+        {
+          "timestep": 8,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 561.5582024
+        },
+        {
+          "timestep": 9,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 555.5029777
+        },
+        {
+          "timestep": 10,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 549.447753
+        },
+        {
+          "timestep": 11,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 543.3925283
+        },
+        {
+          "timestep": 12,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 537.3373036
+        },
+        {
+          "timestep": 13,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 531.2820789
+        },
+        {
+          "timestep": 14,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 525.2268542
+        },
+        {
+          "timestep": 15,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 519.1716295
+        },
+        {
+          "timestep": 16,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 513.1164048
+        },
+        {
+          "timestep": 17,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 507.0611801
+        },
+        {
+          "timestep": 18,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 501.0059554
+        },
+        {
+          "timestep": 19,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 494.9507307
+        },
+        {
+          "timestep": 20,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 488.895506
+        },
+        {
+          "timestep": 21,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 482.8402813
+        },
+        {
+          "timestep": 22,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 476.7850566
+        },
+        {
+          "timestep": 23,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 470.7298319
+        }
+      ]
+    },
+    "ml": {
+      "total_reward": 480.0,
+      "path_length": 24,
+      "success_metrics": {
+        "success_count": 24,
+        "small_miss_count": 0,
+        "failure_count": 0,
+        "total_timesteps": 24,
+        "success_rate": 1.0,
+        "small_miss_rate": 0.0,
+        "failure_rate": 0.0
+      },
+      "uptime_metric": 1.0,
+      "actions": [
+        {
+          "timestep": 0,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 610
+        },
+        {
+          "timestep": 1,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 603.9447753
+        },
+        {
+          "timestep": 2,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 597.8895506
+        },
+        {
+          "timestep": 3,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 591.8343259
+        },
+        {
+          "timestep": 4,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 585.7791012
+        },
+        {
+          "timestep": 5,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 579.7238765
+        },
+        {
+          "timestep": 6,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 573.6686518
+        },
+        {
+          "timestep": 7,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 567.6134271
+        },
+        {
+          "timestep": 8,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 561.5582024
+        },
+        {
+          "timestep": 9,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 555.5029777
+        },
+        {
+          "timestep": 10,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 549.447753
+        },
+        {
+          "timestep": 11,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 543.3925283
+        },
+        {
+          "timestep": 12,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 537.3373036
+        },
+        {
+          "timestep": 13,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 531.2820789
+        },
+        {
+          "timestep": 14,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 525.2268542
+        },
+        {
+          "timestep": 15,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 519.1716295
+        },
+        {
+          "timestep": 16,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 513.1164048
+        },
+        {
+          "timestep": 17,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 507.0611801
+        },
+        {
+          "timestep": 18,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 501.0059554
+        },
+        {
+          "timestep": 19,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 494.9507307
+        },
+        {
+          "timestep": 20,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 488.895506
+        },
+        {
+          "timestep": 21,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 482.8402813
+        },
+        {
+          "timestep": 22,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 476.7850566
+        },
+        {
+          "timestep": 23,
+          "model": "YOLOv10_X",
+          "charge": false,
+          "battery_level": 470.7298319
+        }
+      ]
+    }
+  },
+  "error": null
+}
