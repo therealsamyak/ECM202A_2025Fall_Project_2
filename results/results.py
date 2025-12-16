@@ -11,6 +11,7 @@ import json
 import os
 import glob
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import seaborn as sns
 from typing import Dict
 import warnings
@@ -46,9 +47,14 @@ class ResultsAnalyzer:
         self.config_path = config_path
         self.config = self._load_config()
 
+        # Override with latest batch summary
+        self.batch_summary_path = self._find_latest_batch_summary()
+        print(
+            f"Using latest batch summary: {os.path.basename(self.batch_summary_path)}"
+        )
+
         # Set paths from config
         self.batch_results_dir = self.config["batch_results_dir"]
-        self.batch_summary_path = self.config["batch_summary_path"]
         self.output_dir = self.config["output_dir"]
         self.controller_mapping = self.config["controller_mapping"]
 
@@ -62,6 +68,30 @@ class ResultsAnalyzer:
 
         # Ensure output directory exists
         os.makedirs(self.output_dir, exist_ok=True)
+
+    def _find_latest_batch_summary(self) -> str:
+        """Find most recent batch summary file by timestamp."""
+        import re
+
+        summary_dir = os.path.dirname(self.config["batch_summary_path"])
+        pattern = re.compile(r"batch_summary_(\d{8}_\d{6})\.json")
+
+        latest_file = None
+        latest_timestamp = 0
+
+        for file in os.listdir(summary_dir):
+            match = pattern.match(file)
+            if match:
+                timestamp_str = match.group(1)
+                timestamp = int(timestamp_str.replace("_", ""))
+                if timestamp > latest_timestamp:
+                    latest_timestamp = timestamp
+                    latest_file = os.path.join(summary_dir, file)
+
+        if latest_file is None:
+            raise FileNotFoundError(f"No batch summary files found in {summary_dir}")
+
+        return latest_file
 
     def _load_config(self) -> Dict:
         """Load configuration from JSON file."""
@@ -152,11 +182,15 @@ class ResultsAnalyzer:
             return "mixed"
 
     def _get_short_name(self, config: Dict) -> str:
-        """Generate C1-C8 controller name from model configuration."""
-        # Extract the model filename part that matches the controller mapping
+        """Extract controller short name from prefixed model filename."""
         model_file = config.get("model_file", "")
 
-        # Remove 'controller_controller_' prefix if present
+        # Extract C1, C2, etc. from beginning of filename
+        if model_file.startswith("C"):
+            # Format: "C1_controller_acc..." -> "C1"
+            return model_file.split("_")[0]
+
+        # Fallback to original logic for backward compatibility
         if model_file.startswith("controller_controller_"):
             mapping_key = model_file.replace("controller_controller_", "")
         else:
@@ -203,7 +237,7 @@ class ResultsAnalyzer:
 
     def format_percentage_axis(self, ax):
         """Format y-axis as percentage."""
-        ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
 
     def create_figure_4_1(self):
         """Figure 4.1: Controller Performance Comparison across all model configurations."""
@@ -217,6 +251,11 @@ class ResultsAnalyzer:
         )
 
         models = self.summary_data["graph_data"]["accuracy_metrics"]["models"]
+
+        # Ensure model_configs is populated
+        if not self.model_configs:
+            self._parse_model_configurations()
+
         short_names = [self.model_configs[m]["short_name"] for m in models]
 
         # Success Rates
@@ -235,6 +274,7 @@ class ResultsAnalyzer:
         x = list(range(len(short_names)))
         width = 0.25
 
+        # Oracle bars
         ax1.bar(
             [i - width for i in x],
             success_rates["Oracle"],
@@ -242,7 +282,11 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax1.bar(x, success_rates["ML"], width, label="ML", color="#A23B72")
+
+        # ML bars with a single label but individual controller names on x-axis
+        ax1.bar(x, success_rates["ML"], width, label="ML Controllers", color="#A23B72")
+
+        # Naive bars
         ax1.bar(
             [i + width for i in x],
             success_rates["Naive"],
@@ -278,7 +322,10 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax2.bar(x, rewards["ML"], width, label="ML", color="#A23B72")
+
+        # ML bars with single label but individual controller names on x-axis
+        ax2.bar(x, rewards["ML"], width, label="ML Controllers", color="#A23B72")
+
         ax2.bar(
             [i + width for i in x],
             rewards["Naive"],
@@ -292,7 +339,7 @@ class ResultsAnalyzer:
         ax2.set_xticklabels(short_names, rotation=45, ha="right")
         ax2.legend()
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Uptime Metrics
         uptime = {
@@ -314,7 +361,11 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax3.bar(x, uptime["ML"], width, label="ML", color="#A23B72")
+
+        # ML bars with specific controller names
+        for i, short_name in enumerate(short_names):
+            ax3.bar(i, uptime["ML"][i], width, label=short_name, color="#A23B72")
+
         ax3.bar(
             [i + width for i in x],
             uptime["Naive"],
@@ -338,13 +389,13 @@ class ResultsAnalyzer:
         ]
 
         ax4.bar(x, performance_gap, color="#E63946", alpha=0.7)
-        ax4.set_title("ML vs Oracle Performance Gap")
+        ax4.set_title("ML Controllers vs Oracle Performance Gap")
         ax4.set_ylabel("Gap (Oracle - ML)")
         ax4.set_xticks(x)
         ax4.set_xticklabels(short_names, rotation=45, ha="right")
         ax4.axhline(y=0, color="black", linestyle="-", alpha=0.5)
         ax4.grid(True, alpha=0.3)
-        ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax4.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
 
         plt.tight_layout()
         plt.savefig(
@@ -416,7 +467,7 @@ class ResultsAnalyzer:
         ax1.bar(
             [i - width for i in x], oracle_avg, width, label="Oracle", color="#2E86AB"
         )
-        ax1.bar(x, ml_avg, width, label="ML", color="#A23B72")
+        ax1.bar(x, ml_avg, width, label="ML Controllers", color="#A23B72")
         ax1.bar(
             [i + width for i in x], naive_avg, width, label="Naive", color="#F18F01"
         )
@@ -440,7 +491,7 @@ class ResultsAnalyzer:
         ax2.set_title("Oracle-ML Performance Gap by Accuracy Threshold")
         ax2.set_ylabel("Performance Gap")
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.5)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
 
         # Plot 3: Success rate distribution
         ax3.boxplot([acc_819_oracle, acc_950_oracle], labels=["81.9%", "95.0%"])
@@ -452,7 +503,14 @@ class ResultsAnalyzer:
         ax4.plot(
             thresholds, oracle_avg, "o-", label="Oracle", color="#2E86AB", linewidth=2
         )
-        ax4.plot(thresholds, ml_avg, "s-", label="ML", color="#A23B72", linewidth=2)
+        ax4.plot(
+            thresholds,
+            ml_avg,
+            "s-",
+            label="ML Controllers",
+            color="#A23B72",
+            linewidth=2,
+        )
         ax4.plot(
             thresholds, naive_avg, "^-", label="Naive", color="#F18F01", linewidth=2
         )
@@ -461,7 +519,7 @@ class ResultsAnalyzer:
         ax4.set_xlabel("Accuracy Threshold")
         ax4.legend()
         ax4.set_ylim(0, 1.1)
-        ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax4.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
         ax4.grid(True, alpha=0.3)
 
         plt.tight_layout()
@@ -536,7 +594,7 @@ class ResultsAnalyzer:
         ax2.set_title("Total Reward by Latency Threshold")
         ax2.set_ylabel("Total Reward")
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.5)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Plot 3: Uptime by Latency
         uptime_avg = [
@@ -591,7 +649,7 @@ class ResultsAnalyzer:
         ax4.set_xticklabels(categories)
         ax4.legend()
         ax4.set_ylim(0, 1.1)
-        ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax4.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
 
         plt.tight_layout()
         plt.savefig(
@@ -654,7 +712,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax1.bar(x, perf_success["ML"], width, label="ML", color="#A23B72")
+        ax1.bar(x, perf_success["ML"], width, label="ML Controllers", color="#A23B72")
         ax1.bar(
             [i + width for i in x],
             perf_success["Naive"],
@@ -699,7 +757,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax2.bar(x, perf_rewards["ML"], width, label="ML", color="#A23B72")
+        ax2.bar(x, perf_rewards["ML"], width, label="ML Controllers", color="#A23B72")
         ax2.bar(
             [i + width for i in x],
             perf_rewards["Naive"],
@@ -713,7 +771,7 @@ class ResultsAnalyzer:
         ax2.set_xticklabels(short_names, rotation=45, ha="right")
         ax2.legend()
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Uptime metrics
         perf_uptime = {
@@ -744,7 +802,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax3.bar(x, perf_uptime["ML"], width, label="ML", color="#A23B72")
+        ax3.bar(x, perf_uptime["ML"], width, label="ML Controllers", color="#A23B72")
         ax3.bar(
             [i + width for i in x],
             perf_uptime["Naive"],
@@ -778,7 +836,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax4.bar(x, ml_efficiency, width, label="ML", color="#A23B72")
+        ax4.bar(x, ml_efficiency, width, label="ML Controllers", color="#A23B72")
         ax4.bar(
             [i + width for i in x],
             naive_efficiency,
@@ -855,7 +913,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax1.bar(x, carbon_success["ML"], width, label="ML", color="#A23B72")
+        ax1.bar(x, carbon_success["ML"], width, label="ML Controllers", color="#A23B72")
         ax1.bar(
             [i + width for i in x],
             carbon_success["Naive"],
@@ -900,7 +958,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax2.bar(x, carbon_rewards["ML"], width, label="ML", color="#A23B72")
+        ax2.bar(x, carbon_rewards["ML"], width, label="ML Controllers", color="#A23B72")
         ax2.bar(
             [i + width for i in x],
             carbon_rewards["Naive"],
@@ -914,7 +972,7 @@ class ResultsAnalyzer:
         ax2.set_xticklabels(short_names, rotation=45, ha="right")
         ax2.legend()
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Uptime metrics
         carbon_uptime = {
@@ -945,7 +1003,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax3.bar(x, carbon_uptime["ML"], width, label="ML", color="#A23B72")
+        ax3.bar(x, carbon_uptime["ML"], width, label="ML Controllers", color="#A23B72")
         ax3.bar(
             [i + width for i in x],
             carbon_uptime["Naive"],
@@ -973,7 +1031,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax4.bar(x, ml_carbon_eff, width, label="ML", color="#A23B72")
+        ax4.bar(x, ml_carbon_eff, width, label="ML Controllers", color="#A23B72")
         ax4.bar(
             [i + width for i in x],
             naive_carbon_eff,
@@ -986,7 +1044,7 @@ class ResultsAnalyzer:
         ax4.set_xticks(x)
         ax4.set_xticklabels(short_names, rotation=45, ha="right")
         ax4.legend()
-        ax4.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.1%}"))
+        ax4.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.1%}"))
 
         plt.tight_layout()
         plt.savefig(
@@ -1051,7 +1109,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax1.bar(x, large_success["ML"], width, label="ML", color="#A23B72")
+        ax1.bar(x, large_success["ML"], width, label="ML Controllers", color="#A23B72")
         ax1.bar(
             [i + width for i in x],
             large_success["Naive"],
@@ -1096,7 +1154,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax2.bar(x, large_rewards["ML"], width, label="ML", color="#A23B72")
+        ax2.bar(x, large_rewards["ML"], width, label="ML Controllers", color="#A23B72")
         ax2.bar(
             [i + width for i in x],
             large_rewards["Naive"],
@@ -1110,7 +1168,7 @@ class ResultsAnalyzer:
         ax2.set_xticklabels(short_names, rotation=45, ha="right")
         ax2.legend()
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Uptime metrics
         large_uptime = {
@@ -1141,7 +1199,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax3.bar(x, large_uptime["ML"], width, label="ML", color="#A23B72")
+        ax3.bar(x, large_uptime["ML"], width, label="ML Controllers", color="#A23B72")
         ax3.bar(
             [i + width for i in x],
             large_uptime["Naive"],
@@ -1173,7 +1231,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax4.bar(x, ml_util, width, label="ML", color="#A23B72")
+        ax4.bar(x, ml_util, width, label="ML Controllers", color="#A23B72")
         ax4.bar(
             [i + width for i in x],
             naive_util,
@@ -1252,7 +1310,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax1.bar(x, small_success["ML"], width, label="ML", color="#A23B72")
+        ax1.bar(x, small_success["ML"], width, label="ML Controllers", color="#A23B72")
         ax1.bar(
             [i + width for i in x],
             small_success["Naive"],
@@ -1297,7 +1355,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax2.bar(x, small_rewards["ML"], width, label="ML", color="#A23B72")
+        ax2.bar(x, small_rewards["ML"], width, label="ML Controllers", color="#A23B72")
         ax2.bar(
             [i + width for i in x],
             small_rewards["Naive"],
@@ -1311,7 +1369,7 @@ class ResultsAnalyzer:
         ax2.set_xticklabels(short_names, rotation=45, ha="right")
         ax2.legend()
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
-        ax2.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
 
         # Uptime metrics
         small_uptime = {
@@ -1342,7 +1400,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax3.bar(x, small_uptime["ML"], width, label="ML", color="#A23B72")
+        ax3.bar(x, small_uptime["ML"], width, label="ML Controllers", color="#A23B72")
         ax3.bar(
             [i + width for i in x],
             small_uptime["Naive"],
@@ -1374,7 +1432,7 @@ class ResultsAnalyzer:
             label="Oracle",
             color="#2E86AB",
         )
-        ax4.bar(x, ml_efficiency, width, label="ML", color="#A23B72")
+        ax4.bar(x, ml_efficiency, width, label="ML Controllers", color="#A23B72")
         ax4.bar(
             [i + width for i in x],
             naive_efficiency,
