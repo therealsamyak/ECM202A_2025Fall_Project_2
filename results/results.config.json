@@ -1,0 +1,15 @@
+{
+  "batch_summary_path": "simulation/simulation_data/batch_summaries/batch_summary_20251215_222423.json",
+  "batch_results_dir": "simulation/simulation_data/batch_results",
+  "output_dir": "results/graphs",
+  "controller_mapping": {
+    "controller_acc0.95_lat0.015_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth": "C1",
+    "controller_acc0.95_lat0.015_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth": "C2",
+    "controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth": "C3",
+    "controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth": "C4",
+    "controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth": "C5",
+    "controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth": "C6",
+    "controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth": "C7",
+    "controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth": "C8"
+  }
+}

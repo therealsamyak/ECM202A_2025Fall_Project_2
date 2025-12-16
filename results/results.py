@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from typing import Dict
 import warnings
+import sys
 
 warnings.filterwarnings("ignore")
 
@@ -40,18 +41,54 @@ plt.rcParams.update(
 class ResultsAnalyzer:
     """Main class for analyzing batch results and generating charts."""
 
-    def __init__(
-        self, batch_results_dir: str, batch_summary_path: str, output_dir: str
-    ):
-        self.batch_results_dir = batch_results_dir
-        self.batch_summary_path = batch_summary_path
-        self.output_dir = output_dir
+    def __init__(self, config_path: str = "results/results.config.json"):
+        # Load configuration
+        self.config_path = config_path
+        self.config = self._load_config()
+
+        # Set paths from config
+        self.batch_results_dir = self.config["batch_results_dir"]
+        self.batch_summary_path = self.config["batch_summary_path"]
+        self.output_dir = self.config["output_dir"]
+        self.controller_mapping = self.config["controller_mapping"]
+
+        # Initialize data containers
         self.batch_data = None
         self.summary_data = None
         self.model_configs = {}
 
+        # Validate paths exist
+        self._validate_paths()
+
         # Ensure output directory exists
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(self.output_dir, exist_ok=True)
+
+    def _load_config(self) -> Dict:
+        """Load configuration from JSON file."""
+        try:
+            with open(self.config_path, "r") as f:
+                config = json.load(f)
+
+            if "batch_summary_path" not in config:
+                raise ValueError("batch_summary_path is required in config")
+
+            return config
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Configuration file not found: {self.config_path}")
+        except json.JSONDecodeError as e:
+            raise ValueError(f"Invalid JSON in config file: {e}")
+
+    def _validate_paths(self):
+        """Validate that required paths exist."""
+        if not os.path.exists(self.batch_summary_path):
+            raise FileNotFoundError(
+                f"Batch summary file not found: {self.batch_summary_path}"
+            )
+
+        if not os.path.exists(self.batch_results_dir):
+            raise FileNotFoundError(
+                f"Batch results directory not found: {self.batch_results_dir}"
+            )
 
     def load_data(self):
         """Load batch results and summary data."""
@@ -98,6 +135,9 @@ class ResultsAnalyzer:
 
             # Determine configuration type
             config["config_type"] = self._get_config_type(config)
+
+            # Store the original model file for controller mapping
+            config["model_file"] = model_file
             config["short_name"] = self._get_short_name(config)
 
             self.model_configs[model_file] = config
@@ -112,11 +152,18 @@ class ResultsAnalyzer:
             return "mixed"
 
     def _get_short_name(self, config: Dict) -> str:
-        """Generate short name for model configuration."""
-        acc = int(config["accuracy_threshold"] * 1000)
-        lat = int(config["latency_threshold"] * 1000)
-        cap = config["battery_capacity"]
-        return f"acc{acc}_lat{lat}_cap{cap}"
+        """Generate C1-C8 controller name from model configuration."""
+        # Extract the model filename part that matches the controller mapping
+        model_file = config.get("model_file", "")
+
+        # Remove 'controller_controller_' prefix if present
+        if model_file.startswith("controller_controller_"):
+            mapping_key = model_file.replace("controller_controller_", "")
+        else:
+            mapping_key = model_file
+
+        # Look up in controller mapping
+        return self.controller_mapping.get(mapping_key, "Unknown")
 
     def _load_individual_results(self):
         """Load individual batch result files for detailed analysis."""
@@ -1354,17 +1401,15 @@ class ResultsAnalyzer:
 
 def main():
     """Main function to run the analysis."""
-    # Set up paths
-    batch_results_dir = "simulation/simulation_data/batch_results"
-    batch_summary_path = (
-        "simulation/simulation_data/batch_summaries/batch_summary_20251215_073024.json"
-    )
-    output_dir = "results/graphs"
-
-    # Create analyzer and generate charts
-    analyzer = ResultsAnalyzer(batch_results_dir, batch_summary_path, output_dir)
-    analyzer.load_data()
-    analyzer.generate_all_charts()
+    try:
+        # Create analyzer and generate charts
+        analyzer = ResultsAnalyzer()
+        analyzer.load_data()
+        analyzer.generate_all_charts()
+        print("All charts generated successfully!")
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
