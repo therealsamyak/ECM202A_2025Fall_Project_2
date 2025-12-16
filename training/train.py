@@ -123,15 +123,9 @@ def load_config(config_path: str):
                 "learning_rate": 0.001,
                 "batch_size": 32,
                 "epochs": 100,
+                "early_stopping": {"enabled": True, "patience": 10, "min_delta": 0.001},
             },
-            "data": {
-                "train_data_path": "data/training_data/train.npy",
-                "val_data_path": "data/training_data/val.npy",
-                "test_data_path": "data/training_data/test.npy",
-                "train_actions_path": "data/training_data/train_actions.npy",
-                "val_actions_path": "data/training_data/val_actions.npy",
-                "test_actions_path": "data/training_data/test_actions.npy",
-            },
+            "data_directory": "data/training_data/",
             "paths": {
                 "model_save_path": "training/models/best_model.pth",
             },
@@ -417,9 +411,7 @@ def train_per_controller_mode(config, device, logger) -> int:
         )
 
         # Save model with controller-specific naming
-        model_save_path = (
-            f"training/models/controller_{controller['name']}_best_model.pth"
-        )
+        model_save_path = f"training/models/C{i}_{controller['name']}_best_model.pth"
         os.makedirs(os.path.dirname(model_save_path), exist_ok=True)
 
         model_metadata = {
@@ -496,168 +488,6 @@ def train_per_controller_mode(config, device, logger) -> int:
     return 0
 
 
-def train_generic_mode(config, device, logger) -> int:
-    """Original generic training mode for backward compatibility."""
-    # Load configuration
-    training_config = config.get("training", {})
-
-    # Setup model
-    model = PolicyNetwork().to(device)
-    criterion = ImitationLoss()
-    optimizer = optim.Adam(
-        model.parameters(), lr=training_config.get("learning_rate", 0.001)
-    )
-
-    # Load real oracle training data
-    logger.info("Loading oracle training data...")
-
-    data_config = config.get("data", {})
-    train_data_path = data_config.get("train_data_path", "data/training_data/train.npy")
-    train_actions_path = data_config.get(
-        "train_actions_path", "data/training_data/train_actions.npy"
-    )
-    val_data_path = data_config.get("val_data_path", "data/training_data/val.npy")
-    val_actions_path = data_config.get(
-        "val_actions_path", "data/training_data/val_actions.npy"
-    )
-    test_data_path = data_config.get("test_data_path", "data/training_data/test.npy")
-    test_actions_path = data_config.get(
-        "test_actions_path", "data/training_data/test_actions.npy"
-    )
-
-    # Load numpy arrays
-    train_obs = np.load(train_data_path)
-    train_actions = np.load(train_actions_path)
-    val_obs = np.load(val_data_path)
-    val_actions = np.load(val_actions_path)
-    test_obs = np.load(test_data_path)
-    test_actions = np.load(test_actions_path)
-
-    # Convert to tensors
-    train_dataset = TensorDataset(
-        torch.FloatTensor(train_obs), torch.LongTensor(train_actions)
-    )
-    val_dataset = TensorDataset(
-        torch.FloatTensor(val_obs), torch.LongTensor(val_actions)
-    )
-    test_dataset = TensorDataset(
-        torch.FloatTensor(test_obs), torch.LongTensor(test_actions)
-    )
-
-    logger.info(f"Loaded training data: {len(train_dataset)} samples")
-    logger.info(f"Loaded validation data: {len(val_dataset)} samples")
-    logger.info(f"Loaded test data: {len(test_dataset)} samples")
-
-    batch_size = training_config.get("batch_size", 32)
-    epochs = training_config.get("epochs", 100)
-    model_save_path = config.get("paths", {}).get(
-        "model_save_path", "training/models/best_model.pth"
-    )
-
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
-
-    logger.info("📊 Data loaded successfully (using real oracle data)")
-    logger.info(f"🚀 Starting training for {epochs} epochs...")
-    logger.info("-" * 60)
-
-    # Setup early stopping
-    early_stopping_config = training_config.get("early_stopping", {})
-    if early_stopping_config.get("enabled", True):
-        early_stopping = EarlyStopping(
-            patience=early_stopping_config.get("patience", 10),
-            min_delta=early_stopping_config.get("min_delta", 0.001),
-            restore_best_weights=True,
-        )
-        logger.info(
-            f"🛑 Early stopping enabled: patience={early_stopping_config.get('patience', 10)}"
-        )
-    else:
-        early_stopping = None
-        logger.info("🛑 Early stopping disabled")
-
-    # Training loop
-    best_val_loss = float("inf")
-
-    for epoch in range(epochs):
-        logger.info(f"📈 Epoch {epoch + 1}/{epochs}")
-
-        # Training
-        model.train()
-        train_total_losses = []
-
-        for observations, actions in train_loader:
-            observations = observations.to(device)
-            model_targets = actions[:, 0].to(device)
-            charge_targets = actions[:, 1].to(device)
-
-            optimizer.zero_grad()
-            model_logits, charge_logit = model(observations)
-            total_loss, model_loss, charge_loss = criterion(
-                model_logits, charge_logit, model_targets, charge_targets
-            )
-
-            total_loss.backward()
-            optimizer.step()
-            train_total_losses.append(total_loss.item())
-
-        # Validation
-        val_loss, val_model_acc, val_charge_acc = evaluate_model(
-            model, val_loader, device, criterion
-        )
-
-        avg_train_loss = np.mean(train_total_losses) if train_total_losses else 0
-
-        logger.info(f"  🏋 Train Loss: {avg_train_loss:.6f}")
-        logger.info(
-            f"  ✅ Val Loss: {val_loss:.6f} (Model Acc: {val_model_acc:.4f}, Charge Acc: {val_charge_acc:.4f})"
-        )
-
-        # Save best model
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            os.makedirs(os.path.dirname(model_save_path), exist_ok=True)
-
-            model_metadata = {
-                "config": config,
-                "best_val_loss": best_val_loss,
-                "epochs_trained": epoch + 1,
-                "val_model_accuracy": val_model_acc,
-                "val_charge_accuracy": val_charge_acc,
-            }
-
-            save_model(model, model_save_path, model_metadata)
-            logger.info(f"  💾 New best model saved (val_loss: {best_val_loss:.6f})")
-
-        # Check early stopping
-        if early_stopping:
-            if early_stopping(val_loss, model):
-                logger.info(f"🛑 Early stopping triggered at epoch {epoch + 1}")
-                break
-
-        logger.info("-" * 60)
-
-    # Test set evaluation
-    logger.info("🧪 Evaluating on test set...")
-    test_loss, test_model_acc, test_charge_acc = evaluate_model(
-        model, test_loader, device, criterion
-    )
-    logger.info("📊 Test Results:")
-    logger.info(f"  Test Loss: {test_loss:.6f}")
-    logger.info(f"  Test Model Accuracy: {test_model_acc:.4f}")
-    logger.info(f"  Test Charge Accuracy: {test_charge_acc:.4f}")
-
-    # Final report
-    logger.info("\n" + "=" * 60)
-    logger.info("✅ Training completed successfully!")
-    logger.info(f"📊 Best validation loss: {best_val_loss:.6f}")
-    logger.info(f"💾 Best model saved to: {model_save_path}")
-    logger.info("=" * 60)
-
-    return 0
-
-
 def main():
     """Main training function."""
     # Setup logging first
@@ -678,18 +508,15 @@ def main():
     logger.info(f"🏋 Epochs: {training_config.get('epochs', 'N/A')}")
     logger.info(f"📦 Batch size: {training_config.get('batch_size', 'N/A')}")
     logger.info(f"⚡ Learning rate: {training_config.get('learning_rate', 'N/A')}")
-    logger.info(f"🎯 Training Mode: {config.get('training_mode', 'generic')}")
+    logger.info("🎯 Training Mode: per_controller")
     logger.info("-" * 60)
 
     # Setup
     device = get_device()
     logger.info(f"💻 Using device: {device}")
 
-    # Check training mode
-    if config.get("training_mode") == "per_controller":
-        return train_per_controller_mode(config, device, logger)
-    else:
-        return train_generic_mode(config, device, logger)
+    # Always use per_controller mode
+    return train_per_controller_mode(config, device, logger)
 
 
 if __name__ == "__main__":

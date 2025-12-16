@@ -1263,33 +1263,24 @@ generate_comparative_analysis(controllers)</code></pre>
                 >training/training.config.json</a
               >
             </p>
-
-            <b>Training Parameters</b>
             <pre><code>{
   "training_mode": "per_controller",
-  "learning_rate": 0.001,
-  "batch_size": 32,
-  "epochs": 500,
-  "loss_function": "cross_entropy",
-  "optimizer": "Adam"
-}</code></pre>
-
-            <b>Early Stopping</b>
-            <pre><code>{
-  "enabled": true,
-  "patience": 10,
-  "min_delta": 0.001
-}</code></pre>
-
-            <b>Data Paths</b>
-            <pre><code>{
-  "train_data_path": "data/training_data/train.npy",
-  "val_data_path": "data/training_data/val.npy",
-  "test_data_path": "data/training_data/test.npy",
-  "train_actions_path": "data/training_data/train_actions.npy",
-  "val_actions_path": "data/training_data/val_actions.npy",
-  "test_actions_path": "data/training_data/test_actions.npy",
-  "model_save_path": "training/models/best_model.pth"
+  "data_directory": "data/training_data/",
+  "training": {
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "epochs": 500,
+    "loss_function": "cross_entropy",
+    "optimizer": "Adam",
+    "early_stopping": {
+      "enabled": true,
+      "patience": 10,
+      "min_delta": 0.001
+    }
+  },
+  "paths": {
+    "model_save_path": "training/models/best_model.pth"
+  }
 }</code></pre>
 
             <h4>Energy Data Source</h4>
