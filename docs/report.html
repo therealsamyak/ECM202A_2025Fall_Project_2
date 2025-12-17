@@ -93,24 +93,20 @@
                 <a href="#ablation-studies">4.4 Ablation Studies</a>
                 <ul class="toc-sublinks">
                   <li>
-                    <a href="#4.4.1-accuracy-latency-impact">4.4.1 Accuracy & Latency Impact</a>
+                    <a href="#4.4.1-accuracy-latency-impact">4.4.1 Accuracy vs Latency Impact</a>
                   </li>
-                  <li><a href="#4.4.2-reward-weights-ablation-study">4.4.2 Reward Weights</a></li>
                   <li>
-                    <a href="#4.4.3-battery-configuration-ablation-study"
-                      >4.4.3 Battery Configuration</a
+                    <a href="#4.4.2-reward-structure-impact">4.4.2 Reward Structure Impact</a>
+                  </li>
+                  <li>
+                    <a href="#4.4.3-battery-configuration-impact"
+                      >4.4.3 Battery Configuration Impact</a
                     >
                   </li>
                   <li>
-                    <a href="#4.4.4-seasonal-variation-ablation-study">4.4.4 Seasonal Variation</a>
-                  </li>
-                  <li>
-                    <a href="#4.4.5-controller-comparison-ablation-study"
-                      >4.4.5 Controller Performance Gaps</a
+                    <a href="#4.4.4-seasonal-variation-analysis"
+                      >4.4.4 Seasonal Variation Analysis</a
                     >
-                  </li>
-                  <li>
-                    <a href="#4.4.6-reward-weight-sensitivity">4.4.6 Reward Weight Sensitivity</a>
                   </li>
                 </ul>
               </li>
@@ -136,7 +132,13 @@
         </ul>
 
         <div class="footer-info">
-          <p><strong>Contributors:</strong><br />Samyak Kakatur, Jasper Lin</p>
+          <p>
+            <strong>Contributors:</strong><br /><a
+              href="https://github.com/therealsamyak"
+              target="_blank"
+              >Samyak Kakatur</a
+            >, <a href="https://github.com/jasperlin0330" target="_blank">Jasper Lin</a>
+          </p>
         </div>
       </aside>
 
@@ -144,7 +146,27 @@
       <main class="main-content">
         <div class="content-wrapper">
           <h1>Optimal Charge Security Camera</h1>
-          <p>Main report for this project.</p>
+
+          <!-- Contributors Section -->
+          <section id="contributors" class="section">
+            <h2>Contributors</h2>
+            <ul>
+              <li>
+                <strong>Samyak Kakatur</strong> (<a
+                  href="https://github.com/therealsamyak"
+                  target="_blank"
+                  >GitHub</a
+                >)
+              </li>
+              <li>
+                <strong>Jasper Lin</strong> (<a
+                  href="https://github.com/jasperlin0330"
+                  target="_blank"
+                  >GitHub</a
+                >)
+              </li>
+            </ul>
+          </section>
 
           <!-- Abstract Section -->
           <section id="abstract" class="section">
@@ -524,9 +546,9 @@ avg_inference_time_seconds ← actual_inference_duration / iterations
 
             <b
               >To simplify this problem, we assume that ALL these parameters are constant per
-              controller. If any of these parameters change, the controller will need to be solved
-              and retrained again. See <a href="#limitations">Section 5.3</a> for more
-              information.</b
+              controller (EXCEPT \(\{d_t\}_{t=0}^{T-1}\)). If any of these parameters change, the
+              controller will need to be solved and retrained again. See
+              <a href="#limitations">Section 5.3</a> for more information.</b
             >
 
             <h3 id="oracle-controller">3.3 Oracle Controller</h3>
@@ -762,9 +784,10 @@ END FOR
 
             <b
               >To simplify this problem, we assume that ALL system parameters in
-              <a href="#system-parameters">Section 3.2</a> are constant per controller. If any of
-              these parameters change, the controller will need to be solved and retrained again.
-              See <a href="#limitations">Section 5.3</a> for more information.</b
+              <a href="#system-parameters">Section 3.2</a> are constant per controller (EXCEPT
+              \(\{d_t\}_{t=0}^{T-1}\)). If any of these parameters change, the controller will need
+              to be solved and retrained again. See <a href="#limitations">Section 5.3</a> for more
+              information.</b
             >
 
             <h4 id="training-data-generation">Training Data Generation</h4>
@@ -1112,20 +1135,6 @@ generate_comparative_analysis(controllers)</code></pre>
           <!-- Evaluation & Results Section -->
           <section id="evaluation-results" class="section">
             <h2>4. Evaluation & Results</h2>
-            <p>
-              Present experimental results with clarity and professionalism.<br /><br />
-              Include:
-            </p>
-            <ul>
-              <li>Plots (accuracy, latency, energy, error curves)</li>
-              <li>Tables (comparisons with baselines)</li>
-              <li>
-                Qualitative visualizations (spectrograms, heatmaps, bounding boxes, screenshots)
-              </li>
-              <li>Ablation studies</li>
-              <li>Error analysis / failure cases</li>
-            </ul>
-            <p>Each figure should have a caption and a short interpretation.</p>
 
             <h3 id="results-parameters">4.1 Results Parameters</h3>
             <p>Below are all the parameter settings used to generate the results.</p>
@@ -1273,7 +1282,7 @@ generate_comparative_analysis(controllers)</code></pre>
   }
 ]</code></pre>
 
-            <b>Data Generation Parameters</b>
+            <b>Training Data Generation Parameters</b>
             <pre><code>{
   "seasonal_dates": ["2024-01-15", "2024-04-15", "2024-07-15", "2024-10-15"],
   "locations": ["US-CAL-LDWP_2024_5_minute.csv", "US-NY-NYIS_2024_5_minute.csv"],
@@ -1314,6 +1323,32 @@ generate_comparative_analysis(controllers)</code></pre>
   "paths": {
     "model_save_path": "training/models/best_model.pth"
   }
+</code></pre>
+
+            <h4>Simulation Configuration</h4>
+            <p>
+              <a
+                href="https://github.com/therealsamyak/ECM202A_2025Fall_Project_2/blob/main/simulation/simulation.config.json"
+                target="_blank"
+                >simulation/simulation.config.json</a
+              >
+            </p>
+
+            <b>Simulation System Constants</b>
+            <p>\(K\), \(\Delta\), \(F\)</p>
+            <pre><code>{
+  "nearest_neighbor_k": 3,
+  "task_interval_seconds": 3600,
+  "battery_discretization_step": 0.01
+}</code></pre>
+
+            <b>Data Paths</b>
+            <p>Model profiles and energy data file locations</p>
+            <pre><code>{
+  "data_paths": {
+    "model_profiles": "../model-profiler/power_profiles.json",
+    "energy_data": "../energy-data/US-CAL-LDWP_2024_5_minute.csv"
+  }
 }</code></pre>
 
             <h4>Energy Data Source</h4>
@@ -1324,8 +1359,8 @@ generate_comparative_analysis(controllers)</code></pre>
             </p>
             <ul>
               <li>US-CAL-LDWP (California)</li>
-              <li>US-FLA-FPL (Florida)</li>
-              <li>US-NW-PSEI (Northwest)</li>
+              <!-- <li>US-FLA-FPL (Florida)</li>
+              <li>US-NW-PSEI (Northwest)</li> -->
               <li>US-NY-NYIS (New York)</li>
             </ul>
 
@@ -1352,7 +1387,35 @@ generate_comparative_analysis(controllers)</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><strong>Controller 1</strong></td>
+                    <td><strong>C1</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>105</td>
+                    <td>0.001598</td>
+                    <td>0.810</td>
+                    <td>1.0</td>
+                    <td>0.248</td>
+                  </tr>
+                  <tr>
+                    <td><strong>C2</strong></td>
+                    <td>0.95</td>
+                    <td>0.015</td>
+                    <td>20</td>
+                    <td>5</td>
+                    <td>8</td>
+                    <td>7</td>
+                    <td>610</td>
+                    <td>0.000269</td>
+                    <td>0.929</td>
+                    <td>1.0</td>
+                    <td>0.192</td>
+                  </tr>
+                  <tr>
+                    <td><strong>C3</strong></td>
                     <td>0.819</td>
                     <td>0.006</td>
                     <td>5</td>
@@ -1363,10 +1426,10 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>0.000269</td>
                     <td>0.984</td>
                     <td>1.0</td>
-                    <td>0.0446</td>
+                    <td>0.048</td>
                   </tr>
                   <tr>
-                    <td><strong>Controller 2</strong></td>
+                    <td><strong>C4</strong></td>
                     <td>0.819</td>
                     <td>0.006</td>
                     <td>20</td>
@@ -1377,38 +1440,10 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>0.000269</td>
                     <td>0.929</td>
                     <td>1.0</td>
-                    <td>0.156</td>
+                    <td>0.165</td>
                   </tr>
                   <tr>
-                    <td><strong>Controller 3</strong></td>
-                    <td>0.95</td>
-                    <td>0.015</td>
-                    <td>20</td>
-                    <td>5</td>
-                    <td>8</td>
-                    <td>7</td>
-                    <td>105</td>
-                    <td>0.001598</td>
-                    <td>0.826</td>
-                    <td>1.0</td>
-                    <td>0.232</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Controller 4</strong></td>
-                    <td>0.95</td>
-                    <td>0.015</td>
-                    <td>20</td>
-                    <td>5</td>
-                    <td>8</td>
-                    <td>7</td>
-                    <td>610</td>
-                    <td>0.000269</td>
-                    <td>0.929</td>
-                    <td>1.0</td>
-                    <td>0.157</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Controller 5</strong></td>
+                    <td><strong>C5</strong></td>
                     <td>0.95</td>
                     <td>0.015</td>
                     <td>5</td>
@@ -1419,10 +1454,10 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>0.000269</td>
                     <td>1.0</td>
                     <td>1.0</td>
-                    <td>0.0156</td>
+                    <td>0.015</td>
                   </tr>
                   <tr>
-                    <td><strong>Controller 6</strong></td>
+                    <td><strong>C6</strong></td>
                     <td>0.819</td>
                     <td>0.006</td>
                     <td>20</td>
@@ -1431,12 +1466,12 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>7</td>
                     <td>105</td>
                     <td>0.001598</td>
-                    <td>0.913</td>
+                    <td>0.984</td>
                     <td>1.0</td>
-                    <td>0.204</td>
+                    <td>0.048</td>
                   </tr>
                   <tr>
-                    <td><strong>Controller 7</strong></td>
+                    <td><strong>C7</strong></td>
                     <td>0.819</td>
                     <td>0.006</td>
                     <td>5</td>
@@ -1445,12 +1480,12 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>15</td>
                     <td>105</td>
                     <td>0.001598</td>
-                    <td>0.913</td>
                     <td>1.0</td>
-                    <td>0.162</td>
+                    <td>1.0</td>
+                    <td>0.011</td>
                   </tr>
                   <tr>
-                    <td><strong>Controller 8</strong></td>
+                    <td><strong>C8</strong></td>
                     <td>0.95</td>
                     <td>0.015</td>
                     <td>5</td>
@@ -1459,9 +1494,9 @@ generate_comparative_analysis(controllers)</code></pre>
                     <td>15</td>
                     <td>105</td>
                     <td>0.001598</td>
-                    <td>0.754</td>
+                    <td>0.739</td>
                     <td>1.0</td>
-                    <td>0.294</td>
+                    <td>0.299</td>
                   </tr>
                 </tbody>
               </table>
@@ -1470,7 +1505,7 @@ generate_comparative_analysis(controllers)</code></pre>
             <h4>Training Summary</h4>
             <p><strong>Average Performance Across All Controllers:</strong></p>
             <ul>
-              <li><strong>Model Accuracy:</strong> 0.906 (90.6%)</li>
+              <li><strong>Model Accuracy:</strong> 0.922 (92.2%)</li>
               <li><strong>Charge Accuracy:</strong> 1.0 (100%)</li>
             </ul>
 
@@ -1487,17 +1522,32 @@ generate_comparative_analysis(controllers)</code></pre>
               function, and feasibility-normalized effective uptime.
             </p>
 
-            <h5>Success Rate Classification</h5>
+            <b>Accuracy</b>
             <p>
               At each timestep, actions are classified based on whether they meet user requirements
               and system constraints:
             </p>
 
-            \[ \begin{aligned} \text{Success} &= \mathbb{I}[a_t \neq \text{NO\_MODEL} \land
-            \text{acc}(a_t) \geq \theta_{\text{acc}} \land \text{lat}(a_t) \leq \theta_{\text{lat}}]
-            \\ \text{Small Miss} &= \mathbb{I}[a_t \neq \text{NO\_MODEL} \land (\text{acc}(a_t) <
-            \theta_{\text{acc}} \lor \text{lat}(a_t) > \theta_{\text{lat}})] \\ \text{Large Miss} &=
-            \mathbb{I}[a_t = \text{NO\_MODEL}] \end{aligned} \]
+            <ul>
+              <li>
+                <strong>Success:</strong> The selected model is not NO_MODEL and meets both accuracy
+                and latency thresholds (accuracy ≥ \(u_{\text{acc}}\) AND latency ≤
+                \(u_{\text{lat}}\)).
+              </li>
+              <li>
+                <strong>Small Miss:</strong> The selected model is not NO_MODEL but fails at least
+                one requirement (accuracy < \(u_{\text{acc}}\) OR latency > \(u_{\text{lat}}\)).
+              </li>
+              <li>
+                <strong>Large Miss:</strong> The selected action is NO_MODEL (no feasible model
+                available).
+              </li>
+            </ul>
+
+            <p>
+              <b>Accuracy</b> = \(\frac{Count(\text{Success}) \times \Delta}{T}\) = # Successes
+              times Task Interval over Horizon
+            </p>
 
             <pre><code>IF action.model == NO_MODEL THEN
     large_miss ← 1
@@ -1521,8 +1571,11 @@ END IF</code></pre>
               >
             </p>
 
-            <h5>Total Reward Function</h5>
-            <p>Combines success rates with carbon cost into a single utility metric:</p>
+            <b>Utility (Reward Function)</b>
+            <p>
+              Combines success rates with carbon cost into a single utility metric. This is the same
+              function as defined in <a href="#oracle-controller">Section 3.3</a>.
+            </p>
 
             \[ R_t = W \cdot \text{Success} - X \cdot \text{Small Miss} - Y \cdot \text{Large Miss}
             - Z \cdot \Delta_d \]
@@ -1543,7 +1596,7 @@ reward ← W × success - X × small_miss - Y × large_miss - Z × delta_d</code
               >
             </p>
 
-            <h5>Feasibility-Normalized Effective Uptime</h5>
+            <b>Feasibility-Normalized Effective Uptime</b>
             <p>
               Measures the quality of model selection relative to the best feasible option at each
               timestep:
@@ -1557,7 +1610,6 @@ reward ← W × success - X × small_miss - Y × large_miss - Z × delta_d</code
     IF action.model == NO_MODEL THEN
         uptime_score[t] ← 0
     ELSE
-        // Find all models feasible with current battery
         feasible_models ← []
         FOR each model m DO
             IF battery_level ≥ energy_per_inference(m) THEN
@@ -1575,7 +1627,6 @@ reward ← W × success - X × small_miss - Y × large_miss - Z × delta_d</code
     END IF
 END FOR
 
-// Return average over entire horizon
 RETURN sum(uptime_score) / len(uptime_score)</code></pre>
 
             <p>
@@ -1587,8 +1638,7 @@ RETURN sum(uptime_score) / len(uptime_score)</code></pre>
               >
             </p>
 
-            <h4>Baseline Performance Metrics</h4>
-            <p>Average controller performance across all configurations:</p>
+            <h4>Overall Performance Metrics</h4>
             <figure class="chart-placeholder">
               <img
                 src="figure_4_1_overall_performance_comparison.png"
@@ -1596,122 +1646,105 @@ RETURN sum(uptime_score) / len(uptime_score)</code></pre>
                 style="max-width: 100%; height: auto;"
               />
               <figcaption>
-                <p><strong>Figure 4.1:</strong> Overall Controller Performance Comparison</p>
+                <p><strong>Figure 4.1:</strong> Average results across ALL controllers.</p>
               </figcaption>
             </figure>
 
             <h3 id="ablation-studies">4.4 Targeted Ablation Studies</h3>
             <p>
               Systematic ablation studies with clean parameter isolation to understand individual
-              parameter impacts on controller performance. Each study compares configurations
-              differing by exactly ONE parameter using the consistent 3-panel layout.
+              parameter impacts on controller performance. Each figure uses a consistent 3-panel
+              horizontal layout showing Accuracy | Utility | Uptime metrics, as defined in
+              <a href="#performance-evaluation-metrics">Section 4.3</a>.
+              <b
+                >Unless otherwise stated, assume all information is an average of 4 simulations (1
+                per season) of data from Southern California.</b
+              >
             </p>
 
-            <h4 id="4.4.1-accuracy-latency-impact">4.4.1 Accuracy & Latency Impact</h4>
+            <h4 id="4.4.1-accuracy-latency-impact">Accuracy & Latency</h4>
             <p>
-              Isolates the effect of user requirement tuples (accuracy, latency) by comparing two
-              configurations: (0.819, 0.006s) vs (0.95, 0.015s). This study examines how different
-              combinations of accuracy and latency requirements affect controller performance when
-              traded off as a pair rather than individually.
-            </p>
-            <p>
-              The comparison uses controllers C1 (acc=0.95, lat=0.015s) vs C4 (acc=0.819,
-              lat=0.006s) with identical other parameters to understand the trade-off between
-              stricter accuracy requirements and more lenient latency constraints versus the
-              opposite configuration.
+              Compares controllers with different accuracy and latency thresholds to understand how
+              user requirement stringency affects controller performance.
             </p>
             <figure class="chart-placeholder">
               <img
-                src="figure_4_2_accuracy_threshold_impact.png"
-                alt="Accuracy & Latency Impact"
+                src="figure_4_2_accuracy_latency_impact.png"
+                alt="Accuracy vs Latency Impact"
                 style="max-width: 100%; height: auto;"
               />
               <figcaption>
-                <p><strong>Figure 4.2:</strong> Accuracy & Latency Impact (C1 vs C4)</p>
+                <p>
+                  <strong>Figure 4.2</strong> |
+                  <strong>High Accuracy & Latency (C1, C8):</strong> acc=0.95, lat=0.015s, Battery
+                  Capacity, Charging Rate = (105 mWh, 0.001598) |
+                  <strong>Low Accuracy & Latency (C6, C7):</strong> acc=0.819, lat=0.006s |
+                  <strong>Battery Capacity, Charging Rate (C1, C6, C7, C8)</strong> = (105 mWh,
+                  0.001598)
+                </p>
               </figcaption>
             </figure>
 
-            <h4 id="4.4.2-reward-weights-ablation-study">4.4.2 Reward Structure Impact</h4>
+            <h4 id="4.4.2-reward-structure-impact">Reward Weights</h4>
             <p>
-              Isolates effect of reward weights by comparing controllers C4 (carb=7,
-              performance-focused) vs C3 (carb=15, carbon-focused) with identical system parameters.
+              Compares controllers with different reward weight configurations to understand how
+              reward design affects controller behavior.
             </p>
             <figure class="chart-placeholder">
               <img
-                src="figure_4_4_reward_structure_impact.png"
+                src="figure_4_3_reward_structure_impact.png"
                 alt="Reward Structure Impact"
                 style="max-width: 100%; height: auto;"
               />
               <figcaption>
-                <p><strong>Figure 4.4:</strong> Reward Structure Impact (C4 vs C3)</p>
+                <p>
+                  <strong>Figure 4.3</strong> |
+                  <strong>Success-weighted (C2, C6):</strong> Performance-focused weights |
+                  <strong>Carbon-weighted (C3, C7):</strong> Carbon-focused weights |
+                  <strong>Battery Capacity, Charging Rate (C2, C3)</strong> = (610 mWh, 0.000269) |
+                  <strong>Battery Capacity, Charging Rate (C6, C7)</strong> = (105 mWh, 0.001598)
+                </p>
               </figcaption>
             </figure>
 
-            <h4 id="4.4.3-battery-configuration-ablation-study">
-              4.4.3 Battery Configuration Impact
-            </h4>
+            <h4 id="4.4.3-battery-configuration-impact">Battery Configuration</h4>
             <p>
-              Isolates effect of hardware constraints by comparing controllers C1 (105 mWh, 0.001598
-              rate) vs C2 (610 mWh, 0.000269 rate) with identical other parameters.
+              Compares controllers with different battery configurations to understand how hardware
+              constraints affect controller performance.
             </p>
             <figure class="chart-placeholder">
               <img
-                src="figure_4_5_battery_configuration_impact.png"
+                src="figure_4_4_battery_configuration_impact.png"
                 alt="Battery Configuration Impact"
                 style="max-width: 100%; height: auto;"
               />
               <figcaption>
-                <p><strong>Figure 4.5:</strong> Battery Configuration Impact (C1 vs C2)</p>
+                <p>
+                  <strong>Figure 4.4</strong> | <strong>Small Battery (C6, C8):</strong> Battery
+                  Capacity, Charging Rate = (105 mWh, 0.001598) |
+                  <strong>Large Battery (C4, C5):</strong> Battery Capacity, Charging Rate = (610
+                  mWh, 0.000269) | <strong>Success-weighted (C4, C6):</strong> Performance-focused
+                  weights | <strong>Carbon-weighted (C5, C8):</strong> Carbon-focused weights
+                </p>
               </figcaption>
             </figure>
 
-            <h4 id="4.4.4-seasonal-variation-ablation-study">4.4.4 Seasonal Variation Analysis</h4>
+            <h4 id="4.4.4-seasonal-variation-analysis">Seasonal Variation</h4>
             <p>
-              Analyzes performance patterns across 4 seasons (winter, spring, summer, fall) with
-              diverse controller configurations to understand energy data impact.
+              Analyzes average controller performance across all seasonal test dates to understand
+              how seasonal carbon intensity patterns affect overall system behavior.
             </p>
             <figure class="chart-placeholder">
               <img
-                src="figure_4_6_seasonal_variation.png"
+                src="figure_4_5_seasonal_variation.png"
                 alt="Seasonal Variation Analysis"
                 style="max-width: 100%; height: auto;"
               />
               <figcaption>
-                <p><strong>Figure 4.6:</strong> Seasonal Variation Analysis</p>
-              </figcaption>
-            </figure>
-
-            <h4 id="4.4.5-controller-comparison-ablation-study">
-              4.4.5 Controller Performance Gaps
-            </h4>
-            <p>
-              Comprehensive comparison of Oracle vs ML vs Naive controllers across all model
-              configurations to quantify ML learning effectiveness and optimization gaps.
-            </p>
-            <figure class="chart-placeholder">
-              <img
-                src="figure_4_7_performance_gaps.png"
-                alt="Controller Performance Gaps"
-                style="max-width: 100%; height: auto;"
-              />
-              <figcaption>
-                <p><strong>Figure 4.7:</strong> Controller Performance Gaps</p>
-              </figcaption>
-            </figure>
-
-            <h4 id="4.4.6-reward-weight-sensitivity">4.4.6 Reward Weight Sensitivity</h4>
-            <p>
-              Compares performance-focused (carb7) vs carbon-focused (carb15) optimization across
-              different hardware configurations to understand objective function impact.
-            </p>
-            <figure class="chart-placeholder">
-              <img
-                src="figure_4_8_reward_sensitivity.png"
-                alt="Reward Weight Sensitivity"
-                style="max-width: 100%; height: auto;"
-              />
-              <figcaption>
-                <p><strong>Figure 4.8:</strong> Reward Weight Sensitivity</p>
+                <p>
+                  <strong>Figure 4.5</strong> | <b>Winter:</b> Feb. 20th 2024 | <b>Spring:</b> May
+                  20th 2024 | <b>Summer:</b> Aug. 20th 2024 | <b>Autumn:</b> Nov. 20th 2024
+                </p>
               </figcaption>
             </figure>
           </section>
@@ -1793,11 +1826,11 @@ RETURN sum(uptime_score) / len(uptime_score)</code></pre>
               Honestly, the biggest bottleneck was the runtime cost of generating all the oracle
               data. Even with our discretization and K-nearest neighbor tricks, solving the MDP for
               multiple parameter combinations just ate up so much computational time. As you can see
-              from the data generation parameters in <a href="#results-parameters">Section 4.1</a>,
-              we were limited to just a few locations and seasonal combinations because each oracle
-              solve took forever. This really constrained how broad our parameter coverage could be
-              and ultimately limited how many controllers we could realistically train within the
-              project timeline.
+              from the trainingdata generation parameters in
+              <a href="#results-parameters">Section 4.1</a>, we were limited to just a few locations
+              and seasonal combinations because each oracle solve took forever. This really
+              constrained how broad our parameter coverage could be and ultimately limited how many
+              controllers we could realistically train within the project timeline.
             </p>
             <h3 id="limitations">5.3 Limitations</h3>
 
@@ -1837,11 +1870,11 @@ RETURN sum(uptime_score) / len(uptime_score)</code></pre>
 
             <p>
               Due to our time constraints, we were not able to perform more ablation studies on this
-              controller. The computational cost of solving the MDP, even after the restrictions and
-              trade-offs we made, there was not enough time to do this. There are so many system
-              parameters that tuning a controller for every single combination, especially with the
-              many tasks we were doing, is just not feasible. This ties in to the previous point, as
-              more abelation studies would also allow for the general controller.
+              controller. We only had enough time to generate statistics for 1 region (Southern
+              California). The computational cost of solving the MDP, even after the restrictions
+              and trade-offs we made, is so large that there was not enough time to do this. This
+              ties in to the previous point, as more abelation studies would also allow for the
+              general controller.
             </p>
 
             <h3 id="future_work">5.4 Future Work</h3>

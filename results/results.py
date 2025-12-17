@@ -61,8 +61,8 @@ class ResultsAnalyzer:
         self.output_dir = self.config["output_dir"]
 
         # Initialize data containers
-        self.batch_data = None
-        self.summary_data = None
+        self.batch_data = {}
+        self.summary_data = {}
         self.model_configs = {}
         self.controller_configs = {}
 
@@ -371,8 +371,8 @@ class ResultsAnalyzer:
             else:
                 all_models.append(model_tuple)
 
-        # Limit to first few models to prevent overcrowding
-        models_to_show = all_models[:4]
+        # Use all provided models
+        models_to_show = all_models
 
         # Algorithm color mapping
         algorithm_colors = {
@@ -388,6 +388,10 @@ class ResultsAnalyzer:
         controller_names = []
         for model_file in models_to_show:
             controller_names.append(self._extract_controller_name(model_file))
+
+        # Keep the order as provided (no sorting)
+        controller_names = controller_names[: len(models_to_show)]
+        models_to_show = models_to_show[: len(controller_names)]
 
         # Create positions for each controller group
         x_positions = list(range(len(controller_names)))
@@ -414,6 +418,7 @@ class ResultsAnalyzer:
                         self.summary_data["graph_data"]["utility_comparison"][
                             "total_rewards"
                         ][algorithm][model_index]
+                        / 4  # Average across 4 seasons
                     )
                     uptime_values.append(
                         self.summary_data["graph_data"]["uptime_metrics"][
@@ -428,9 +433,9 @@ class ResultsAnalyzer:
                     uptime_values.append(0)
 
             # Calculate x positions for this algorithm's bars (offset within each controller group)
-            offset = (
-                list(algorithm_colors.keys()).index(algorithm) * bar_width - bar_width
-            )
+            # Oracle: -0.25, ML: 0, Naive: +0.25
+            algorithm_index = list(algorithm_colors.keys()).index(algorithm)
+            offset = (algorithm_index - 1) * bar_width
             x_algo = [x + offset for x in x_positions]
 
             # Panel 1: Accuracy Metrics
@@ -463,7 +468,7 @@ class ResultsAnalyzer:
 
         # Configure Panel 1: Accuracy Metrics
         ax1.set_title("Accuracy Metrics", fontweight="bold")
-        ax1.set_ylabel("Success Rate")
+        ax1.set_ylabel("Average Success Rate")
         ax1.set_xticks(x_positions)
         ax1.set_xticklabels(controller_names)
         ax1.set_ylim(0, 1.1)
@@ -473,7 +478,7 @@ class ResultsAnalyzer:
 
         # Configure Panel 2: Utility Metrics
         ax2.set_title("Utility Metrics", fontweight="bold")
-        ax2.set_ylabel("Total Reward")
+        ax2.set_ylabel("Average Total Reward")
         ax2.set_xticks(x_positions)
         ax2.set_xticklabels(controller_names)
         ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
@@ -483,7 +488,7 @@ class ResultsAnalyzer:
 
         # Configure Panel 3: Uptime Metrics
         ax3.set_title("Uptime Metrics", fontweight="bold")
-        ax3.set_ylabel("Uptime Score")
+        ax3.set_ylabel("Average Uptime Score")
         ax3.set_xticks(x_positions)
         ax3.set_xticklabels(controller_names)
         ax3.set_ylim(0, 1.1)
@@ -600,79 +605,342 @@ class ResultsAnalyzer:
         )
         plt.close()
 
-    def create_figure_4_2(self):
-        """Figure 4.2: Accuracy and Latency Impact (C1 vs C4)."""
-        print("Creating Figure 4.2: Accuracy and Latency Impact...")
+    def create_figure_4_2_acc_lat_comparison(self):
+        """Figure 4.2: Accuracy vs Latency Comparison."""
+        print("Creating Figure 4.2: Accuracy vs Latency Comparison...")
 
         if not self.summary_data:
             self.load_data()
 
-        c1_model = "C1_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth"
-        c4_model = "C4_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth"
+        # Accuracy vs Latency Comparison: C1, C8, C6, C7 (numerical order)
+        acc_lat_models = [
+            "C1_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth",
+            "C8_controller_acc0.95_lat0.015_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth",
+            "C6_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth",
+            "C7_controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth",
+        ]
 
-        title = "Figure 4.2: Accuracy and Latency Impact (C1 vs C4)"
+        title = "Figure 4.2: Accuracy vs Latency Comparison"
         self.create_three_panel_horizontal_layout(
             title,
-            [(c1_model, c4_model)],
+            acc_lat_models,
             os.path.join(self.output_dir, "figure_4_2_accuracy_latency_impact.png"),
         )
 
-    def create_figure_4_3(self):
-        """Figure 4.3: Reward Structure Impact (C4 vs C3)."""
-        print("Creating Figure 4.3: Reward Structure Impact...")
+    def create_figure_4_3_reward_weight_comparison(self):
+        """Figure 4.3: Reward Weight Comparison."""
+        print("Creating Figure 4.3: Reward Weight Comparison...")
 
         if not self.summary_data:
             self.load_data()
 
-        c4_model = "C4_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth"
-        c3_model = "C3_controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth"
+        # Reward Weight Comparison: C2, C3, C6, C7 (numerical order)
+        reward_weight_models = [
+            "C2_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth",
+            "C3_controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth",
+            "C6_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth",
+            "C7_controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth",
+        ]
 
-        title = "Figure 4.3: Reward Structure Impact (C4 vs C3)"
+        title = "Figure 4.3: Reward Weight Comparison"
         self.create_three_panel_horizontal_layout(
             title,
-            [(c4_model, c3_model)],
+            reward_weight_models,
             os.path.join(self.output_dir, "figure_4_3_reward_structure_impact.png"),
         )
 
-    def create_figure_4_4(self):
-        """Figure 4.4: Battery Configuration Impact (C1 vs C2)."""
-        print("Creating Figure 4.4: Battery Configuration Impact...")
+    def create_figure_4_4_battery_comparison(self):
+        """Figure 4.4: Battery Configuration Comparison."""
+        print("Creating Figure 4.4: Battery Configuration Comparison...")
 
         if not self.summary_data:
             self.load_data()
 
-        c1_model = "C1_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth"
-        c2_model = "C2_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth"
+        # Battery Configuration Comparison: C4, C6, C5, C8 (special order)
+        battery_models = [
+            "C4_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth",
+            "C6_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth",
+            "C5_controller_acc0.95_lat0.015_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth",
+            "C8_controller_acc0.95_lat0.015_succ5_small7_large10_carb15_cap105_rate0.001598_best_model.pth",
+        ]
 
-        title = "Figure 4.4: Battery Configuration Impact (C1 vs C2)"
+        title = "Figure 4.4: Battery Configuration Comparison"
         self.create_three_panel_horizontal_layout(
             title,
-            [(c1_model, c2_model)],
+            battery_models,
             os.path.join(
                 self.output_dir, "figure_4_4_battery_configuration_impact.png"
             ),
         )
 
-    def create_figure_4_5(self):
-        """Figure 4.5: Seasonal Variation Analysis."""
-        print("Creating Figure 4.5: Seasonal Variation Analysis...")
+    def create_figure_4_5_seasonal_average(self):
+        """Figure 4.5: Seasonal Performance Analysis - Averaged across all controllers."""
+        print("Creating Figure 4.5: Seasonal Performance Analysis...")
 
         if not self.summary_data:
             self.load_data()
 
-        # Select representative models for seasonal analysis
-        seasonal_models = [
-            "C1_controller_acc0.95_lat0.015_succ20_small5_large8_carb7_cap105_rate0.001598_best_model.pth",
-            "C4_controller_acc0.819_lat0.006_succ20_small5_large8_carb7_cap610_rate0.000269_best_model.pth",
-            "C3_controller_acc0.819_lat0.006_succ5_small7_large10_carb15_cap610_rate0.000269_best_model.pth",
-        ]
+        # Get all models and seasonal dates
+        all_models = self.summary_data["graph_data"]["accuracy_metrics"]["models"]
+        seasonal_dates = self.summary_data["graph_data"]["metadata"]["test_dates"]
 
-        title = "Figure 4.5: Seasonal Variation Analysis"
-        self.create_three_panel_horizontal_layout(
-            title,
-            seasonal_models,
-            os.path.join(self.output_dir, "figure_4_5_seasonal_variation.png"),
+        # Calculate seasonal averages across all controllers for each algorithm
+        seasonal_success_rates = {"oracle": [], "ml": [], "naive": []}
+        seasonal_rewards = {"oracle": [], "ml": [], "naive": []}
+        seasonal_uptime = {"oracle": [], "ml": [], "naive": []}
+
+        # For each season, average across all controllers
+        for season_idx in range(len(seasonal_dates)):
+            for algorithm in ["oracle", "ml", "naive"]:
+                # Sum across all models for this season and algorithm
+                season_success_total = sum(
+                    self.summary_data["graph_data"]["accuracy_metrics"][
+                        "success_rates"
+                    ][algorithm][model_idx]
+                    for model_idx in range(len(all_models))
+                )
+                season_reward_total = sum(
+                    self.summary_data["graph_data"]["utility_comparison"][
+                        "total_rewards"
+                    ][algorithm][model_idx]
+                    for model_idx in range(len(all_models))
+                )
+                season_uptime_total = sum(
+                    self.summary_data["graph_data"]["uptime_metrics"]["uptime_scores"][
+                        algorithm
+                    ][model_idx]
+                    for model_idx in range(len(all_models))
+                )
+
+                # Calculate averages
+                num_models = len(all_models)
+                seasonal_success_rates[algorithm].append(
+                    season_success_total / num_models
+                )
+                seasonal_rewards[algorithm].append(season_reward_total / num_models)
+                seasonal_uptime[algorithm].append(season_uptime_total / num_models)
+
+        # Create seasonal visualization with bar charts (similar to other figures)
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
+        fig.suptitle(
+            "Figure 4.5: Seasonal Performance Analysis", fontsize=16, fontweight="bold"
         )
+
+        # X-axis labels (seasons)
+        x_positions = range(len(seasonal_dates))
+        season_labels = [
+            date.replace("2024-", "") for date in seasonal_dates
+        ]  # "02-20", "05-20", etc.
+
+        # Algorithm colors
+        algorithm_colors = {
+            "oracle": "#2E86AB",  # Blue
+            "ml": "#A23B72",  # Purple
+            "naive": "#F18F01",  # Orange
+        }
+
+        bar_width = 0.25
+
+        # Plot data for each algorithm type
+        for algorithm in ["oracle", "ml", "naive"]:
+            # Calculate x positions for this algorithm's bars
+            algorithm_index = list(algorithm_colors.keys()).index(algorithm)
+            offset = (algorithm_index - 1) * bar_width  # -0.25, 0, +0.25
+            x_algo = [x + offset for x in x_positions]
+
+            # Panel 1: Success Rate by Season
+            ax1.bar(
+                x_algo,
+                seasonal_success_rates[algorithm],
+                bar_width,
+                label=algorithm.capitalize(),
+                color=algorithm_colors[algorithm],
+                alpha=0.8,
+            )
+
+            # Panel 2: Total Reward by Season
+            ax2.bar(
+                x_algo,
+                seasonal_rewards[algorithm],
+                bar_width,
+                label=algorithm.capitalize(),
+                color=algorithm_colors[algorithm],
+                alpha=0.8,
+            )
+
+            # Panel 3: Uptime Score by Season
+            ax3.bar(
+                x_algo,
+                seasonal_uptime[algorithm],
+                bar_width,
+                label=algorithm.capitalize(),
+                color=algorithm_colors[algorithm],
+                alpha=0.8,
+            )
+
+        # Configure Panel 1: Success Rate by Season
+        ax1.set_title("Average Success Rate", fontweight="bold")
+        ax1.set_ylabel("Average Success Rate")
+        ax1.set_xticks(x_positions)
+        ax1.set_xticklabels(season_labels)
+        ax1.set_ylim(0, 1.1)
+        ax1.grid(True, alpha=0.3)
+        self.format_percentage_axis(ax1)
+        ax1.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+
+        # Configure Panel 2: Total Reward by Season
+        ax2.set_title("Average Total Reward", fontweight="bold")
+        ax2.set_ylabel("Average Total Reward")
+        ax2.set_xticks(x_positions)
+        ax2.set_xticklabels(season_labels)
+        ax2.axhline(y=0, color="black", linestyle="-", alpha=0.3)
+        ax2.grid(True, alpha=0.3)
+        ax2.yaxis.set_major_formatter(mticker.FuncFormatter(lambda x, p: f"{x:.0f}"))
+        ax2.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+
+        # Configure Panel 3: Uptime Score by Season
+        ax3.set_title("Average Uptime Score", fontweight="bold")
+        ax3.set_ylabel("Average Uptime Score")
+        ax3.set_xticks(x_positions)
+        ax3.set_xticklabels(season_labels)
+        ax3.set_ylim(0, 1.1)
+        ax3.grid(True, alpha=0.3)
+        self.format_percentage_axis(ax3)
+        ax3.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+
+        plt.tight_layout()
+        plt.savefig(
+            os.path.join(self.output_dir, "figure_4_5_seasonal_variation.png"),
+            bbox_inches="tight",
+            dpi=300,
+        )
+        plt.close()
+
+    def create_seasonal_variation_chart(
+        self, controller_name: str, seasonal_dates: List, save_path: str
+    ):
+        """Create seasonal variation chart showing performance across 4 dates."""
+        # Extract model index from the full model list
+        models = self.summary_data["graph_data"]["accuracy_metrics"]["models"]
+        try:
+            model_index = models.index(controller_name)
+        except ValueError:
+            print(f"Warning: Model {controller_name} not found in summary data")
+            return
+
+        # Use summary data to get seasonal performance directly
+        models = self.summary_data["graph_data"]["accuracy_metrics"]["models"]
+        try:
+            model_index = models.index(controller_name)
+        except ValueError:
+            print(f"Warning: Model {controller_name} not found in summary data")
+            return
+
+        # Extract seasonal data from summary for this controller
+        seasonal_success_rates = {"oracle": [], "ml": [], "naive": []}
+
+        # Get seasonal dates and extract corresponding data
+        seasonal_dates = self.summary_data["graph_data"]["metadata"]["test_dates"]
+
+        # Get success rates for each seasonal date for this controller
+        for algorithm in ["oracle", "ml", "naive"]:
+            seasonal_success_rates[algorithm] = [
+                self.summary_data["graph_data"]["accuracy_metrics"]["success_rates"][
+                    algorithm
+                ][model_index]
+                for _ in seasonal_dates  # Same model, shown across seasons
+            ]
+
+        # Create seasonal visualization
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
+        fig.suptitle(
+            "Figure 4.5: Seasonal Variation Analysis", fontsize=16, fontweight="bold"
+        )
+
+        x = range(len(seasonal_dates))
+        colors = {"oracle": "#2E86AB", "ml": "#A23B72", "naive": "#F18F01"}
+        labels = [
+            date.replace("2024-", "") for date in seasonal_dates
+        ]  # "02-20", "05-20", etc.
+
+        # Panel 1: Success Rate by Season
+        for algorithm in ["oracle", "ml", "naive"]:
+            ax1.plot(
+                x,
+                seasonal_success_rates[algorithm],
+                marker="o",
+                color=colors[algorithm],
+                label=algorithm.capitalize(),
+                linewidth=2,
+            )
+        ax1.set_title("Success Rate by Season", fontweight="bold")
+        ax1.set_ylabel("Success Rate")
+        ax1.set_xticks(x)
+        ax1.set_xticklabels(labels)
+        ax1.set_ylim(0, 1.1)
+        ax1.grid(True, alpha=0.3)
+        self.format_percentage_axis(ax1)
+        ax1.legend()
+
+        # Panel 2: Total Reward by Season
+        seasonal_rewards = {"oracle": [], "ml": [], "naive": []}
+
+        for algorithm in ["oracle", "ml", "naive"]:
+            seasonal_rewards[algorithm] = [
+                self.summary_data["graph_data"]["utility_comparison"]["total_rewards"][
+                    algorithm
+                ][model_index]
+                for _ in seasonal_dates  # Same model, shown across seasons
+            ]
+
+        for algorithm in ["oracle", "ml", "naive"]:
+            ax2.plot(
+                x,
+                seasonal_rewards[algorithm],
+                marker="o",
+                color=colors[algorithm],
+                label=algorithm.capitalize(),
+                linewidth=2,
+            )
+        ax2.set_title("Total Reward by Season", fontweight="bold")
+        ax2.set_ylabel("Total Reward")
+        ax2.set_xticks(x)
+        ax2.set_xticklabels(labels)
+        ax2.grid(True, alpha=0.3)
+        ax2.legend()
+
+        # Panel 3: Uptime Score by Season
+        seasonal_uptime = {"oracle": [], "ml": [], "naive": []}
+
+        for algorithm in ["oracle", "ml", "naive"]:
+            seasonal_uptime[algorithm] = [
+                self.summary_data["graph_data"]["uptime_metrics"]["uptime_scores"][
+                    algorithm
+                ][model_index]
+                for _ in seasonal_dates  # Same model, shown across seasons
+            ]
+
+        for algorithm in ["oracle", "ml", "naive"]:
+            ax3.plot(
+                x,
+                seasonal_uptime[algorithm],
+                marker="o",
+                color=colors[algorithm],
+                label=algorithm.capitalize(),
+                linewidth=2,
+            )
+        ax3.set_title("Uptime Score by Season", fontweight="bold")
+        ax3.set_ylabel("Uptime Score")
+        ax3.set_xticks(x)
+        ax3.set_xticklabels(labels)
+        ax3.set_ylim(0, 1.1)
+        ax3.grid(True, alpha=0.3)
+        self.format_percentage_axis(ax3)
+        ax3.legend()
+
+        plt.tight_layout()
+        plt.savefig(save_path, bbox_inches="tight", dpi=300)
+        plt.close()
 
     def create_figure_4_6(self):
         """Figure 4.6: Controller Performance Gaps."""
@@ -691,58 +959,25 @@ class ResultsAnalyzer:
             os.path.join(self.output_dir, "figure_4_6_performance_gaps.png"),
         )
 
-    def create_figure_4_7(self):
-        """Figure 4.7: Reward Weight Sensitivity (carb7 vs carb15 groups)."""
-        print("Creating Figure 4.7: Reward Weight Sensitivity...")
+    def generate_consolidated_charts(self):
+        """Generate all consolidated charts for Section 4 with new structure."""
+        print("Generating consolidated charts for Section 4...")
 
+        # Ensure data is loaded first
         if not self.summary_data:
             self.load_data()
 
-        # Group by carbon weight
-        carb7_models = [
-            m
-            for m in self.summary_data["graph_data"]["accuracy_metrics"]["models"]
-            if "carb7" in m
-        ]
-        carb15_models = [
-            m
-            for m in self.summary_data["graph_data"]["accuracy_metrics"]["models"]
-            if "carb15" in m
-        ]
+        # Section 4.3: Overall Comparison
+        self.create_figure_4_1()
 
-        title = "Figure 4.7: Reward Weight Sensitivity (Performance vs Carbon Focused)"
-        self.create_three_panel_horizontal_layout(
-            title,
-            carb7_models[:2] + carb15_models[:2],  # Limit to prevent overcrowding
-            os.path.join(self.output_dir, "figure_4_7_reward_sensitivity.png"),
-        )
+        # Section 4.4: Targeted Ablation Studies
+        self.create_figure_4_2_acc_lat_comparison()  # Accuracy vs Latency Comparison
+        self.create_figure_4_3_reward_weight_comparison()  # Reward Weight Comparison
+        self.create_figure_4_4_battery_comparison()  # Battery Configuration Comparison
+        self.create_figure_4_5_seasonal_average()  # Seasonal Performance Analysis
+        self.create_figure_4_6()  # Performance Gaps (All Controllers)
 
-    def create_figure_4_8(self):
-        """Figure 4.8: Energy Utilization Analysis (battery size comparison)."""
-        print("Creating Figure 4.8: Energy Utilization Analysis...")
-
-        if not self.summary_data:
-            self.load_data()
-
-        # Group by battery size
-        small_battery_models = [
-            m
-            for m in self.summary_data["graph_data"]["accuracy_metrics"]["models"]
-            if "cap105" in m
-        ]
-        large_battery_models = [
-            m
-            for m in self.summary_data["graph_data"]["accuracy_metrics"]["models"]
-            if "cap610" in m
-        ]
-
-        title = "Figure 4.8: Energy Utilization Analysis (Battery Size Impact)"
-        self.create_three_panel_horizontal_layout(
-            title,
-            small_battery_models[:2]
-            + large_battery_models[:2],  # Limit to prevent overcrowding
-            os.path.join(self.output_dir, "figure_4_8_energy_utilization.png"),
-        )
+        print(f"All consolidated charts saved to {self.output_dir}")
 
     def generate_all_charts(self):
         """Generate all required charts for Section 4 (GRAPH.md implementation)."""
@@ -756,13 +991,11 @@ class ResultsAnalyzer:
         self.create_figure_4_1()
 
         # Section 4.4: Targeted Ablation Studies
-        self.create_figure_4_2()  # Accuracy and Latency Impact
-        self.create_figure_4_3()  # Reward Structure Impact
-        self.create_figure_4_4()  # Battery Configuration Impact
-        self.create_figure_4_5()  # Seasonal Variation
-        self.create_figure_4_6()  # Performance Gaps
-        self.create_figure_4_7()  # Reward Weight Sensitivity
-        self.create_figure_4_8()  # Energy Utilization
+        self.create_figure_4_2_acc_lat_comparison()  # Accuracy vs Latency Comparison
+        self.create_figure_4_3_reward_weight_comparison()  # Reward Weight Comparison
+        self.create_figure_4_4_battery_comparison()  # Battery Configuration Comparison
+        self.create_figure_4_5_seasonal_average()  # Seasonal Performance Analysis
+        self.create_figure_4_6()  # Performance Gaps (All Controllers)
 
         print(f"All charts saved to {self.output_dir}")
 
@@ -773,7 +1006,7 @@ def main():
         # Create analyzer and generate charts
         analyzer = ResultsAnalyzer()
         analyzer.load_data()
-        analyzer.generate_all_charts()
+        analyzer.generate_consolidated_charts()
         print("All charts generated successfully!")
     except Exception as e:
         print(f"Error: {e}")
