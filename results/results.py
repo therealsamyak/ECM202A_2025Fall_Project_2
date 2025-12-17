@@ -138,6 +138,9 @@ class ResultsAnalyzer:
 
     def _parse_model_configurations(self):
         """Parse model filenames to extract configuration parameters."""
+        if not self.summary_data:
+            raise ValueError("summary_data is None - load_data() must be called first")
+
         model_files = self.summary_data["graph_data"]["accuracy_metrics"]["models"]
 
         for model_file in model_files:
@@ -185,7 +188,14 @@ class ResultsAnalyzer:
         """Extract controller short name from prefixed model filename."""
         model_file = config.get("model_file", "")
 
-        # Extract C1, C2, etc. from beginning of filename
+        # Look up in controller mapping (now: C1 -> model filename)
+        # So we need to find which key maps to this model file
+        if self.controller_mapping:
+            for short_name, model_filename in self.controller_mapping.items():
+                if model_filename == model_file:
+                    return short_name
+
+        # Fallback: Extract C1, C2, etc. from beginning of filename
         if model_file.startswith("C"):
             # Format: "C1_controller_acc..." -> "C1"
             return model_file.split("_")[0]
@@ -196,8 +206,7 @@ class ResultsAnalyzer:
         else:
             mapping_key = model_file
 
-        # Look up in controller mapping
-        return self.controller_mapping.get(mapping_key, "Unknown")
+        return mapping_key
 
     def _load_individual_results(self):
         """Load individual batch result files for detailed analysis."""
