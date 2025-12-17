@@ -1,35 +1,34 @@
 ## Optimal Charge Security Camera
 
-We have a battery-powered security camera that runs local pre-trained image-recognition models. A battery is attached both to the charger, and the camera. The camera is context aware about clean energy information externally. Based on the information, we have a controller that looks at current battery percentage, information about external energy, and user-defined metrics (minimum accuracy, minimum latency, how often we run the model etc.), to decide which image-recognition model is loaded based on all these factors. We want to decide when to charge the battery vs when to use the energy to load a higher model for higher accuracy.
+An intelligent security camera system that dynamically selects YOLO models based on battery level and clean energy availability. Balances accuracy, efficiency, and sustainability through three controller approaches: Oracle (optimal), Custom (learned via imitation), and Naive (baseline).
 
-THE GOAL OF THIS CODEBASE IS TO OBTAIN A MODEL WITH GOOD WEIGHTS SO IT CAN BE RAN GENERAL-USE IN ALL SCENARIOS TO OPTIMIZE THIS.
+📖 **Full documentation, results, and technical details:** https://therealsamyak.github.io/ECM202A_2025Fall_Project_2/
 
-**We have a predefined optimizer function that we will use to optimize the model selection.**
-
-## Model Profiling
-
-The model profiler benchmarks YOLOv10 models for power consumption and performance.
-
-### Power & Latency Benchmarks
-
-Power estimates are stored in `model-profiler/power_profiles.json`. Run it with
+## Quick Start
 
 ```bash
-python3 model-profiler/benchmark_power.py
+# Clone and install dependencies
+git clone https://github.com/therealsamyak/ECM202A_2025Fall_Project_2.git
+cd ECM202A_2025Fall_Project_2
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
+
+# Run simulation
+python3 simulation/run.py
 ```
 
-Change line 40 of `model-profiler/benchmark_power.py` to modify the number of iterations.
+## Key Components
 
-### Accuracy
+- **Model Profiler**: Benchmarks YOLOv10 power/latency/accuracy
+- **Oracle Controller**: Optimal MILP-based decision making
+- **ML Controller**: Real-time policy via imitation learning
+- **Simulation Framework**: Seasonal evaluation across energy data
 
-Accuracy values are also stored in `model-profiler/power_profiles.json`, and are scaled up from the COCO mAP 50-95 values, to more accurately be translated to percentages.
+## Data Sources
 
-## Citations
+Carbon intensity data from [Electricity Maps](https://www.electricitymaps.com/) for US regions (2024, 5-minute granularity).
 
-Electricity Maps. "United States California LDWP 2024 5 minute Carbon Intensity Data". Electricity Maps, ver. July 2, 2025, https://www.electricitymaps.com.
+---
 
-Electricity Maps. "United States Florida FPL 2024 5 minute Carbon Intensity Data". Electricity Maps, ver. July 2, 2025, https://www.electricitymaps.com.
-
-Electricity Maps. "United States Northwest PSEI 2024 5 minute Carbon Intensity Data". Electricity Maps, ver. July 2, 2025, https://www.electricitymaps.com.
-
-Electricity Maps. "United States New York NYIS 2024 5 minute Carbon Intensity Data". Electricity Maps, ver. July 2, 2025, https://www.electricitymaps.com.
+Visit our [documentation site](https://therealsamyak.github.io/ECM202A_2025Fall_Project_2/) for comprehensive technical details, results, and implementation guide.
