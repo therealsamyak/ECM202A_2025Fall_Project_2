@@ -324,9 +324,9 @@ class OracleController:
         return False
 
     def _expand_search_until_k_valid(
-        self, battery_level: float, available_keys: set, k: int
+        self, battery_level: float, available_keys: set, k: int, timestep: int = -1
     ) -> str:
-        """Expand search until K valid options found"""
+        """Expand search until K valid options found, optimized by value"""
         search_radius = 1
         max_radius = 50  # Prevent infinite loop
 
@@ -339,28 +339,49 @@ class OracleController:
             ]
 
             if len(candidates) >= k:
-                # Sort by distance and collect K valid options
+                # Sort by distance and collect K valid options with their values
                 candidates.sort(key=lambda x: abs(x - battery_level))
-                valid_count = 0
+                valid_options = []
                 for candidate in candidates:
                     if self._has_feasible_actions_for_battery(candidate):
-                        valid_count += 1
-                        if valid_count == k:
-                            # Return the closest of the K valid options
-                            return self._battery_to_key(candidate)
+                        candidate_key = str(round(candidate, 7))
+                        # Get value function for this timestep and battery level
+                        if timestep >= 0 and timestep <= len(self.V) - 1:
+                            value = self.V[timestep].get(candidate_key, -float("inf"))
+                        else:
+                            value = -float("inf")
+                        valid_options.append((candidate_key, value))
+
+                        if len(valid_options) == k:
+                            # Sort by value (descending) and return best option
+                            valid_options.sort(key=lambda x: x[1], reverse=True)
+                            return valid_options[0][0]
             search_radius += 1
 
-        # Last resort: return any feasible key
+        # Last resort: find any feasible key with best available value
+        best_key = None
+        best_value = -float("inf")
         for key in available_keys:
             if self._has_feasible_actions_for_battery(float(key)):
-                return self._battery_to_key(float(key))
+                # Get value function for this timestep and battery level
+                if timestep >= 0 and timestep <= len(self.V) - 1:
+                    value = self.V[timestep].get(key, -float("inf"))
+                else:
+                    value = -float("inf")
+
+                if value > best_value:
+                    best_value = value
+                    best_key = key
+
+        if best_key is not None:
+            return best_key
 
         return self._battery_to_key(battery_level)  # Ultimate fallback
 
     def _find_k_nearest_keys_with_validation(
-        self, battery_level: float, available_keys: set, k: int
+        self, battery_level: float, available_keys: set, k: int, timestep: int = -1
     ) -> str:
-        """Find K nearest discretized keys with feasibility validation"""
+        """Find K nearest discretized keys with feasibility validation, optimized by value"""
         # Validate K parameter
         if k <= 0 or k % 2 == 0:
             raise ValueError("K must be an odd positive integer")
@@ -374,26 +395,36 @@ class OracleController:
         ]
         available_items.sort(key=lambda x: x[1])  # Sort by distance
 
-        # Collect K nearest valid options
+        # Collect K nearest valid options with their values
         valid_options = []
         for i in range(min(k, len(available_items))):
             nearest_key = str(round(available_items[i][0], 7))
 
             # Check if this battery level has feasible actions
             if self._has_feasible_actions_for_battery(float(nearest_key)):
-                valid_options.append(nearest_key)
+                # Get the value function for this timestep and battery level
+                if timestep >= 0 and timestep <= len(self.V) - 1:
+                    value = self.V[timestep].get(nearest_key, -float("inf"))
+                else:
+                    value = -float("inf")
+                valid_options.append((nearest_key, value))
             else:
                 # Debug: show why this option is invalid
                 print(
                     f"DEBUG: Battery {float(nearest_key):.7f} has no feasible actions"
                 )
 
-        # If we found K valid options, return the closest one
+        # If we found K valid options, return one with HIGHEST value (not closest distance)
         if len(valid_options) == k:
-            return valid_options[0]
+            # Sort by value (descending) and return best
+            valid_options.sort(key=lambda x: x[1], reverse=True)
+            best_option = valid_options[0][0]
+            return best_option
 
         # Otherwise, expand search until we get K valid options
-        result = self._expand_search_until_k_valid(battery_level, available_keys, k)
+        result = self._expand_search_until_k_valid(
+            battery_level, available_keys, k, timestep
+        )
         print(
             f"DEBUG: Expanded search result for battery {battery_level:.7f}: {result}"
         )
@@ -427,72 +458,6 @@ class OracleController:
 
         return self.feasible_actions_cache[battery_key]
 
-    def solve(self) -> List[Tuple[State, Action]]:
-        """Solve MDP using backward induction with continuous battery levels"""
-        # Initialize with full battery capacity
-        initial_battery_key = self._battery_to_key(self.battery_capacity)
-
-        # Backward induction
-        for t in range(
-            self.num_timesteps, -1, -1
-        ):  # Include extra timestep in DP computation
-            # Determine which battery levels to evaluate at this timestep
-            battery_keys_to_evaluate = set()
-
-            # Always include full battery capacity and zero battery level
-            battery_keys_to_evaluate.add(initial_battery_key)
-            battery_keys_to_evaluate.add(self._battery_to_key(0.0))
-
-            if t == self.num_timesteps - 1:
-                # Last timestep: already have full battery from above
-                pass
-            else:
-                # For other timesteps, work backwards from t+1 states
-                battery_keys_to_evaluate.update(self.V[t + 1].keys())
-
-                # Pre-compute reachable battery levels from t+1 states
-                # This avoids the double nested loop
-                reachable_battery_keys = set()
-                for next_battery_key in self.V[t + 1].keys():
-                    battery_float = float(next_battery_key)
-                    feasible_actions = self._get_feasible_actions(battery_float)
-
-                    for action in feasible_actions:
-                        state = State(timestep=t, battery_level=battery_float)
-                        next_state = self.transition.transition(
-                            state, action, self.model_profiles
-                        )
-                        reachable_battery_key = self._battery_to_key(
-                            next_state.battery_level
-                        )
-                        reachable_battery_keys.add(reachable_battery_key)
-
-                battery_keys_to_evaluate.update(reachable_battery_keys)
-
-            # Process battery levels in parallel
-            self._process_timestep_parallel(t, battery_keys_to_evaluate)
-
-        # Extract optimal path
-        return self._extract_optimal_path()
-
-    def _calculate_path_reward(self, path: List[Tuple[State, Action]]) -> float:
-        """Calculate total reward for a path"""
-        total_reward = 0.0
-        for t, (state, action) in enumerate(path):
-            model_profile = (
-                None
-                if action.model == ModelType.NO_MODEL
-                else self.model_profiles[action.model]
-            )
-            reward = round(
-                self.reward_calc.calculate_reward(
-                    action, model_profile, self.carbon_data[t]
-                ),
-                7,
-            )
-            total_reward += reward
-        return total_reward
-
     def _extract_optimal_path(self) -> List[Tuple[State, Action]]:
         """Extract the optimal path from the solved policy"""
         path = []
@@ -505,25 +470,23 @@ class OracleController:
             # Use nearest neighbor lookup for actual battery values
             available_keys = set(self.pi[t].keys())
             nearest_key = self._find_k_nearest_keys_with_validation(
-                current_battery, available_keys, self.k_neighbors
+                current_battery, available_keys, self.k_neighbors, t
             )
             action = self.pi[t].get(nearest_key)
 
+            # With value-based K-NN, action should never be None
+            # Keeping this as safety check but it shouldn't trigger
             if action is None:
-                # Fallback: try exact key match
+                # This indicates a bug in K-NN logic or DP computation
                 exact_key = self._battery_to_key(current_battery)
                 action = self.pi[t].get(exact_key)
 
                 if action is None:
-                    # Debug: check what battery keys are available at this timestep
-                    available_keys_list = list(self.pi[t].keys())[:5]  # Show first 5
-                    print(
-                        f"t={t}: No policy found for battery {current_battery:.7f} (nearest key: {nearest_key}, exact key: {exact_key})"
+                    raise RuntimeError(
+                        f"K-NN failed to find valid action at t={t}, battery={current_battery:.7f}. "
+                        f"Nearest key: {nearest_key}, Exact key: {exact_key}, "
+                        f"Available keys: {len(available_keys)}"
                     )
-                    print(f"  Available battery keys (first 5): {available_keys_list}")
-
-                    # Default to NO_MODEL, no charge if no policy found
-                    action = Action(model=ModelType.NO_MODEL, charge=False)
 
             path.append((state, action))
 
@@ -600,3 +563,69 @@ class OracleController:
                 "model_types": [model.value for model in ModelType],
             },
         }
+
+    def solve(self) -> List[Tuple[State, Action]]:
+        """Solve MDP using backward induction with continuous battery levels"""
+        # Initialize with full battery capacity
+        initial_battery_key = self._battery_to_key(self.battery_capacity)
+
+        # Backward induction
+        for t in range(
+            self.num_timesteps, -1, -1
+        ):  # Include extra timestep in DP computation
+            # Determine which battery levels to evaluate at this timestep
+            battery_keys_to_evaluate = set()
+
+            # Always include full battery capacity and zero battery level
+            battery_keys_to_evaluate.add(initial_battery_key)
+            battery_keys_to_evaluate.add(self._battery_to_key(0.0))
+
+            if t == self.num_timesteps - 1:
+                # Last timestep: already have full battery from above
+                pass
+            else:
+                # For other timesteps, work backwards from t+1 states
+                battery_keys_to_evaluate.update(self.V[t + 1].keys())
+
+                # Pre-compute reachable battery levels from t+1 states
+                # This avoids the double nested loop
+                reachable_battery_keys = set()
+                for next_battery_key in self.V[t + 1].keys():
+                    battery_float = float(next_battery_key)
+                    feasible_actions = self._get_feasible_actions(battery_float)
+
+                    for action in feasible_actions:
+                        state = State(timestep=t, battery_level=battery_float)
+                        next_state = self.transition.transition(
+                            state, action, self.model_profiles
+                        )
+                        reachable_battery_key = self._battery_to_key(
+                            next_state.battery_level
+                        )
+                        reachable_battery_keys.add(reachable_battery_key)
+
+                battery_keys_to_evaluate.update(reachable_battery_keys)
+
+            # Process battery levels in parallel
+            self._process_timestep_parallel(t, battery_keys_to_evaluate)
+
+        # Extract optimal path
+        return self._extract_optimal_path()
+
+    def _calculate_path_reward(self, path: List[Tuple[State, Action]]) -> float:
+        """Calculate total reward for a path"""
+        total_reward = 0.0
+        for t, (state, action) in enumerate(path):
+            model_profile = (
+                None
+                if action.model == ModelType.NO_MODEL
+                else self.model_profiles[action.model]
+            )
+            reward = round(
+                self.reward_calc.calculate_reward(
+                    action, model_profile, self.carbon_data[t]
+                ),
+                7,
+            )
+            total_reward += reward
+        return total_reward

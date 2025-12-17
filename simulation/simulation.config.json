@@ -5,7 +5,7 @@
     "task_interval_seconds": 3600,
     "horizon_seconds": 86400,
     "battery_discretization_step": 0.01,
-    "nearest_neighbor_k": 3,
+    "nearest_neighbor_k": 1,
     "max_workers": 100
   },
   "user_requirements": {
